@@ -30,9 +30,8 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450;
-
+    const int screenWidth = 1366;
+    const int screenHeight = 1024;
     SetConfigFlags(FLAG_MSAA_4X_HINT);      // Enable Multi Sampling Anti Aliasing 4x (if available)
 
     InitWindow(screenWidth, screenHeight, "raylib [shaders] example - custom uniform variable");
@@ -47,14 +46,16 @@ int main(void)
 
     Model model = LoadModel("resources/models/barracks.obj");                   // Load OBJ model
     Texture2D texture = LoadTexture("resources/models/barracks_diffuse.png");   // Load model texture (diffuse map)
+    Texture2D mapTex = LoadTexture("resources/maps/IpadProDistortionCalibrationMap.png");   // Load model texture (diffuse map)
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;                     // Set model diffuse texture
 
     Vector3 position = { 0.0f, 0.0f, 0.0f };                                    // Set model position
 
     // Load postprocessing shader
     // NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
-    Shader shader = LoadShader(0, TextFormat("resources/shaders/glsl140/swirl.fs", GLSL_VERSION));
-
+    
+    Shader shader = LoadShader(0,
+                               TextFormat("resources/shaders/glsl140/swirl.fs", GLSL_VERSION));
     // Get variable (uniform) location on the shader to connect with the program
     // NOTE: If uniform variable could not be found in the shader, function returns -1
     int swirlCenterLoc = GetShaderLocation(shader, "center");
@@ -70,18 +71,44 @@ int main(void)
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
+    
+    int powerLoc = GetShaderLocation(shader, "_power");
+    int alphaLoc = GetShaderLocation(shader, "_alpha");
+    int mapLoc = GetShaderLocation(shader, "MapTex");
+    int tarLoc = GetShaderLocation(shader, "RenderedTex");
+    
+    // Send new value to the shader to be used on drawing
+    float power = 1.0;
+    float alpha = 1.0;
+    SetShaderValue(shader, powerLoc, &power, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(shader, alphaLoc, &alpha, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(shader, mapLoc, &mapTex, SHADER_UNIFORM_SAMPLER2D);
+    // SetShaderValue(shader, tarLoc, &target, SHADER_UNIFORM_SAMPLER2D);
+
+
     // Main game loop
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
-        Vector2 mousePosition = GetMousePosition();
+        // Vector2 mousePosition = GetMousePosition();
 
-        swirlCenter[0] = mousePosition.x;
-        swirlCenter[1] = screenHeight - mousePosition.y;
+        // swirlCenter[0] = mousePosition.x;
+        // swirlCenter[1] = screenHeight - mousePosition.y;
 
-        // Send new value to the shader to be used on drawing
-        SetShaderValue(shader, swirlCenterLoc, swirlCenter, SHADER_UNIFORM_VEC2);
+
+        // this.material.uniforms._power.value = this.power;
+        // this.material.uniforms._alpha.value = this.alpha;
+        // this.material.uniforms.RenderedTex.value = bufferTexture;
+        // this.material.uniforms.MapTex.value = decodedMap;
+
+        // uniform vec4 _TexRotationVec;
+        // uniform highp float _power;
+        // uniform highp float _alpha;
+        // uniform sampler2D RenderedTex;
+        // uniform sampler2D MapTex;
+        //     wrapMono = new wrapBase(4095,true,1,1,uniforms);
+        //     constructor( _mapDiv, _flipTexture, _power, _alpha,_uniforms){
 
         UpdateCamera(&camera);          // Update camera
         //----------------------------------------------------------------------------------
@@ -92,7 +119,7 @@ int main(void)
             ClearBackground(RAYWHITE);  // Clear texture background
 
             BeginMode3D(camera);        // Begin 3d mode drawing
-                DrawModel(model, position, 0.5f, WHITE);   // Draw 3d model with texture
+                DrawModel(model, position, 0.3f, WHITE);   // Draw 3d model with texture
                 DrawGrid(10, 1.0f);     // Draw a grid
             EndMode3D();                // End 3d mode drawing, returns to orthographic 2d mode
 

@@ -5,45 +5,39 @@ precision mediump float;
 // Input vertex attributes (from vertex shader)
 in vec2 fragTexCoord;
 in vec4 fragColor;
+out vec4 _fragColor;
 
-// Input uniform values
-uniform sampler2D texture0;
-uniform vec4 colDiffuse;
+uniform vec4 _TexRotationVec;
+uniform highp float _power;
+uniform highp float _alpha;
+uniform sampler2D RenderedTex;
+uniform sampler2D MapTex;
 
-// NOTE: Add here your custom variables
-
-// NOTE: Render size values should be passed from code
-const float renderWidth = 800.0;
-const float renderHeight = 450.0;
-
-float radius = 250.0;
-float angle = 0.8;
-
-uniform vec2 center;
-
-// Output fragment color
-out vec4 finalColor;
+bool inside(vec2 uv){
+   highp float EPS = 0.001;
+   return EPS <= uv.x && uv.x <= float(1)-EPS && EPS <= uv.y && uv.y <= float(1)-EPS;
+}
 
 void main()
 {
-    vec2 texSize = vec2(renderWidth, renderHeight);
-    vec2 tc = fragTexCoord*texSize;
-    tc -= center;
 
-    float dist = length(tc);
+   vec4 BLACK = vec4(0, 0, 0, 0);
+   vec2 HALF = vec2(0.5, 0.5);
+   mat2 rotMat = mat2 (_TexRotationVec.x, _TexRotationVec.y, _TexRotationVec.z, _TexRotationVec.w);
+   vec2 mapUV = rotMat*(fragTexCoord-HALF)+HALF;
+   
+   if (!inside(mapUV)) {
+      _fragColor = BLACK;
+   }
 
-    if (dist < radius)
-    {
-        float percent = (radius - dist)/radius;
-        float theta = percent*percent*angle*8.0;
-        float s = sin(theta);
-        float c = cos(theta);
+   vec4 map = texture(MapTex, mapUV);
+   vec2 renderedTexUV = vec2(map.x, map.y);
+   if (!inside(renderedTexUV)) {
+     _fragColor = BLACK;
+   }
 
-        tc = vec2(dot(tc, vec2(c, -s)), dot(tc, vec2(s, c)));
-    }
+   vec4 temTexture = texture(RenderedTex, renderedTexUV);
+   _fragColor = _alpha * vec4 (pow(temTexture[0], _power),pow(temTexture[1], _power), pow(temTexture[2], _power), pow(temTexture[3], _power));
 
-    tc += center;
-    vec4 color = texture(texture0, tc/texSize)*colDiffuse*fragColor;;
 
-    finalColor = vec4(color.rgb, 1.0);;
 }
