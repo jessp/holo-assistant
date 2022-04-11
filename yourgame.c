@@ -19,12 +19,48 @@
 ********************************************************************************************/
 
 #include "raylib.h"
+#include <stdio.h>
 
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
 #else   // PLATFORM_RPI, PLATFORM_ANDROID, PLATFORM_WEB
     #define GLSL_VERSION            100
 #endif
+
+
+RenderTexture2D convertRGBATexture2Map(Image encodedMap, bool flipTexture, RenderTexture2D decodedMapResult){
+
+        float mapDiv = 4095;
+        Color *encodedColor32 = LoadImageColors(encodedMap);
+        Color mapColor[encodedMap.width * encodedMap.height];
+
+        Color ec;
+        Vector4 tempColor;
+        printf("hi %c\n", encodedColor32[0].r);
+
+        int LOAD_TEX_COLOR_BIT_DEPTH = 8;
+
+        for (int pixel = 0; pixel < (encodedMap.width * encodedMap.height); ++pixel) {
+            ec = encodedColor32[pixel];
+
+            tempColor.w = ((ec.r << LOAD_TEX_COLOR_BIT_DEPTH) + ec.g) / mapDiv;
+            tempColor.x = ((ec.b << LOAD_TEX_COLOR_BIT_DEPTH) + ec.a) / mapDiv;
+         
+            if (flipTexture) {
+                tempColor.x = 1.0 - tempColor.x;
+            }
+
+            tempColor.y = 0;
+            tempColor.z = 255.0;
+
+            mapColor[pixel] = ColorFromNormalized(tempColor);
+        }
+        
+
+        UpdateTexture(decodedMapResult.texture, mapColor);
+        UnloadImageColors(encodedColor32);
+        return decodedMapResult;
+}
 
 int main(void)
 {
@@ -38,29 +74,29 @@ int main(void)
 
     // Define the camera to look into our 3d world
     Camera camera = { 0 };
-    camera.position = (Vector3){ 8.0f, 8.0f, 8.0f };
-    camera.target = (Vector3){ 0.0f, 1.5f, 0.0f };
+    camera.position = (Vector3){ -1.0f, 4.0f, 20.0f };
+    camera.target = (Vector3){ 0.0f, 0.0f, -80.0f };
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
-    camera.fovy = 45.0f;
+    camera.fovy = 60.0f;
     camera.projection = CAMERA_PERSPECTIVE;
+
+    // Camera camera = { { 2.0f, 3.0f, 2.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0f, 0 };
 
     Model model = LoadModel("resources/models/barracks.obj");                   // Load OBJ model
     Texture2D texture = LoadTexture("resources/models/barracks_diffuse.png");   // Load model texture (diffuse map)
-    Texture2D mapTex = LoadTexture("resources/maps/IpadProDistortionCalibrationMap.png");   // Load model texture (diffuse map)
+    Image mapTex = LoadImage("resources/maps/IpadProDistortionCalibrationMap-sm.png");   // Load model texture (diffuse map)
+    RenderTexture2D decodedTex = LoadRenderTexture(mapTex.width, mapTex.height);
+    decodedTex = convertRGBATexture2Map(mapTex, 1, decodedTex);
+
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;                     // Set model diffuse texture
 
-    Vector3 position = { 0.0f, 0.0f, 0.0f };                                    // Set model position
+    Vector3 position = { 0.0f, 0.0f, 2.0f };                                    // Set model position
 
     // Load postprocessing shader
     // NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
     
-    Shader shader = LoadShader(0,
+    Shader shader = LoadShader(TextFormat("resources/shaders/glsl140/swirl.vs", GLSL_VERSION),
                                TextFormat("resources/shaders/glsl140/swirl.fs", GLSL_VERSION));
-    // Get variable (uniform) location on the shader to connect with the program
-    // NOTE: If uniform variable could not be found in the shader, function returns -1
-    int swirlCenterLoc = GetShaderLocation(shader, "center");
-
-    float swirlCenter[2] = { (float)screenWidth/2, (float)screenHeight/2 };
 
     // Create a RenderTexture2D to be used for render to texture
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
@@ -68,47 +104,30 @@ int main(void)
     // Setup orbital camera
     SetCameraMode(camera, CAMERA_ORBITAL);  // Set an orbital camera mode
 
-    SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
+    SetTargetFPS(30);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     
     int powerLoc = GetShaderLocation(shader, "_power");
     int alphaLoc = GetShaderLocation(shader, "_alpha");
+    int texRotationVecLoc = GetShaderLocation(shader, "_TexRotationVec");
     int mapLoc = GetShaderLocation(shader, "MapTex");
     int tarLoc = GetShaderLocation(shader, "RenderedTex");
     
     // Send new value to the shader to be used on drawing
     float power = 1.0;
     float alpha = 1.0;
+    float texRotationVec[4] = { 1.0f, 0.0f, 0.0f, 1.0f }; 
     SetShaderValue(shader, powerLoc, &power, SHADER_UNIFORM_FLOAT);
     SetShaderValue(shader, alphaLoc, &alpha, SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, mapLoc, &mapTex, SHADER_UNIFORM_SAMPLER2D);
-    // SetShaderValue(shader, tarLoc, &target, SHADER_UNIFORM_SAMPLER2D);
-
+    SetShaderValue(shader, mapLoc, &decodedTex.texture, SHADER_UNIFORM_SAMPLER2D);
+    SetShaderValue(shader, tarLoc, &target, SHADER_UNIFORM_SAMPLER2D);
+    SetShaderValue(shader, texRotationVecLoc, &texRotationVec, SHADER_UNIFORM_VEC4);
 
     // Main game loop
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {
-        // Update
-        //----------------------------------------------------------------------------------
-        // Vector2 mousePosition = GetMousePosition();
 
-        // swirlCenter[0] = mousePosition.x;
-        // swirlCenter[1] = screenHeight - mousePosition.y;
-
-
-        // this.material.uniforms._power.value = this.power;
-        // this.material.uniforms._alpha.value = this.alpha;
-        // this.material.uniforms.RenderedTex.value = bufferTexture;
-        // this.material.uniforms.MapTex.value = decodedMap;
-
-        // uniform vec4 _TexRotationVec;
-        // uniform highp float _power;
-        // uniform highp float _alpha;
-        // uniform sampler2D RenderedTex;
-        // uniform sampler2D MapTex;
-        //     wrapMono = new wrapBase(4095,true,1,1,uniforms);
-        //     constructor( _mapDiv, _flipTexture, _power, _alpha,_uniforms){
 
         UpdateCamera(&camera);          // Update camera
         //----------------------------------------------------------------------------------
@@ -116,10 +135,10 @@ int main(void)
         // Draw
         //----------------------------------------------------------------------------------
         BeginTextureMode(target);       // Enable drawing to texture
-            ClearBackground(RAYWHITE);  // Clear texture background
+            ClearBackground(GRAY);  // Clear texture background
 
             BeginMode3D(camera);        // Begin 3d mode drawing
-                DrawModel(model, position, 0.3f, WHITE);   // Draw 3d model with texture
+                DrawModel(model, position, 3.0f, WHITE);   // Draw 3d model with texture
                 DrawGrid(10, 1.0f);     // Draw a grid
             EndMode3D();                // End 3d mode drawing, returns to orthographic 2d mode
 
@@ -133,11 +152,13 @@ int main(void)
             BeginShaderMode(shader);
                 // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
                 DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
+                // DrawTextureRec(decodedTex.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
             EndShaderMode();
 
             // Draw some 2d text over drawn texture
             DrawText("(c) Barracks 3D model by Alberto Cano", screenWidth - 220, screenHeight - 20, 10, GRAY);
             DrawFPS(10, 10);
+            // SetShaderValue(shader, tarLoc, &target, SHADER_UNIFORM_SAMPLER2D);
         EndDrawing();
         //----------------------------------------------------------------------------------
     }
@@ -154,3 +175,4 @@ int main(void)
 
     return 0;
 }
+
