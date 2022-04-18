@@ -1,11 +1,4 @@
-#version 140
-
-// Input vertex attributes
-uniform vec4 _TexRotationVec;
-uniform highp float _power;
-uniform highp float _alpha;
-uniform sampler2D RenderedTex;
-uniform sampler2D MapTex;
+#version 330
 
 // Input uniform values
 uniform mat4 mvp;
@@ -17,8 +10,8 @@ out vec4 fragColor;
 // Input values
 in vec3 vertexPosition;
 in vec2 vertexTexCoord;
-in vec4 vertexColor;
 in vec3 vertexNormal;
+in vec4 vertexColor;
 
 // NOTE: Add here your custom variables
 
