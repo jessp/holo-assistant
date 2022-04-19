@@ -50,8 +50,6 @@ RenderTexture2D convertRGBATexture2Map(Image encodedMap, bool flipTexture, Rende
                 tempColor.x = 1.0 - tempColor.x;
             }
 
-            // tempColor.w = 0.0;
-            // tempColor.x = 0.0;
             tempColor.y = 0.0;
             tempColor.z = 0.0;
 
@@ -77,15 +75,15 @@ int main(void)
 
     // Define the camera to look into our 3d world
     Camera camera = { 0 };
-    camera.position = (Vector3){ 0.0f, 0.0f, -18.0f };
+    camera.position = (Vector3){ -1.0f, 4.0f, 20.0f };
     camera.target = (Vector3){ 0.0f, 0.0f, -80.0f };
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
-    camera.fovy = 66.2f;
+    camera.fovy = 60.0f;
     camera.projection = CAMERA_PERSPECTIVE;
 
 
-    Model model = LoadModel("resources/models/barracks.obj");                   // Load OBJ model
-    Texture2D texture = LoadTexture("resources/models/barracks_diffuse.png");   // Load model texture (diffuse map)
+    Model model = LoadModel("resources/models/turret.obj");    
+    Texture2D texture = LoadTexture("resources/models/turret_diffuse.png");   // Load model texture (diffuse map)
     Image mapTex = LoadImage("resources/maps/IpadProDistortionCalibrationMap-sm.png");   // Load model texture (diffuse map)
     RenderTexture2D decodedTex = LoadRenderTexture(mapTex.width, mapTex.height);
     decodedTex = convertRGBATexture2Map(mapTex, 1, decodedTex);
@@ -93,8 +91,8 @@ int main(void)
 
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;                     // Set model diffuse texture
 
-    Vector3 position = { 0.0f, -6.0f, 0.0f };                                    // Set model position
-
+    Vector3 position = { 0.0f, 0.0f, 2.0f };                                    // Set model position
+    float scale = 1.0;
     // Load postprocessing shader    
     Shader shader = LoadShader(TextFormat("resources/shaders/glsl140/swirl.vs"), TextFormat("resources/shaders/glsl140/swirl.fs", GLSL_VERSION));
 
@@ -125,8 +123,8 @@ int main(void)
     {
 
         //move texture around to help see effect of arrow keys
-        if (IsKeyDown(KEY_RIGHT)) position.x += 2.0f;
-        if (IsKeyDown(KEY_LEFT)) position.x -= 2.0f;
+        if (IsKeyDown(KEY_RIGHT)) scale += 0.1f;
+        if (IsKeyDown(KEY_LEFT)) scale -= 0.1f;
         if (IsKeyDown(KEY_UP)) position.z -= 2.0f;
         if (IsKeyDown(KEY_DOWN)) position.z += 2.0f;
 
@@ -140,7 +138,7 @@ int main(void)
             ClearBackground(GRAY);  // Clear texture background
 
             BeginMode3D(camera);        // Begin 3d mode drawing
-                DrawModel(model, position, 1.0f, WHITE);   // Draw 3d model with texture
+                DrawModel(model, position, scale, WHITE);   // Draw 3d model with texture
                 DrawGrid(10, 1.0f);     // Draw a grid
             EndMode3D();                // End 3d mode drawing, returns to orthographic 2d mode
 
@@ -160,6 +158,7 @@ int main(void)
             // Draw some 2d text over drawn texture
             DrawText("(c) Barracks 3D model by Alberto Cano", screenWidth - 220, screenHeight - 20, 10, GRAY);
             DrawFPS(10, 10);
+            printf("z: %f y: %f\n", position.z, position.y);
 
         EndDrawing();
 
