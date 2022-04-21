@@ -19,7 +19,11 @@
 ********************************************************************************************/
 
 #include "raylib.h"
+#include <raymath.h>
 #include <stdio.h>
+
+#define RL_CULL_DISTANCE_FAR             10000.0    // Default projection matrix far cull distance
+#define RL_CULL_DISTANCE_NEAR              0.1    // Default projection matrix near cull distance
 
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
@@ -92,6 +96,7 @@ int main(void)
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;                     // Set model diffuse texture
 
     Vector3 position = { 0.0f, 0.0f, 2.0f };                                    // Set model position
+    Vector3 tabletScreenScale = {4.0f, 3.0f, 1.0f};
     float scale = 1.0;
     // Load postprocessing shader    
     Shader shader = LoadShader(TextFormat("resources/shaders/glsl140/swirl.vs"), TextFormat("resources/shaders/glsl140/swirl.fs", GLSL_VERSION));
@@ -108,14 +113,29 @@ int main(void)
     int alphaLoc = GetShaderLocation(shader, "_alpha");
     int texRotationVecLoc = GetShaderLocation(shader, "_TexRotationVec");
     int mapLoc = GetShaderLocation(shader, "texture1");
+    bool showingShader = true;
     
     // Send new value to the shader to be used on drawing
     float power = 1.0;
     float alpha = 1.0;
-    float texRotationVec[4] = { 1.0f, 0.0f, 0.0f, 1.0f }; 
+
+
+    Vector3 axis = { 0, 0, 1 };
+    Quaternion rot = QuaternionFromAxisAngle(axis, 0.0f);
+    Matrix matScale = MatrixScale(tabletScreenScale.x, tabletScreenScale.y, tabletScreenScale.z);
+    Matrix matRotation = MatrixRotate(axis,  0.0f);
+    Matrix matTranslation = MatrixTranslate(0, 0, 0);
+    Matrix matTransform = MatrixMultiply(MatrixMultiply(matScale, matRotation), matTranslation);
+
+    Matrix m = MatrixMultiply(
+            MatrixScale(1.0f/tabletScreenScale.x, 1.0f/tabletScreenScale.y, 1), 
+            matTransform
+            );
+
+    Vector4 texRotationVec = { m.m0, m.m4, m.m1, m.m5 }; 
+    printf("%f %f %f %f\n", m.m0, m.m4, m.m1, m.m5);
     SetShaderValue(shader, powerLoc, &power, SHADER_UNIFORM_FLOAT);
     SetShaderValue(shader, alphaLoc, &alpha, SHADER_UNIFORM_FLOAT);
-
     SetShaderValue(shader, texRotationVecLoc, &texRotationVec, SHADER_UNIFORM_VEC4);
 
     // Main game loop
@@ -123,10 +143,29 @@ int main(void)
     {
 
         //move texture around to help see effect of arrow keys
-        if (IsKeyDown(KEY_RIGHT)) scale += 0.1f;
-        if (IsKeyDown(KEY_LEFT)) scale -= 0.1f;
-        if (IsKeyDown(KEY_UP)) position.z -= 2.0f;
-        if (IsKeyDown(KEY_DOWN)) position.z += 2.0f;
+        if (IsKeyDown(KEY_Q)) camera.position.x += 1.0f;
+        if (IsKeyDown(KEY_W)) camera.position.x -= 1.0f;
+        if (IsKeyDown(KEY_A)) camera.position.y -= 1.0f;
+        if (IsKeyDown(KEY_S)) camera.position.y += 1.0f;
+        if (IsKeyDown(KEY_Z)) camera.position.z -= 1.0f;
+        if (IsKeyDown(KEY_X)) camera.position.z += 1.0f;
+        if (IsKeyDown(KEY_O)) position.x += 1.0f;
+        if (IsKeyDown(KEY_P)) position.x -= 1.0f;
+        if (IsKeyDown(KEY_K)) position.y -= 1.0f;
+        if (IsKeyDown(KEY_L)) position.y += 1.0f;
+        if (IsKeyDown(KEY_N)) position.z -= 1.0f;
+        if (IsKeyDown(KEY_M)) position.z += 1.0f;
+        if (IsKeyDown(KEY_T)) camera.up.x += 1.0f;
+        if (IsKeyDown(KEY_Y)) camera.up.x -= 1.0f;
+        if (IsKeyDown(KEY_G)) camera.up.y -= 1.0f;
+        if (IsKeyDown(KEY_H)) camera.up.y += 1.0f;
+        if (IsKeyDown(KEY_V)) camera.up.z -= 1.0f;
+        if (IsKeyDown(KEY_B)) camera.up.z += 1.0f;
+        if (IsKeyDown(KEY_E)) scale -= 0.1f;
+        if (IsKeyDown(KEY_R)) scale += 0.1f;
+        if (IsKeyPressed(KEY_SPACE)){
+            showingShader = !showingShader;
+        } 
 
 
         UpdateCamera(&camera);          // Update camera
@@ -148,17 +187,21 @@ int main(void)
         BeginDrawing();
             ClearBackground(RAYWHITE);  // Clear screen background
 
-            // Enable shader using the custom uniform
-            BeginShaderMode(shader);
-                SetShaderValueTexture(shader, mapLoc, map);
-                // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
+            if (showingShader){
+                // Enable shader using the custom uniform
+                BeginShaderMode(shader);
+                    SetShaderValueTexture(shader, mapLoc, map);
+                    // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
+                    DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
+                EndShaderMode();
+            } else {
                 DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
-            EndShaderMode();
+            }
 
             // Draw some 2d text over drawn texture
             DrawText("(c) Barracks 3D model by Alberto Cano", screenWidth - 220, screenHeight - 20, 10, GRAY);
             DrawFPS(10, 10);
-            printf("z: %f y: %f\n", position.z, position.y);
+            // printf("z: %f y: %f\n", position.z, position.y);
 
         EndDrawing();
 
