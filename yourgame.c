@@ -90,7 +90,7 @@ int main(void)
     Texture2D texture = LoadTexture("resources/models/turret_diffuse.png");   // Load model texture (diffuse map)
     Image mapTex = LoadImage("resources/maps/IpadProDistortionCalibrationMap-sm.png");   // Load model texture (diffuse map)
     RenderTexture2D decodedTex = LoadRenderTexture(mapTex.width, mapTex.height);
-    decodedTex = convertRGBATexture2Map(mapTex, 1, decodedTex);
+    decodedTex = convertRGBATexture2Map(mapTex, true, decodedTex);
     Texture2D map = decodedTex.texture;
 
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;                     // Set model diffuse texture
@@ -99,7 +99,7 @@ int main(void)
     Vector3 tabletScreenScale = {4.0f, 3.0f, 1.0f};
     float scale = 1.0;
     // Load postprocessing shader    
-    Shader shader = LoadShader(TextFormat("resources/shaders/glsl140/swirl.vs"), TextFormat("resources/shaders/glsl140/swirl.fs", GLSL_VERSION));
+    Shader shader = LoadShader(TextFormat("resources/shaders/glsl330/warp.vs"), TextFormat("resources/shaders/glsl330/warp.fs", GLSL_VERSION));
 
     // Create a RenderTexture2D to be used for render to texture
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
@@ -113,6 +113,7 @@ int main(void)
     int alphaLoc = GetShaderLocation(shader, "_alpha");
     int texRotationVecLoc = GetShaderLocation(shader, "_TexRotationVec");
     int mapLoc = GetShaderLocation(shader, "texture1");
+    int shaderLoc = GetShaderLocation(shader, "texture0");
     bool showingShader = true;
     
     // Send new value to the shader to be used on drawing
@@ -133,7 +134,6 @@ int main(void)
             );
 
     Vector4 texRotationVec = { m.m0, m.m4, m.m1, m.m5 }; 
-    printf("%f %f %f %f\n", m.m0, m.m4, m.m1, m.m5);
     SetShaderValue(shader, powerLoc, &power, SHADER_UNIFORM_FLOAT);
     SetShaderValue(shader, alphaLoc, &alpha, SHADER_UNIFORM_FLOAT);
     SetShaderValue(shader, texRotationVecLoc, &texRotationVec, SHADER_UNIFORM_VEC4);
