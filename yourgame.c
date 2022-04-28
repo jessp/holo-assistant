@@ -22,8 +22,8 @@
 #include <raymath.h>
 #include <stdio.h>
 
-#define RL_CULL_DISTANCE_FAR             10000.0    // Default projection matrix far cull distance
-#define RL_CULL_DISTANCE_NEAR              0.1    // Default projection matrix near cull distance
+#define RL_CULL_DISTANCE_FAR             50    // Default projection matrix far cull distance
+#define RL_CULL_DISTANCE_NEAR            0.3   // Default projection matrix near cull distance
 
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
@@ -79,7 +79,7 @@ int main(void)
 
     // Define the camera to look into our 3d world
     Camera camera = { 0 };
-    camera.position = (Vector3){ -1.0f, 4.0f, 20.0f };
+    camera.position = (Vector3){ 0.0f, 0.0f, 20.0f };
     camera.target = (Vector3){ 0.0f, 0.0f, -80.0f };
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
     camera.fovy = 60.0f;
@@ -95,7 +95,7 @@ int main(void)
 
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;                     // Set model diffuse texture
 
-    Vector3 position = { 0.0f, 0.0f, 2.0f };                                    // Set model position
+    Vector3 position = { 0.0f, -10.0f, 0.0f };                                    // Set model position
     Vector3 tabletScreenScale = {4.0f, 3.0f, 1.0f};
     float scale = 1.0;
     // Load postprocessing shader    
@@ -142,7 +142,7 @@ int main(void)
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {
 
-        //move texture around to help see effect of arrow keys
+        //move items around to preview effect on shader
         if (IsKeyDown(KEY_Q)) camera.position.x += 1.0f;
         if (IsKeyDown(KEY_W)) camera.position.x -= 1.0f;
         if (IsKeyDown(KEY_A)) camera.position.y -= 1.0f;
