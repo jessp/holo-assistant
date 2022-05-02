@@ -46,16 +46,17 @@ RenderTexture2D convertRGBATexture2Map(Image encodedMap, bool flipTexture, Rende
         for (int pixel = 0; pixel < (encodedMap.width * encodedMap.height); ++pixel) {
             ec = encodedColor32[pixel];
 
-            tempColor.w = ((ec.r << LOAD_TEX_COLOR_BIT_DEPTH) + ec.g) / mapDiv;
-            tempColor.x = ((ec.b << LOAD_TEX_COLOR_BIT_DEPTH) + ec.a) / mapDiv;
+            tempColor.x = ((ec.r << LOAD_TEX_COLOR_BIT_DEPTH) + ec.g) / mapDiv;
+            tempColor.y = ((ec.b << LOAD_TEX_COLOR_BIT_DEPTH) + ec.a) / mapDiv;
          
             if (flipTexture) {
-                tempColor.x = 1.0 - tempColor.x;
+                tempColor.y = 1.0 - tempColor.y;
             }
 
-            tempColor.y = 0.0;
+            tempColor.w = 0.0;
             tempColor.z = 0.0;
 
+            //takes format x y z w
             mapColor[pixel] = ColorFromNormalized(tempColor);
 
         }
@@ -78,8 +79,8 @@ int main(void)
 
     // Define the camera to look into our 3d world
     Camera camera = { 0 };
-    camera.position = (Vector3){ 0.0f, 0.0f, 20.0f };
-    camera.target = (Vector3){ 0.0f, 50.0f, -100.0f };
+    camera.position = (Vector3){ 0.0f, 0.0f, -17.0f };
+    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
     camera.fovy = 60.0f;
     camera.projection = CAMERA_PERSPECTIVE;
@@ -94,7 +95,7 @@ int main(void)
 
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;                     // Set model diffuse texture
 
-    Vector3 position = { 0.0f, -10.0f, 0.0f };                                    // Set model position
+    Vector3 position = { -16.0f, -8.0f, 0.0f };                                    // Set model position
     Vector3 tabletScreenScale = {4.0f, 3.0f, 1.0f};
     float scale = 1.0;
     // Load postprocessing shader    
@@ -141,30 +142,6 @@ int main(void)
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {
 
-        //move items around to preview effect on shader
-        if (IsKeyDown(KEY_Q)) camera.target.x += 1.0f;
-        if (IsKeyDown(KEY_W)) camera.target.x -= 1.0f;
-        if (IsKeyDown(KEY_A)) camera.target.y -= 1.0f;
-        if (IsKeyDown(KEY_S)) camera.target.y += 1.0f;
-        if (IsKeyDown(KEY_Z)) camera.target.z -= 1.0f;
-        if (IsKeyDown(KEY_X)) camera.target.z += 1.0f;
-        if (IsKeyDown(KEY_O)) position.x += 1.0f;
-        if (IsKeyDown(KEY_P)) position.x -= 1.0f;
-        if (IsKeyDown(KEY_K)) position.y -= 1.0f;
-        if (IsKeyDown(KEY_L)) position.y += 1.0f;
-        if (IsKeyDown(KEY_N)) position.z -= 1.0f;
-        if (IsKeyDown(KEY_M)) position.z += 1.0f;
-        if (IsKeyDown(KEY_T)) camera.up.x += 1.0f;
-        if (IsKeyDown(KEY_Y)) camera.up.x -= 1.0f;
-        if (IsKeyDown(KEY_G)) camera.up.y -= 1.0f;
-        if (IsKeyDown(KEY_H)) camera.up.y += 1.0f;
-        if (IsKeyDown(KEY_V)) camera.up.z -= 1.0f;
-        if (IsKeyDown(KEY_B)) camera.up.z += 1.0f;
-        if (IsKeyDown(KEY_E)) scale -= 0.1f;
-        if (IsKeyDown(KEY_R)) scale += 0.1f;
-        if (IsKeyPressed(KEY_SPACE)){
-            showingShader = !showingShader;
-        } 
 
 
         UpdateCamera(&camera);          // Update camera
@@ -200,10 +177,7 @@ int main(void)
                 DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
             }
 
-            // Draw some 2d text over drawn texture
-            DrawText("(c) Barracks 3D model by Alberto Cano", screenWidth - 220, screenHeight - 20, 10, GRAY);
             DrawFPS(10, 10);
-            printf("z: %f y: %f\n", camera.target.z, camera.target.y);
 
         EndDrawing();
 
