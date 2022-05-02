@@ -19,11 +19,10 @@
 ********************************************************************************************/
 
 #include "raylib.h"
+#include "rlgl.h"
 #include <raymath.h>
 #include <stdio.h>
-
-#define RL_CULL_DISTANCE_FAR             50    // Default projection matrix far cull distance
-#define RL_CULL_DISTANCE_NEAR            0.3   // Default projection matrix near cull distance
+#include <math.h>
 
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
@@ -80,14 +79,14 @@ int main(void)
     // Define the camera to look into our 3d world
     Camera camera = { 0 };
     camera.position = (Vector3){ 0.0f, 0.0f, 20.0f };
-    camera.target = (Vector3){ 0.0f, 0.0f, -80.0f };
+    camera.target = (Vector3){ 0.0f, 50.0f, -100.0f };
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
     camera.fovy = 60.0f;
     camera.projection = CAMERA_PERSPECTIVE;
 
 
-    Model model = LoadModel("resources/models/turret.obj");    
-    Texture2D texture = LoadTexture("resources/models/turret_diffuse.png");   // Load model texture (diffuse map)
+    Model model = LoadModel("resources/models/french_bulldog.obj");    
+    Texture2D texture = LoadTexture("resources/models/bulldog.png");   // Load model texture (diffuse map)
     Image mapTex = LoadImage("resources/maps/IpadProDistortionCalibrationMap-sm.png");   // Load model texture (diffuse map)
     RenderTexture2D decodedTex = LoadRenderTexture(mapTex.width, mapTex.height);
     decodedTex = convertRGBATexture2Map(mapTex, true, decodedTex);
@@ -143,12 +142,12 @@ int main(void)
     {
 
         //move items around to preview effect on shader
-        if (IsKeyDown(KEY_Q)) camera.position.x += 1.0f;
-        if (IsKeyDown(KEY_W)) camera.position.x -= 1.0f;
-        if (IsKeyDown(KEY_A)) camera.position.y -= 1.0f;
-        if (IsKeyDown(KEY_S)) camera.position.y += 1.0f;
-        if (IsKeyDown(KEY_Z)) camera.position.z -= 1.0f;
-        if (IsKeyDown(KEY_X)) camera.position.z += 1.0f;
+        if (IsKeyDown(KEY_Q)) camera.target.x += 1.0f;
+        if (IsKeyDown(KEY_W)) camera.target.x -= 1.0f;
+        if (IsKeyDown(KEY_A)) camera.target.y -= 1.0f;
+        if (IsKeyDown(KEY_S)) camera.target.y += 1.0f;
+        if (IsKeyDown(KEY_Z)) camera.target.z -= 1.0f;
+        if (IsKeyDown(KEY_X)) camera.target.z += 1.0f;
         if (IsKeyDown(KEY_O)) position.x += 1.0f;
         if (IsKeyDown(KEY_P)) position.x -= 1.0f;
         if (IsKeyDown(KEY_K)) position.y -= 1.0f;
@@ -177,7 +176,10 @@ int main(void)
             ClearBackground(GRAY);  // Clear texture background
 
             BeginMode3D(camera);        // Begin 3d mode drawing
-                DrawModel(model, position, scale, WHITE);   // Draw 3d model with texture
+                rlPushMatrix();
+                rlRotatef(90.0f, 0.0f, 1.0f, 0.0f); 
+                    DrawModel(model, position, scale, WHITE);   // Draw 3d model with texture
+                rlPopMatrix();
                 DrawGrid(10, 1.0f);     // Draw a grid
             EndMode3D();                // End 3d mode drawing, returns to orthographic 2d mode
 
@@ -201,7 +203,7 @@ int main(void)
             // Draw some 2d text over drawn texture
             DrawText("(c) Barracks 3D model by Alberto Cano", screenWidth - 220, screenHeight - 20, 10, GRAY);
             DrawFPS(10, 10);
-            // printf("z: %f y: %f\n", position.z, position.y);
+            printf("z: %f y: %f\n", camera.target.z, camera.target.y);
 
         EndDrawing();
 
