@@ -86,16 +86,16 @@ int main(void)
     camera.projection = CAMERA_PERSPECTIVE;
 
 
-    Model model = LoadModel("resources/models/french_bulldog.obj");    
-    Texture2D texture = LoadTexture("resources/models/bulldog.png");   // Load model texture (diffuse map)
+    Model model = LoadModel("resources/models/character_base_mod.iqm");    
+    Texture2D texture = LoadTexture("resources/models/Base_texture.png");   // Load model texture (diffuse map)
     Image mapTex = LoadImage("resources/maps/IpadProDistortionCalibrationMap-sm.png");   // Load model texture (diffuse map)
     RenderTexture2D decodedTex = LoadRenderTexture(mapTex.width, mapTex.height);
     decodedTex = convertRGBATexture2Map(mapTex, true, decodedTex);
     Texture2D map = decodedTex.texture;
 
-    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;                     // Set model diffuse texture
+    SetMaterialTexture(&model.materials[0], MATERIAL_MAP_DIFFUSE, texture);     // Set model material map texture
 
-    Vector3 position = { -16.0f, -8.0f, 0.0f };                                    // Set model position
+    Vector3 position = { 0.0f, 0.0f, 0.0f };                                    // Set model position
     Vector3 tabletScreenScale = {4.0f, 3.0f, 1.0f};
     float scale = 1.0;
     // Load postprocessing shader    
@@ -105,6 +105,12 @@ int main(void)
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
 
 
+
+    // Load animation data
+    unsigned int animsCount = 0;
+    ModelAnimation *anims = LoadModelAnimations("resources/models/character_loop_mod.iqm", &animsCount);
+    int animFrameCounter = 0;
+    
     SetTargetFPS(30);                   // Set our game to run at 30 frames-per-second
     //--------------------------------------------------------------------------------------
 
@@ -114,7 +120,7 @@ int main(void)
     int texRotationVecLoc = GetShaderLocation(shader, "_TexRotationVec");
     int mapLoc = GetShaderLocation(shader, "texture1");
     int shaderLoc = GetShaderLocation(shader, "texture0");
-    bool showingShader = true;
+    bool showingShader = false;
     
     // Send new value to the shader to be used on drawing
     float power = 1.0;
@@ -145,6 +151,15 @@ int main(void)
 
 
         UpdateCamera(&camera);          // Update camera
+
+        // Play animation when spacebar is held down
+        if (IsKeyDown(KEY_SPACE))
+        {
+            animFrameCounter++;
+            UpdateModelAnimation(model, anims[0], animFrameCounter);
+            if (animFrameCounter >= anims[0].frameCount) animFrameCounter = 0;
+        }
+
         //----------------------------------------------------------------------------------
 
         // Draw
@@ -154,7 +169,8 @@ int main(void)
 
             BeginMode3D(camera);        // Begin 3d mode drawing
                 rlPushMatrix();
-                rlRotatef(90.0f, 0.0f, 1.0f, 0.0f); 
+                rlRotatef(180.0f, 0.0f, 1.0f, 0.0f);
+                    // DrawModelEx(model, position, (Vector3){ 1.0f, 0.0f, 0.0f }, -90.0f, (Vector3){ 1.0f, 1.0f, 1.0f }, WHITE);
                     DrawModel(model, position, scale, WHITE);   // Draw 3d model with texture
                 rlPopMatrix();
                 DrawGrid(10, 1.0f);     // Draw a grid
@@ -178,6 +194,7 @@ int main(void)
             }
 
             DrawFPS(10, 10);
+            printf("%d\n", animFrameCounter);
 
         EndDrawing();
 
@@ -190,6 +207,10 @@ int main(void)
     //--------------------------------------------------------------------------------------
     UnloadShader(shader);               // Unload shader
     UnloadTexture(texture);             // Unload texture
+    // Unload model animations data
+    for (unsigned int i = 0; i < animsCount; i++) UnloadModelAnimation(anims[i]);
+    //RL_FREE(anims); //TODO - debug error
+
     UnloadTexture(map);             // Unload texture
     UnloadModel(model);                 // Unload model
     UnloadRenderTexture(decodedTex);    // Unload texture
