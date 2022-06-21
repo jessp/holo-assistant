@@ -86,7 +86,7 @@ int main(void)
     camera.projection = CAMERA_PERSPECTIVE;
 
 
-    Model model = LoadModel("resources/models/character_base_mod.iqm");    
+    Model model = LoadModel("resources/models/body_empty.iqm");    
     Texture2D texture = LoadTexture("resources/models/Base_texture.png");   // Load model texture (diffuse map)
     Image mapTex = LoadImage("resources/maps/IpadProDistortionCalibrationMap-sm.png");   // Load model texture (diffuse map)
     RenderTexture2D decodedTex = LoadRenderTexture(mapTex.width, mapTex.height);
@@ -108,7 +108,7 @@ int main(void)
 
     // Load animation data
     unsigned int animsCount = 0;
-    ModelAnimation *anims = LoadModelAnimations("resources/models/character_loop_mod.iqm", &animsCount);
+    ModelAnimation *anims = LoadModelAnimations("resources/models/body_empty.iqm", &animsCount);
     int animFrameCounter = 0;
     
     SetTargetFPS(30);                   // Set our game to run at 30 frames-per-second
@@ -170,8 +170,8 @@ int main(void)
             BeginMode3D(camera);        // Begin 3d mode drawing
                 rlPushMatrix();
                 rlRotatef(180.0f, 0.0f, 1.0f, 0.0f);
-                    // DrawModelEx(model, position, (Vector3){ 1.0f, 0.0f, 0.0f }, -90.0f, (Vector3){ 1.0f, 1.0f, 1.0f }, WHITE);
-                    DrawModel(model, position, scale, WHITE);   // Draw 3d model with texture
+                    DrawModelEx(model, position, (Vector3){ 1.0f, 0.0f, 0.0f }, 0.0f, (Vector3){ 1.0f, 1.0f, 1.0f }, WHITE);
+                    // DrawModel(model, position, scale, WHITE);   // Draw 3d model with texture
                 rlPopMatrix();
                 DrawGrid(10, 1.0f);     // Draw a grid
             EndMode3D();                // End 3d mode drawing, returns to orthographic 2d mode
