@@ -13,13 +13,14 @@
 *   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
 *
 *   Copyright (c) 2015 Ramon Santamaria (@raysan5)
-* * cc yourgame.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib` -o YourGame
+* * cc yourgame.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib pocketsphinx ` -o YourGame
 
 *
 ********************************************************************************************/
 
 #include "raylib.h"
 #include "rlgl.h"
+#include "pocketsphinx_export.h"
 #include <raymath.h>
 #include <stdio.h>
 #include <math.h>
