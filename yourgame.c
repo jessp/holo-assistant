@@ -20,7 +20,7 @@
 
 #include "raylib.h"
 #include "rlgl.h"
-#include "pocketsphinx_export.h"
+#include "pocketsphinx.h"
 #include <raymath.h>
 #include <stdio.h>
 #include <math.h>
