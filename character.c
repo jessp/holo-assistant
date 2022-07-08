@@ -34,5 +34,4 @@ void UpdateCharacter(void){
 		character.animFrameCounter = 0;
 	}
 	UpdateModelAnimation(character.model, character.anims[0], character.animFrameCounter);
-	printf("%d\n", character.animFrameCounter);
 }

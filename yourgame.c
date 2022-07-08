@@ -1,26 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [shaders] example - Apply a postprocessing shader and connect a custom uniform variable
-*
-*   NOTE: This example requires raylib OpenGL 3.3 or ES2 versions for shaders support,
-*         OpenGL 1.1 does not support shaders, recompile raylib to OpenGL 3.3 version.
-*
-*   NOTE: Shaders used in this example are #version 330 (OpenGL 3.3), to test this example
-*         on OpenGL ES 2.0 platforms (Android, Raspberry Pi, HTML5), use #version 100 shaders
-*         raylib comes with shaders ready for both versions, check raylib/shaders install folder
-*
-*   This example has been created using raylib 1.3 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
-*
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
-* * cc yourgame.c character.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib pocketsphinx` -o YourGame
-
+* * cc yourgame.c character.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib pocketsphinx libsoundio` -o YourGame
+* * /usr/local/bin/envs/pepperscone/bin/python main.py
+* * source /usr/local/bin/envs/pepperscone/bin/activate
 *
 ********************************************************************************************/
 
 #include "raylib.h"
 #include "rlgl.h"
 #include "pocketsphinx.h"
+#include <soundio/soundio.h>
 #include <raymath.h>
 #include <stdio.h>
 #include <math.h>
@@ -124,10 +113,8 @@ int main(void)
                 rlRotatef(180.0f, 0.0f, 1.0f, 0.0f);
                     DrawCharacter();
                 rlPopMatrix();
-                DrawGrid(10, 1.0f);     // Draw a grid
             EndMode3D();                // End 3d mode drawing, returns to orthographic 2d mode
 
-            DrawText("TEXT DRAWN IN RENDER TEXTURE", 200, 10, 30, RED);
         EndTextureMode();               // End drawing to texture (now we have a texture available for next passes)
 
         BeginDrawing();
@@ -145,7 +132,6 @@ int main(void)
             }
 
             DrawFPS(10, 10);
-            // printf("%d\n", animFrameCounter);
 
         EndDrawing();
 
