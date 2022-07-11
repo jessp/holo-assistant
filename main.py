@@ -31,6 +31,7 @@ class Audio(object):
         if callback is None: 
             callback = lambda in_data: self.buffer_queue.put(in_data)
         self.buffer_queue = queue.Queue()
+        print(sd.query_devices())
         self.input_rate = input_rate
         self.sample_rate = self.RATE_PROCESS
         self.block_size = int(self.RATE_PROCESS / float(self.BLOCKS_PER_SECOND))
@@ -48,11 +49,6 @@ class Audio(object):
 
 
         self.chunk = None
-        # if not default device
-
-        # kwargs['input_device_index'] = self.device
-
-        # self.stream = self.pa.open(**kwargs)
         self.stream = self.pa.InputStream(**kwargs)
         self.stream.start()
 
@@ -66,11 +62,11 @@ class Audio(object):
             data (binary): Input audio stream
             input_rate (int): Input audio rate to resample from
         """
-        data16 = np.fromstring(string=data, dtype=np.int16)
+        data16 = np.frombuffer(data, dtype=np.int16)
         resample_size = int(len(data16) / self.input_rate * self.RATE_PROCESS)
         resample = signal.resample(data16, resample_size)
         resample16 = np.array(resample, dtype=np.int16)
-        return resample16.tostring()
+        return resample16.tobytes()
 
     def read_resampled(self):
         """Return a block of audio data resampled to 16000hz, blocking if necessary."""
