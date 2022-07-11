@@ -10,6 +10,7 @@ import webrtcvad
 from halo import Halo
 from scipy import signal
 
+
 logging.basicConfig(level=20)
 
 class Audio(object):
@@ -100,7 +101,7 @@ class VADAudio(Audio):
         logging.info("write wav %s", filename)
         wf = wave.open(filename, 'wb')
         wf.setnchannels(self.CHANNELS)
-        # wf.setsampwidth(self.pa.get_sample_size(FORMAT))
+        # print(self.input_rate)
         wf.setsampwidth(2)
         wf.setframerate(self.sample_rate)
         wf.writeframes(data)
@@ -121,7 +122,7 @@ class VADAudio(Audio):
             if len(frame) < 640:
                 return
             is_speech = self.vad.is_speech(frame, self.sample_rate)
-
+            
             if not triggered:
                 ring_buffer.append((frame, is_speech))
                 num_voiced = len([f for f, speech in ring_buffer if speech])
