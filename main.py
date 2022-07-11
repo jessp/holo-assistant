@@ -9,7 +9,6 @@ import wave
 import webrtcvad
 from halo import Halo
 from scipy import signal
-# import resampy
 
 logging.basicConfig(level=20)
 
@@ -30,13 +29,12 @@ class Audio(object):
         if callback is None: 
             callback = lambda in_data: self.buffer_queue.put(in_data)
         self.buffer_queue = queue.Queue()
+        print(sd.query_devices())
         self.input_rate = input_rate
         self.sample_rate = self.RATE_PROCESS
         self.block_size = int(self.RATE_PROCESS / float(self.BLOCKS_PER_SECOND))
         self.block_size_input = int(self.input_rate / float(self.BLOCKS_PER_SECOND))
         self.pa = sd
-        print(self.DTYPE)
-
         kwargs = {
             'dtype': self.DTYPE,
             'channels': self.CHANNELS,
@@ -63,8 +61,6 @@ class Audio(object):
         resample = signal.resample(data16, resample_size)
         resample16 = np.array(resample, dtype=np.int16)
         return resample16.tobytes()
-        # resample16 = resampy.resample(data, 44100, 16000)
-        # return resample16.tobytes()
 
     def read_resampled(self):
         """Return a block of audio data resampled to 16000hz, blocking if necessary."""
@@ -99,15 +95,15 @@ class VADAudio(Audio):
             while True:
                 yield self.read_resampled()
 
-    # def write_wav(self, filename, data):
-    #     logging.info("write wav %s", filename)
-    #     wf = wave.open(filename, 'wb')
-    #     wf.setnchannels(self.CHANNELS)
-    #     # wf.setsampwidth(self.pa.get_sample_size(FORMAT))
-    #     wf.setsampwidth(2)
-    #     wf.setframerate(44100)
-    #     wf.writeframes(data)
-    #     wf.close()
+    def write_wav(self, filename, data):
+        logging.info("write wav %s", filename)
+        wf = wave.open(filename, 'wb')
+        wf.setnchannels(self.CHANNELS)
+        # wf.setsampwidth(self.pa.get_sample_size(FORMAT))
+        wf.setsampwidth(2)
+        wf.setframerate(self.sample_rate)
+        wf.writeframes(data)
+        wf.close()
 
     def vad_collector(self, padding_ms=300, ratio=0.75, frames=None):
         """Generator that yields series of consecutive audio frames comprising each utterence, separated by yielding a single None.
@@ -159,18 +155,18 @@ def main():
     # Stream from microphone to DeepSpeech using VAD
     spinner = Halo(spinner='line')
     stream_context = model.createStream()
-    # wav_data = bytearray()
+    wav_data = bytearray()
     for frame in frames:
         if frame is not None:
             if spinner: spinner.start()
             logging.debug("streaming frame")
             stream_context.feedAudioContent(np.frombuffer(frame, np.int16))
-            # wav_data.extend(frame)
+            wav_data.extend(frame)
         else:
             if spinner: spinner.stop()
             logging.debug("end utterence")
-            # vad_audio.write_wav(os.path.join(datetime.now().strftime("savewav_%Y-%m-%d_%H-%M-%S_%f.wav")), wav_data)
-            # wav_data = bytearray()
+            vad_audio.write_wav(os.path.join(datetime.now().strftime("savewav_%Y-%m-%d_%H-%M-%S_%f.wav")), wav_data)
+            wav_data = bytearray()
             text = stream_context.finishStream()
             print("Recognized: %s" % text)
             stream_context = model.createStream()
