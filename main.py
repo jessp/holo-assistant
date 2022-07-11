@@ -35,6 +35,7 @@ class Audio(object):
         self.block_size = int(self.RATE_PROCESS / float(self.BLOCKS_PER_SECOND))
         self.block_size_input = int(self.input_rate / float(self.BLOCKS_PER_SECOND))
         self.pa = sd
+        print(self.block_size_input)
         kwargs = {
             'dtype': self.DTYPE,
             'channels': self.CHANNELS,
@@ -140,7 +141,9 @@ class VADAudio(Audio):
                     ring_buffer.clear()
 
 def main():
-    DEFAULT_SAMPLE_RATE = 44100
+    device_info = sd.query_devices(None, 'input')
+    sample_rate = int(device_info['default_samplerate'])
+    DEFAULT_SAMPLE_RATE = sample_rate
     # Load DeepSpeech model
     print('Initializing model...')
     model = deepspeech.Model('deepspeech-0.9.3-models.pbmm')
@@ -148,7 +151,7 @@ def main():
 
 
     # Start audio with VAD
-    vad_audio = VADAudio(aggressiveness=3,
+    vad_audio = VADAudio(aggressiveness=2,
                          input_rate=DEFAULT_SAMPLE_RATE)
     print("Listening (ctrl-C to exit)...")
     frames = vad_audio.vad_collector()
@@ -166,6 +169,8 @@ def main():
             if spinner: spinner.stop()
             logging.debug("end utterence")
             vad_audio.write_wav(os.path.join(datetime.now().strftime("savewav_%Y-%m-%d_%H-%M-%S_%f.wav")), wav_data)
+            text2 = model.stt(wav_data)
+            print(text2)
             wav_data = bytearray()
             text = stream_context.finishStream()
             print("Recognized: %s" % text)
