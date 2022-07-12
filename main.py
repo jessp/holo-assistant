@@ -25,18 +25,16 @@ class Audio(object):
     def __init__(self, callback=None, input_rate=RATE_PROCESS):
         def proxy_callback(in_data, frame_count, time_info, status):
             #pylint: disable=unused-argument
-            callback(in_data)
-            # return (None)
+            callback(in_data.copy())
+            return (None, 0)
         if callback is None: 
             callback = lambda in_data: self.buffer_queue.put(in_data)
         self.buffer_queue = queue.Queue()
-        print(sd.query_devices())
         self.input_rate = input_rate
         self.sample_rate = self.RATE_PROCESS
         self.block_size = int(self.RATE_PROCESS / float(self.BLOCKS_PER_SECOND))
         self.block_size_input = int(self.input_rate / float(self.BLOCKS_PER_SECOND))
         self.pa = sd
-        print(self.block_size_input)
         kwargs = {
             'dtype': self.DTYPE,
             'channels': self.CHANNELS,
@@ -170,8 +168,6 @@ def main():
             if spinner: spinner.stop()
             logging.debug("end utterence")
             vad_audio.write_wav(os.path.join(datetime.now().strftime("savewav_%Y-%m-%d_%H-%M-%S_%f.wav")), wav_data)
-            text2 = model.stt(wav_data)
-            print(text2)
             wav_data = bytearray()
             text = stream_context.finishStream()
             print("Recognized: %s" % text)
