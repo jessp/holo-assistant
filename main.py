@@ -3,9 +3,7 @@ from datetime import datetime
 import threading, collections, queue, os, os.path
 import deepspeech
 import numpy as np
-# import pyaudio
 import sounddevice as sd
-import wave
 import webrtcvad
 from halo import Halo
 from scipy import signal
@@ -95,16 +93,6 @@ class VADAudio(Audio):
             while True:
                 yield self.read_resampled()
 
-    def write_wav(self, filename, data):
-        logging.info("write wav %s", filename)
-        wf = wave.open(filename, 'wb')
-        wf.setnchannels(self.CHANNELS)
-        # print(self.input_rate)
-        wf.setsampwidth(2)
-        wf.setframerate(self.sample_rate)
-        wf.writeframes(data)
-        wf.close()
-
     def vad_collector(self, padding_ms=300, ratio=0.75, frames=None):
         """Generator that yields series of consecutive audio frames comprising each utterence, separated by yielding a single None.
             Determines voice activity by ratio of frames in padding_ms. Uses a buffer to include padding_ms prior to being triggered.
@@ -140,38 +128,37 @@ class VADAudio(Audio):
                     ring_buffer.clear()
 
 def main():
-    device_info = sd.query_devices(None, 'input')
-    sample_rate = int(device_info['default_samplerate'])
-    DEFAULT_SAMPLE_RATE = sample_rate
-    # Load DeepSpeech model
-    print('Initializing model...')
-    model = deepspeech.Model('deepspeech-0.9.3-models.pbmm')
-    model.enableExternalScorer('deepspeech-0.9.3-models.scorer')
+    try:
+        device_info = sd.query_devices(None, 'input')
+        sample_rate = int(device_info['default_samplerate'])
+        DEFAULT_SAMPLE_RATE = sample_rate
+        # Load DeepSpeech model
+        print('Initializing model...')
+        model = deepspeech.Model('deepspeech-0.9.3-models.pbmm')
+        model.enableExternalScorer('deepspeech-0.9.3-models.scorer')
 
 
-    # Start audio with VAD
-    vad_audio = VADAudio(aggressiveness=2,
-                         input_rate=DEFAULT_SAMPLE_RATE)
-    print("Listening (ctrl-C to exit)...")
-    frames = vad_audio.vad_collector()
-    # Stream from microphone to DeepSpeech using VAD
-    spinner = Halo(spinner='line')
-    stream_context = model.createStream()
-    wav_data = bytearray()
-    for frame in frames:
-        if frame is not None:
-            if spinner: spinner.start()
-            logging.debug("streaming frame")
-            stream_context.feedAudioContent(np.frombuffer(frame, np.int16))
-            wav_data.extend(frame)
-        else:
-            if spinner: spinner.stop()
-            logging.debug("end utterence")
-            vad_audio.write_wav(os.path.join(datetime.now().strftime("savewav_%Y-%m-%d_%H-%M-%S_%f.wav")), wav_data)
-            wav_data = bytearray()
-            text = stream_context.finishStream()
-            print("Recognized: %s" % text)
-            stream_context = model.createStream()
+        # Start audio with VAD
+        vad_audio = VADAudio(aggressiveness=2,
+                             input_rate=DEFAULT_SAMPLE_RATE)
+        print("Listening (ctrl-C to exit)...")
+        frames = vad_audio.vad_collector()
+        # Stream from microphone to DeepSpeech using VAD
+        spinner = Halo(spinner='line')
+        stream_context = model.createStream()
+        for frame in frames:
+            if frame is not None:
+                if spinner: spinner.start()
+                logging.debug("streaming frame")
+                stream_context.feedAudioContent(np.frombuffer(frame, np.int16))
+            else:
+                if spinner: spinner.stop()
+                logging.debug("end utterence")
+                text = stream_context.finishStream()
+                print("Recognized: %s" % text)
+                stream_context = model.createStream()
+    except KeyboardInterrupt:
+        print("Exiting...")
 
 if __name__ == '__main__':
     main()
