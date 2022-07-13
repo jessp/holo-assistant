@@ -1,6 +1,6 @@
 /*******************************************************************************************
 *
-* * cc yourgame.c character.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib pocketsphinx libsoundio` -o YourGame
+* * cc yourgame.c character.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib` -o YourGame
 * * /usr/local/bin/envs/pepperscone/bin/python main.py
 * * source /usr/local/bin/envs/pepperscone/bin/activate
 *
@@ -8,8 +8,6 @@
 
 #include "raylib.h"
 #include "rlgl.h"
-#include "pocketsphinx.h"
-#include <soundio/soundio.h>
 #include <raymath.h>
 #include <stdio.h>
 #include <math.h>
@@ -95,6 +93,13 @@ int main(void)
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {
 
+        if (IsKeyDown(KEY_UP)) {
+            SetPose(1);
+        } 
+
+        if (IsKeyDown(KEY_DOWN)) {
+            SetPose(2);
+        } 
 
 
         UpdateCamera(&camera);          // Update camera

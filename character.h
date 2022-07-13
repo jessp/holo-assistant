@@ -4,12 +4,22 @@
 //----------------------------------------------------------------------------------
 // Types and Structures Definition
 //----------------------------------------------------------------------------------
+typedef enum
+{
+    idle = 0,
+    enterListen,
+    exitListen
+} pose;
+
 typedef struct Character {
     Texture2D texture;
     Model model;
     Vector3 position;
     unsigned int animsCount;
     int animFrameCounter;
+    pose currentPose;
+    pose nextPose;
+    bool justEnter;
     // Load animation data
     ModelAnimation *anims;
 } Character;
@@ -27,6 +37,10 @@ void InitCharacter(void);
 void UnloadCharacter(void);
 void DrawCharacter(void);
 void UpdateCharacter(void);
+void SetPose(int);
+void IdlePose(void);
+void ExitListenPose(void);
+void EnterListenPose(void);
 
 
 #endif 
