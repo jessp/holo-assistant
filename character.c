@@ -31,54 +31,73 @@ void DrawCharacter(void){
 	DrawModelEx(character.model, character.position, (Vector3){ 1.0f, 0.0f, 0.0f }, 0.0f, (Vector3){ 1.0f, 1.0f, 1.0f }, WHITE);
 }
 
-void EnterListenPose(void){
+void goToNext(void){
+    if (character.currentPose != character.nextPose){
+        character.currentPose = character.nextPose;
+    }
+}
+
+void doPose(bool forward, bool loop, int poseIndex, bool backToIdle){
     if (character.justEnter == true && character.currentPose == character.nextPose){
-        character.animFrameCounter = 0;
+        if (forward){
+            character.animFrameCounter = 0;
+        } else {
+            character.animFrameCounter = character.anims[poseIndex].frameCount - 1;
+        }
         character.justEnter = false;
     }
 
-    if (character.animFrameCounter < character.anims[1].frameCount - 1){
-        character.animFrameCounter++;
-    } else {
-        if (character.currentPose != character.nextPose){
-            character.currentPose = character.nextPose;
+    if (forward){
+        if (loop){
+            character.animFrameCounter++;
+            if (character.animFrameCounter >= character.anims[poseIndex].frameCount){
+                character.animFrameCounter = 0;
+                goToNext();
+            }
+        } else {
+            if (character.animFrameCounter < character.anims[poseIndex].frameCount - 1){
+                character.animFrameCounter++;
+                if (backToIdle && character.animFrameCounter == character.anims[poseIndex].frameCount - 1){
+                    character.nextPose = idle;
+                }
+            } else {
+                printf("%s\n", "hiiii");
+                goToNext();
+            }
         }
+    } else {
+        if (loop){
+            character.animFrameCounter--;
+            if (character.animFrameCounter <= 0){
+                character.animFrameCounter = character.anims[poseIndex].frameCount - 1;
+                goToNext();
+            }
+        } else {
+            if (character.animFrameCounter > 0){
+                character.animFrameCounter--;
+                if (backToIdle && character.animFrameCounter == 0){
+                    character.nextPose = idle;
+                }
+            } else {
+                goToNext();
+            }  
+        }
+
     }
-    UpdateModelAnimation(character.model, character.anims[1], character.animFrameCounter);
+        
+    UpdateModelAnimation(character.model, character.anims[poseIndex], character.animFrameCounter);
+}
+
+void EnterListenPose(void){
+    doPose(true, false, 1, false);
 }
 
 void ExitListenPose(void){
-    if (character.justEnter == true && character.currentPose == character.nextPose){
-        character.animFrameCounter = character.anims[1].frameCount - 1;
-        character.justEnter = false;
-    }
-
-    if (character.animFrameCounter > 0){
-        character.animFrameCounter--;
-        if (character.animFrameCounter == 0){
-            character.nextPose = idle;
-        }
-        if (character.currentPose != character.nextPose){
-            character.currentPose = character.nextPose;
-        }
-    }  
-    UpdateModelAnimation(character.model, character.anims[1], character.animFrameCounter);
+    doPose(false, false, 1, true);
 }
 
 void IdlePose(void){
-    if (character.justEnter == true && character.currentPose == character.nextPose){
-        character.animFrameCounter = 0;
-        character.justEnter = false;
-    }
-
-    character.animFrameCounter++;
-    if (character.animFrameCounter >= character.anims[0].frameCount){
-        character.animFrameCounter = 0;
-        if (character.currentPose != character.nextPose){
-            character.currentPose = character.nextPose;
-        }
-    }
-    UpdateModelAnimation(character.model, character.anims[0], character.animFrameCounter);
+    doPose(true, true, 0, false);
 }
 
 void SetPose(int pose){

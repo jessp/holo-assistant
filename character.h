@@ -41,6 +41,7 @@ void SetPose(int);
 void IdlePose(void);
 void ExitListenPose(void);
 void EnterListenPose(void);
+void doPose(bool forward, bool loop, int poseIndex, bool backToIdle);
 
 
 #endif 
