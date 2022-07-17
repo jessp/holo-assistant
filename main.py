@@ -7,6 +7,8 @@ import sounddevice as sd
 import webrtcvad
 from halo import Halo
 from scipy import signal
+import socket
+import time
 
 
 logging.basicConfig(level=20)
@@ -129,37 +131,46 @@ class VADAudio(Audio):
 
 
 def main():
+    HOST = "127.0.0.1"  # The server's hostname or IP address
+    PORT = 65432  # The port used by the server
     try:
-        device_info = sd.query_devices(None, 'input')
-        sample_rate = int(device_info['default_samplerate'])
-        DEFAULT_SAMPLE_RATE = sample_rate
-        # Load DeepSpeech model
-        print('Initializing model...')
-        model = deepspeech.Model('deepspeech-0.9.3-models.pbmm')
-        model.enableExternalScorer('deepspeech-0.9.3-models.scorer')
-        model.addHotWord("maria", 100)
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.bind((HOST, PORT))
+            s.listen()
+            conn, addr = s.accept()
+            device_info = sd.query_devices(None, 'input')
+            sample_rate = int(device_info['default_samplerate'])
+            DEFAULT_SAMPLE_RATE = sample_rate
+            # Load DeepSpeech model
+            print('Initializing model...')
+            model = deepspeech.Model('deepspeech-0.9.3-models.pbmm')
+            model.enableExternalScorer('deepspeech-0.9.3-models.scorer')
+            model.addHotWord("maria", 100)
 
-        # Start audio with VAD
-        vad_audio = VADAudio(aggressiveness=1,
-                             input_rate=DEFAULT_SAMPLE_RATE)
-        print("Listening (ctrl-C to exit)...")
-        frames = vad_audio.vad_collector()
-        # Stream from microphone to DeepSpeech using VAD
-        spinner = Halo(spinner='line')
-        stream_context = model.createStream()
-        for frame in frames:
-            if frame is not None:
-                if spinner: spinner.start()
-                logging.debug("streaming frame")
-                stream_context.feedAudioContent(np.frombuffer(frame, np.int16))
-            else:
-                if spinner: spinner.stop()
-                logging.debug("end utterence")
-                text = stream_context.finishStream()
-                print("Recognized: %s" % text)
-                stream_context = model.createStream()
+            # Start audio with VAD
+            vad_audio = VADAudio(aggressiveness=1,
+                                input_rate=DEFAULT_SAMPLE_RATE)
+            print("Listening (ctrl-C to exit)...")
+            frames = vad_audio.vad_collector()
+            # Stream from microphone to DeepSpeech using VAD
+            spinner = Halo(spinner='line')
+            stream_context = model.createStream()
+            for frame in frames:
+                if frame is not None:
+                    if spinner: spinner.start()
+                    logging.debug("streaming frame")
+                    stream_context.feedAudioContent(np.frombuffer(frame, np.int16))
+                else:
+                    if spinner: spinner.stop()
+                    logging.debug("end utterence")
+                    text = stream_context.finishStream()
+                    print("Recognized: %s" % text)
+                    if "maria" in text:
+                        print("heard name...")
+                        conn.sendall(b'listen')
+                    stream_context = model.createStream()
     except KeyboardInterrupt:
-        print("Exiting...")
+        print("Exiting server...")
 
 
 if __name__ == '__main__':

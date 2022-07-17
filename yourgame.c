@@ -12,6 +12,12 @@
 #include <stdio.h>
 #include <math.h>
 #include "character.h"
+#include <string.h>
+#include <sys/socket.h> //socket
+#include <arpa/inet.h>  //inet_addr
+#include <unistd.h>
+#include <pthread.h>
+
 
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
@@ -40,6 +46,28 @@ Character character = { 0 };
 RenderTexture2D convertRGBATexture2Map(Image encodedMap, bool flipTexture, RenderTexture2D decodedMapResult);
 static void InitProgram(void);
 
+void *runClientThread(void* my_sock)
+{
+    char server_reply[2000];
+    while(1)
+    {
+        //Receive a reply from the server
+        if( recv(* (int*)my_sock , server_reply , 2000 , 0) < 0)
+        {
+            puts("recv failed");
+            // break;
+        }
+            
+        puts("Server reply :");
+        puts(server_reply);
+        if (TextIsEqual(server_reply, "listen")) {
+            SetPose(1);
+        } 
+        memset(server_reply, 0, 2000 * (sizeof server_reply[0]) );
+    }
+}
+
+
 int main(void)
 {
     // Initialization
@@ -49,6 +77,31 @@ int main(void)
 
     SetConfigFlags(FLAG_MSAA_4X_HINT);      // Enable Multi Sampling Anti Aliasing 4x (if available)
 
+    //Socket stuff
+    int sock;
+    struct sockaddr_in server;
+    
+    //Create socket
+    sock = socket(AF_INET , SOCK_STREAM , 0);
+    if (sock == -1)
+    {
+        printf("Could not create socket");
+    }
+    puts("Socket created");
+    
+    server.sin_addr.s_addr = inet_addr("127.0.0.1");
+    server.sin_family = AF_INET;
+    server.sin_port = htons( 65432 );
+
+    //Connect to remote server
+    if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0)
+    {
+        perror("connect failed. Error");
+        return 1;
+    }
+    
+    puts("Connected\n");
+    
 
    // Load model texture (diffuse map)
     Image mapTex = LoadImage("resources/maps/IpadProDistortionCalibrationMap-sm.png");   // Load model texture (diffuse map)
@@ -89,9 +142,12 @@ int main(void)
     SetShaderValue(shader, alphaLoc, &alpha, SHADER_UNIFORM_FLOAT);
     SetShaderValue(shader, texRotationVecLoc, &texRotationVec, SHADER_UNIFORM_VEC4);
 
+    pthread_t thread_id;
+    pthread_create(&thread_id, NULL, runClientThread, &sock);
+
     // Main game loop
     while (!WindowShouldClose())        // Detect window close button or ESC key
-    {
+    {   
 
         if (IsKeyDown(KEY_UP)) {
             SetPose(1);
@@ -148,6 +204,8 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
+    pthread_exit(NULL);
+    close(sock);
     UnloadShader(shader);               // Unload shader
     UnloadTexture(map);             // Unload texture
     UnloadRenderTexture(decodedTex);    // Unload texture

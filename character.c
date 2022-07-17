@@ -61,7 +61,6 @@ void doPose(bool forward, bool loop, int poseIndex, bool backToIdle){
                     character.nextPose = idle;
                 }
             } else {
-                printf("%s\n", "hiiii");
                 goToNext();
             }
         }
