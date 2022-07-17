@@ -93,7 +93,7 @@ class VADAudio(Audio):
             while True:
                 yield self.read_resampled()
 
-    def vad_collector(self, padding_ms=300, ratio=0.75, frames=None):
+    def vad_collector(self, padding_ms=1000, ratio=0.65, frames=None):
         """Generator that yields series of consecutive audio frames comprising each utterence, separated by yielding a single None.
             Determines voice activity by ratio of frames in padding_ms. Uses a buffer to include padding_ms prior to being triggered.
             Example: (frame, ..., frame, None, frame, ..., frame, None, ...)
@@ -127,6 +127,7 @@ class VADAudio(Audio):
                     yield None
                     ring_buffer.clear()
 
+
 def main():
     try:
         device_info = sd.query_devices(None, 'input')
@@ -136,10 +137,10 @@ def main():
         print('Initializing model...')
         model = deepspeech.Model('deepspeech-0.9.3-models.pbmm')
         model.enableExternalScorer('deepspeech-0.9.3-models.scorer')
-
+        model.addHotWord("maria", 100)
 
         # Start audio with VAD
-        vad_audio = VADAudio(aggressiveness=2,
+        vad_audio = VADAudio(aggressiveness=1,
                              input_rate=DEFAULT_SAMPLE_RATE)
         print("Listening (ctrl-C to exit)...")
         frames = vad_audio.vad_collector()
@@ -159,6 +160,7 @@ def main():
                 stream_context = model.createStream()
     except KeyboardInterrupt:
         print("Exiting...")
+
 
 if __name__ == '__main__':
     main()
