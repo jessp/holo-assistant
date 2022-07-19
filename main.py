@@ -95,7 +95,7 @@ class VADAudio(Audio):
             while True:
                 yield self.read_resampled()
 
-    def vad_collector(self, padding_ms=1000, ratio=0.65, frames=None):
+    def vad_collector(self, padding_ms=450, ratio=0.65, frames=None):
         """Generator that yields series of consecutive audio frames comprising each utterence, separated by yielding a single None.
             Determines voice activity by ratio of frames in padding_ms. Uses a buffer to include padding_ms prior to being triggered.
             Example: (frame, ..., frame, None, frame, ..., frame, None, ...)
@@ -106,6 +106,7 @@ class VADAudio(Audio):
         ring_buffer = collections.deque(maxlen=num_padding_frames)
         triggered = False
 
+        frame_idx = 0
         for frame in frames:
             if len(frame) < 640:
                 return
@@ -122,17 +123,53 @@ class VADAudio(Audio):
 
             else:
                 yield frame
+                frame_idx += 1
                 ring_buffer.append((frame, is_speech))
                 num_unvoiced = len([f for f, speech in ring_buffer if not speech])
-                if num_unvoiced > ratio * ring_buffer.maxlen:
+                #track frame index and stop listening if more than 100 frames
+                #to prevent overlong periods before reporting back
+                if num_unvoiced > ratio * ring_buffer.maxlen or frame_idx > 100:
                     triggered = False
+                    frame_idx = 0
                     yield None
                     ring_buffer.clear()
+
+
+
+class infinite_timer():
+    """
+    A Thread that executes infinitely, used to reset to idle position
+    """
+    def __init__(self, t, hFunction, conn):
+        self.t = t
+        self.hFunction = hFunction
+        self.conn = conn
+        self.thread = threading.Timer(self.t, self.handle_function)
+        
+    def handle_function(self):
+        self.hFunction(self.conn)
+        self.thread.cancel()
+        
+    def start(self):
+        self.thread = threading.Timer(self.t, self.handle_function)
+        self.thread.start()
+        
+    def cancel(self):
+        self.thread.cancel()
 
 
 def main():
     HOST = "127.0.0.1"  # The server's hostname or IP address
     PORT = 65432  # The port used by the server
+    start_time = time.time()
+    command_mode = False
+
+    def exit_listen(conn):
+        global command_mode
+        command_mode = False
+        conn.sendall(b'exit listen')
+        print("heard exit command")
+
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.bind((HOST, PORT))
@@ -148,26 +185,49 @@ def main():
             model.addHotWord("maria", 100)
 
             # Start audio with VAD
-            vad_audio = VADAudio(aggressiveness=1,
+            vad_audio = VADAudio(aggressiveness=2,
                                 input_rate=DEFAULT_SAMPLE_RATE)
             print("Listening (ctrl-C to exit)...")
             frames = vad_audio.vad_collector()
             # Stream from microphone to DeepSpeech using VAD
             spinner = Halo(spinner='line')
             stream_context = model.createStream()
+
+            t = infinite_timer(8, exit_listen, conn)
+
+
             for frame in frames:
                 if frame is not None:
                     if spinner: spinner.start()
                     logging.debug("streaming frame")
-                    stream_context.feedAudioContent(np.frombuffer(frame, np.int16))
+                    try:
+                        stream_context.feedAudioContent(np.frombuffer(frame, np.int16))
+                    except:
+                        stream_context = model.createStream()
+                        print("Unended stream error...")
                 else:
                     if spinner: spinner.stop()
                     logging.debug("end utterence")
-                    text = stream_context.finishStream()
+                    try:
+                        text = stream_context.finishStream()
+                    except:
+                        text = ""
+                        print("Finish stream error...")
                     print("Recognized: %s" % text)
                     if "maria" in text:
                         print("heard name...")
                         conn.sendall(b'listen')
+                        command_mode = True
+                        start_time = time.time()
+                        t.cancel()
+                        t.start()
+                    if command_mode:
+                        if "whether" in text or "weather" in text:
+                            conn.sendall(b'talk')
+                            command_mode = False
+                    else:
+                        continue
+
                     stream_context = model.createStream()
     except KeyboardInterrupt:
         print("Exiting server...")

@@ -45,27 +45,8 @@ Character character = { 0 };
 //------------------------------------------------------------------------------------
 RenderTexture2D convertRGBATexture2Map(Image encodedMap, bool flipTexture, RenderTexture2D decodedMapResult);
 static void InitProgram(void);
+void *runClientThread(void*);
 
-void *runClientThread(void* my_sock)
-{
-    char server_reply[2000];
-    while(1)
-    {
-        //Receive a reply from the server
-        if( recv(* (int*)my_sock , server_reply , 2000 , 0) < 0)
-        {
-            puts("recv failed");
-            // break;
-        }
-            
-        puts("Server reply :");
-        puts(server_reply);
-        if (TextIsEqual(server_reply, "listen")) {
-            SetPose(1);
-        } 
-        memset(server_reply, 0, 2000 * (sizeof server_reply[0]) );
-    }
-}
 
 
 int main(void)
@@ -149,12 +130,18 @@ int main(void)
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {   
 
+        //debugging poses
         if (IsKeyDown(KEY_UP)) {
             SetPose(1);
         } 
 
         if (IsKeyDown(KEY_DOWN)) {
             SetPose(2);
+        } 
+
+        //debugging shader
+        if (IsKeyDown(KEY_LEFT)) {
+            showingShader = !showingShader;
         } 
 
 
@@ -262,4 +249,27 @@ RenderTexture2D convertRGBATexture2Map(Image encodedMap, bool flipTexture, Rende
         UpdateTexture(decodedMapResult.texture, mapColor);
         UnloadImageColors(encodedColor32);
         return decodedMapResult;
+}
+
+void *runClientThread(void* my_sock)
+{
+    char server_reply[2000];
+    while(1)
+    {
+        //Receive a reply from the server
+        if( recv(* (int*)my_sock , server_reply , 2000 , 0) < 0)
+        {
+            puts("recv failed");
+        }
+            
+        puts("Server reply :");
+        puts(server_reply);
+        if (TextIsEqual(server_reply, "listen")) {
+            SetPose(1);
+        } 
+        if (TextIsEqual(server_reply, "exit listen")) {
+            SetPose(2);
+        } 
+        memset(server_reply, 0, 2000 * (sizeof server_reply[0]) );
+    }
 }
