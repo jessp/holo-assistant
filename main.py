@@ -9,6 +9,11 @@ from halo import Halo
 from scipy import signal
 import socket
 import time
+import configparser
+import json
+import requests
+import urllib.parse
+import geograpy
 
 
 logging.basicConfig(level=20)
@@ -157,12 +162,65 @@ class infinite_timer():
     def cancel(self):
         self.thread.cancel()
 
+def get_extreme(json_string, isHigh):
+    get_all_vals = [temp["temp_c"] for temp in json_string["hour"]]
+    if isHigh:
+        return max(get_all_vals)
+    else:
+        return min(get_all_vals)
+
+def get_condition(json_string, condition):
+    for hour in json_string["hour"]:
+        if condition in hour["condition"]["text"].lower():
+            return hour["time"][-5:]
+        return False
+
+
+
+def get_weather(key, text, default_location):
+    weather_base_url = "http://api.weatherapi.com/v1/"
+    weather_string = ""
+    where_var = "auto:ip"
+    places = geograpy.get_geoPlace_context(text=text.title())
+    if len(places.cities) > 0:
+        where_var = places.cities[0]
+        weather_string += "In %s, "%where_var
+    #either we look for the word tomorrow, or we focus on the rest of today
+    when_string = "the rest of today"
+    when_var = 1
+    if "tomorrow" in text:
+        when_string = "tomorrow"
+        when_var = 2
+    
+    weather_current_response = requests.get((weather_base_url + "forecast.json?key=%s&days=%s&q=%s")%(key, when_var, where_var))
+    if weather_current_response.status_code == 200:
+        json_resp = weather_current_response.json()
+        the_high = get_extreme(json_resp["forecast"]["forecastday"][when_var - 1], True)
+        the_low = get_extreme(json_resp["forecast"]["forecastday"][when_var - 1], False)
+        weather_string += "The high for %s will be %s degrees, and the low will be %s degrees."%(when_string,the_high,the_low)
+        rain_time = get_condition(json_resp["forecast"]["forecastday"][when_var - 1], "rain")
+        if (rain_time != False):
+            weather_string += " There may be rain starting at %s."%(rain_time)
+        snow_time = get_condition(json_resp["forecast"]["forecastday"][when_var - 1], "snow")
+        if (snow_time != False):
+            weather_string += " There may be snow starting at %s."%(snow_time)
+        print(weather_string)
+    else:
+        print(weather_current_response.status_code)
+
 
 def main():
     HOST = "127.0.0.1"  # The server's hostname or IP address
     PORT = 65432  # The port used by the server
     start_time = time.time()
     command_mode = False
+    config = configparser.ConfigParser()
+    config.sections()
+    config.read('settings.config')
+    weather_key = config['DEFAULT']['weatherApiKey']
+
+    
+    get_weather(weather_key, "weather in tokyo", "")
 
     def exit_listen(conn):
         global command_mode
