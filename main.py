@@ -14,6 +14,7 @@ import json
 import requests
 import urllib.parse
 import geograpy
+import re
 
 
 logging.basicConfig(level=20)
@@ -181,10 +182,13 @@ def get_weather(key, text, default_location):
     weather_base_url = "http://api.weatherapi.com/v1/"
     weather_string = ""
     where_var = "auto:ip"
-    places = geograpy.get_geoPlace_context(text=text.title())
-    if len(places.cities) > 0:
-        where_var = places.cities[0]
-        weather_string += "In %s, "%where_var
+    loc_attempt = text.find(" in ")
+    if loc_attempt > -1:
+        loc_string = text[loc_attempt + 4):]
+        places = geograpy.get_geoPlace_context(text=loc_string.title())
+        if len(places.cities) > 0:
+            where_var = places.cities[0]
+            weather_string += "In %s, "%where_var
     #either we look for the word tomorrow, or we focus on the rest of today
     when_string = "the rest of today"
     when_var = 1
