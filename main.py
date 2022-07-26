@@ -4,6 +4,7 @@ import threading, collections, queue, os, os.path
 import deepspeech
 import numpy as np
 import sounddevice as sd
+import soundfile as sf
 import webrtcvad
 from halo import Halo
 from scipy import signal
@@ -14,7 +15,6 @@ import json
 import requests
 import urllib.parse
 import geograpy
-import re
 
 
 logging.basicConfig(level=20)
@@ -170,21 +170,80 @@ def get_extreme(json_string, isHigh):
     else:
         return min(get_all_vals)
 
+def int_or_str(text):
+    """Helper function for argument parsing."""
+    try:
+        return int(text)
+    except ValueError:
+        return text
+
+
+class AudioPlayer:
+    def __init__(self):
+        self.event = threading.Event()
+        self.current_frame = 0
+    def callback(self, outdata, frames, time, status):    
+        if status:
+            print(status)
+        chunksize = min(len(self.data) - self.current_frame, frames)
+        outdata[:chunksize] = self.data[self.current_frame:self.current_frame + chunksize]
+        if chunksize < frames:
+            outdata[chunksize:] = 0
+            raise sd.CallbackStop()
+        self.current_frame += chunksize
+    def play(self, filename):
+        self.data, self.fs = sf.read(filename, always_2d=True)
+        stream = sd.OutputStream(
+            samplerate=self.fs, channels=self.data.shape[1],
+            callback=self.callback, finished_callback=self.event.set)
+        with stream:
+            self.event.wait()  # Wait until playback is finished
+
+
+def synthesize_text(text, file_loc):
+    """Synthesizes speech from the input string of text."""
+    import os
+    from google.cloud import texttospeech
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = file_loc
+
+    client = texttospeech.TextToSpeechClient()
+
+    input_text = texttospeech.SynthesisInput(text=text)
+
+    # Note: the voice can also be specified by name.
+    # Names of voices can be retrieved with client.list_voices().
+    voice = texttospeech.VoiceSelectionParams(
+        language_code="en-US",
+        name="en-US-Standard-F",
+        ssml_gender=texttospeech.SsmlVoiceGender.FEMALE,
+    )
+
+    audio_config = texttospeech.AudioConfig(
+        audio_encoding=texttospeech.AudioEncoding.LINEAR16,
+        pitch=2.5
+    )
+
+    response = client.synthesize_speech(
+        request={"input": input_text, "voice": voice, "audio_config": audio_config}
+    )
+
+    # The response's audio_content is binary.
+    with open("./resources/sound_clips/latest_output.wav", "wb") as out:
+        out.write(response.audio_content)
+
 def get_condition(json_string, condition):
     for hour in json_string["hour"]:
         if condition in hour["condition"]["text"].lower():
             return hour["time"][-5:]
         return False
 
-
-
-def get_weather(key, text, default_location):
+def get_weather(key, text):
     weather_base_url = "http://api.weatherapi.com/v1/"
     weather_string = ""
     where_var = "auto:ip"
     loc_attempt = text.find(" in ")
     if loc_attempt > -1:
-        loc_string = text[loc_attempt + 4):]
+        loc_string = text[(loc_attempt + 4):]
         places = geograpy.get_geoPlace_context(text=loc_string.title())
         if len(places.cities) > 0:
             where_var = places.cities[0]
@@ -209,8 +268,10 @@ def get_weather(key, text, default_location):
         if (snow_time != False):
             weather_string += " There may be snow starting at %s."%(snow_time)
         print(weather_string)
+        return weather_string
     else:
         print(weather_current_response.status_code)
+        return -1
 
 
 def main():
@@ -222,9 +283,6 @@ def main():
     config.sections()
     config.read('settings.config')
     weather_key = config['DEFAULT']['weatherApiKey']
-
-    
-    get_weather(weather_key, "weather in tokyo", "")
 
     def exit_listen(conn):
         global command_mode
@@ -255,7 +313,7 @@ def main():
             spinner = Halo(spinner='line')
             stream_context = model.createStream()
 
-            t = infinite_timer(8, exit_listen, conn)
+            t = infinite_timer(20, exit_listen, conn)
 
 
             for frame in frames:
@@ -286,6 +344,13 @@ def main():
                     if command_mode:
                         if "whether" in text or "weather" in text:
                             conn.sendall(b'talk')
+                            player = AudioPlayer()
+                            weather_resp = get_weather(weather_key, text)
+                            synthesize_text(weather_resp, config['DEFAULT']['googleFileLocation'])
+                            if weather_resp == -1:
+                                player.play(filename="./resources/sound_clips/sorry_no_info.wav")
+                            else:
+                                player.play(filename="./resources/sound_clips/latest_output.wav")
                             command_mode = False
                     else:
                         continue

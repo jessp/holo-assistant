@@ -1,3 +1,5 @@
 YourGame
 deepspeech*
 settings.config
+googleCredentials/*.json
+resources/sound_clips/latest_output.wav

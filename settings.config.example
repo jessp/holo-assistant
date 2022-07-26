@@ -1,2 +1,3 @@
 [DEFAULT]
 weatherApiKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+googleFileLocation: ./googleCredentials/xxxxxxxx.json
