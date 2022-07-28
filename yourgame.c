@@ -29,10 +29,9 @@
 //------------------------------------------------------------------------------------
 // Global Variables Declaration
 //------------------------------------------------------------------------------------
-const int screenWidth = 1366;
-const int screenHeight = 1024;                                   // Set model position
+const int screenWidth = 800;
+const int screenHeight = 600;                                   // Set model position
 const Vector3 tabletScreenScale = {4.0f, 3.0f, 1.0f};
-const float scale = 1.0;
 //shader values
 bool showingShader = false;
 const float power = 1.0;
@@ -222,7 +221,6 @@ RenderTexture2D convertRGBATexture2Map(Image encodedMap, bool flipTexture, Rende
         float mapDiv = 4095;
         Color *encodedColor32 = LoadImageColors(encodedMap);
         int arraySize = encodedMap.width * encodedMap.height;
-        // static Color mapColor[5595136];
         static Color* mapColor;
         mapColor = malloc(arraySize * sizeof(Color));
         Color ec;

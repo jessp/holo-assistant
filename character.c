@@ -5,7 +5,7 @@
 void InitCharacter(void){
 	character.model = LoadModel("resources/models/body_empty.iqm");    
     character.texture = LoadTexture("resources/models/Base_texture.png");
-    character.position = (Vector3){ 0.0f, 0.0f, 0.0f };
+    character.position = (Vector3){ 0.0f, -1.0f, 0.0f };
     character.animsCount = 0;
     character.animFrameCounter = 0;
     character.anims = LoadModelAnimations("resources/models/body_empty.iqm", &character.animsCount);
@@ -28,7 +28,7 @@ void UnloadCharacter(void){
 }
 
 void DrawCharacter(void){
-	DrawModelEx(character.model, character.position, (Vector3){ 1.0f, 0.0f, 0.0f }, 0.0f, (Vector3){ 1.0f, 1.0f, 1.0f }, WHITE);
+	DrawModelEx(character.model, character.position, (Vector3){ 1.0f, 0.0f, 0.0f }, 0.0f, (Vector3){ 1.75f, 1.75f, 1.75f }, WHITE);
 }
 
 void goToNext(void){
