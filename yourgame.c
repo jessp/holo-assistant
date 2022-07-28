@@ -30,8 +30,9 @@
 // Global Variables Declaration
 //------------------------------------------------------------------------------------
 const int screenWidth = 800;
-const int screenHeight = 600;                                   // Set model position
+const int screenHeight = 600;
 const Vector3 tabletScreenScale = {4.0f, 3.0f, 1.0f};
+Rectangle dest = {0, 0, (float) screenWidth, (float) screenHeight}; //for final render texture
 //shader values
 bool showingShader = false;
 const float power = 1.0;
@@ -173,7 +174,7 @@ int main(void)
                 BeginShaderMode(shader);
                     SetShaderValueTexture(shader, mapLoc, map);
                     // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
-                    DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
+                    DrawTexturePro(target.texture, (Rectangle){ (float)target.texture.width/2-(float)screenWidth/4, -(float)screenHeight/2, (float)screenWidth/2, -(float)screenHeight/2 }, dest, (Vector2){0,0}, 0.0f, WHITE);
                 EndShaderMode();
             } else {
                 DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
