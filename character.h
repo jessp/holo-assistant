@@ -34,6 +34,7 @@ extern Character character;
 // Functions Declaration
 //----------------------------------------------------------------------------------
 void InitCharacter(void);
+void SetCharacterShader(Shader lightShader);
 void UnloadCharacter(void);
 void DrawCharacter(void);
 void UpdateCharacter(void);

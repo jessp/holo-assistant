@@ -18,7 +18,8 @@
 #include <arpa/inet.h>  //inet_addr
 #include <unistd.h>
 #include <pthread.h>
-
+#define RLIGHTS_IMPLEMENTATION
+#include "rlights.h"
 
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
@@ -92,8 +93,23 @@ int main(void)
     Texture2D map = decodedTex.texture;
 
     // Load postprocessing shader    
-    Shader shader = LoadShader(TextFormat("resources/shaders/glsl330/warp.vs"), TextFormat("resources/shaders/glsl330/warp.fs", GLSL_VERSION));
+    Shader shader = LoadShader(TextFormat("resources/shaders/glsl330/warp.vs"), TextFormat("resources/shaders/glsl330/warp.fs"));
 
+    //Load lighting shader
+    Shader lightingShader = LoadShader(TextFormat("resources/shaders/glsl330/base_lighting.vs"),
+                               TextFormat("resources/shaders/glsl330/lighting.fs"));
+
+    // Get some required shader locations
+    lightingShader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(lightingShader, "viewPos");
+    // Ambient light level (some basic lighting)
+    int ambientLoc = GetShaderLocation(lightingShader, "ambient");
+    SetShaderValue(lightingShader, ambientLoc, (float[4]){ 2.5f, 2.5f, 2.5f, 1.0f }, SHADER_UNIFORM_VEC4);
+    // Create lights
+    Light lights[MAX_LIGHTS] = { 0 };
+    lights[0] = CreateLight(LIGHT_POINT, (Vector3){ 0, 0, -50 }, Vector3Zero(), WHITE, lightingShader);
+
+    //apply the lighting shader to the character
+    SetCharacterShader(lightingShader);
     // Create a RenderTexture2D to be used for render to texture
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
     
@@ -147,6 +163,8 @@ int main(void)
 
 
         UpdateCamera(&camera);          // Update camera
+        float cameraPos[3] = { camera.position.x, camera.position.y, camera.position.z };
+        SetShaderValue(lightingShader, lightingShader.locs[SHADER_LOC_VECTOR_VIEW], cameraPos, SHADER_UNIFORM_VEC3);
 
         UpdateCharacter();
 
@@ -195,6 +213,7 @@ int main(void)
     pthread_exit(NULL);
     close(sock);
     UnloadShader(shader);               // Unload shader
+    UnloadShader(lightingShader);   // Unload shader
     UnloadTexture(map);             // Unload texture
     UnloadRenderTexture(decodedTex);    // Unload texture
     UnloadRenderTexture(target);        // Unload render texture

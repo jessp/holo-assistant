@@ -16,6 +16,10 @@ void InitCharacter(void){
     SetMaterialTexture(&character.model.materials[0], MATERIAL_MAP_DIFFUSE, character.texture);
 }
 
+void SetCharacterShader(Shader lightShader){
+    character.model.materials[0].shader = lightShader;
+}
+
 void UnloadCharacter(void){
     UnloadTexture(character.texture);
     UnloadModel(character.model);
