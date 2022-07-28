@@ -10,6 +10,7 @@
 #include "rlgl.h"
 #include <raymath.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include "character.h"
 #include <string.h>
@@ -85,7 +86,7 @@ int main(void)
     
 
    // Load model texture (diffuse map)
-    Image mapTex = LoadImage("resources/maps/IpadProDistortionCalibrationMap-sm.png");   // Load model texture (diffuse map)
+    Image mapTex = LoadImage("resources/maps/IpadProDistortionCalibrationMap.png");   // Load model texture (diffuse map)
     RenderTexture2D decodedTex = LoadRenderTexture(mapTex.width, mapTex.height);
     decodedTex = convertRGBATexture2Map(mapTex, true, decodedTex);
     Texture2D map = decodedTex.texture;
@@ -154,7 +155,7 @@ int main(void)
         // Draw
         //----------------------------------------------------------------------------------
         BeginTextureMode(target);       // Enable drawing to texture
-            ClearBackground(GRAY);  // Clear texture background
+            ClearBackground(BLACK);  // Clear texture background
 
             BeginMode3D(camera);        // Begin 3d mode drawing
                 rlPushMatrix();
@@ -220,13 +221,14 @@ RenderTexture2D convertRGBATexture2Map(Image encodedMap, bool flipTexture, Rende
 
         float mapDiv = 4095;
         Color *encodedColor32 = LoadImageColors(encodedMap);
-        Color mapColor[encodedMap.width * encodedMap.height];
-
+        int arraySize = encodedMap.width * encodedMap.height;
+        // static Color mapColor[5595136];
+        static Color* mapColor;
+        mapColor = malloc(arraySize * sizeof(Color));
         Color ec;
         Vector4 tempColor;
 
         int LOAD_TEX_COLOR_BIT_DEPTH = 8;
-
         for (int pixel = 0; pixel < (encodedMap.width * encodedMap.height); ++pixel) {
             ec = encodedColor32[pixel];
 
@@ -239,10 +241,8 @@ RenderTexture2D convertRGBATexture2Map(Image encodedMap, bool flipTexture, Rende
 
             tempColor.w = 0.0;
             tempColor.z = 0.0;
-
             //takes format x y z w
             mapColor[pixel] = ColorFromNormalized(tempColor);
-
         }
         
 
