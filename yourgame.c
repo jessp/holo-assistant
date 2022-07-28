@@ -140,7 +140,7 @@ int main(void)
         } 
 
         //debugging shader
-        if (IsKeyDown(KEY_LEFT)) {
+        if (IsKeyReleased(KEY_LEFT)) {
             showingShader = !showingShader;
         } 
 
