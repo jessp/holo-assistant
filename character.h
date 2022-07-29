@@ -13,6 +13,7 @@ typedef enum
 
 typedef struct Character {
     Texture2D texture;
+    Texture2D talkTextures[2];
     Model model;
     Vector3 position;
     unsigned int animsCount;
@@ -38,6 +39,7 @@ void SetCharacterShader(Shader lightShader);
 void UnloadCharacter(void);
 void DrawCharacter(void);
 void UpdateCharacter(void);
+void Talk(void);
 void SetPose(int);
 void IdlePose(void);
 void ExitListenPose(void);

@@ -5,6 +5,8 @@
 void InitCharacter(void){
 	character.model = LoadModel("resources/models/body_empty.iqm");    
     character.texture = LoadTexture("resources/models/Base_texture.png");
+    character.talkTextures[0] = LoadTexture("resources/models/Base_texture-talk-0.png");
+    character.talkTextures[1] = LoadTexture("resources/models/Base_texture-talk-1.png");
     character.position = (Vector3){ 0.0f, -1.0f, 0.0f };
     character.animsCount = 0;
     character.animFrameCounter = 0;
@@ -22,6 +24,9 @@ void SetCharacterShader(Shader lightShader){
 
 void UnloadCharacter(void){
     UnloadTexture(character.texture);
+    for (unsigned int tex = 0; tex < sizeof(character.talkTextures) / sizeof(character.talkTextures[0]); tex++) {
+        UnloadTexture(character.talkTextures[tex]);
+    }
     UnloadModel(character.model);
 
     // Unload model animations data
@@ -29,6 +34,15 @@ void UnloadCharacter(void){
     	UnloadModelAnimation(character.anims[i]);
     }
     //RL_FREE(anims); //TODO - debug error
+}
+
+void Talk(void){
+    int talkIndex = character.animFrameCounter%9/3;
+    if (talkIndex == 2){
+        SetMaterialTexture(&character.model.materials[0], MATERIAL_MAP_DIFFUSE, character.texture);
+    } else {
+        SetMaterialTexture(&character.model.materials[0], MATERIAL_MAP_DIFFUSE, character.talkTextures[talkIndex]);
+    }
 }
 
 void DrawCharacter(void){
@@ -109,6 +123,7 @@ void SetPose(int pose){
 }
 
 void UpdateCharacter(void){
+    Talk();
     if (character.currentPose == enterListen){
         EnterListenPose();
     } else if (character.currentPose == exitListen){
