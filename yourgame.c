@@ -282,11 +282,17 @@ void *runClientThread(void* my_sock)
             
         puts("Server reply :");
         puts(server_reply);
-        if (TextIsEqual(server_reply, "listen")) {
+        if (TextIsEqual(server_reply, "listen\n")) {
             SetPose(1);
         } 
-        if (TextIsEqual(server_reply, "exit listen")) {
+        if (TextIsEqual(server_reply, "exit listen\n")) {
             SetPose(2);
+        } 
+        if (TextIsEqual(server_reply, "talk\n")) {
+            SetTalk(true);
+        } 
+        if (TextIsEqual(server_reply, "exit talk\n")) {
+            SetTalk(false);
         } 
         memset(server_reply, 0, 2000 * (sizeof server_reply[0]) );
     }

@@ -287,7 +287,7 @@ def main():
     def exit_listen(conn):
         global command_mode
         command_mode = False
-        conn.sendall(b'exit listen')
+        conn.sendall(b'exit listen\n')
         print("heard exit command")
 
     try:
@@ -324,7 +324,7 @@ def main():
                         stream_context.feedAudioContent(np.frombuffer(frame, np.int16))
                     except:
                         stream_context = model.createStream()
-                        print("Unended stream error...")
+                        #TODO - Debug this -- we shouldn't be hitting this point
                 else:
                     if spinner: spinner.stop()
                     logging.debug("end utterence")
@@ -334,23 +334,26 @@ def main():
                         text = ""
                         print("Finish stream error...")
                     print("Recognized: %s" % text)
-                    if "maria" in text:
+                    if "maria" in text or "memoria" in text:
                         print("heard name...")
-                        conn.sendall(b'listen')
+                        conn.sendall(b'listen\n')
                         command_mode = True
                         start_time = time.time()
                         t.cancel()
                         t.start()
                     if command_mode:
                         if "whether" in text or "weather" in text:
-                            conn.sendall(b'talk')
+                            t.cancel()
+                            conn.sendall(b'exit listen\n')
                             player = AudioPlayer()
                             weather_resp = get_weather(weather_key, text)
                             synthesize_text(weather_resp, config['DEFAULT']['googleFileLocation'])
+                            conn.sendall(b'talk\n')
                             if weather_resp == -1:
                                 player.play(filename="./resources/sound_clips/sorry_no_info.wav")
                             else:
                                 player.play(filename="./resources/sound_clips/latest_output.wav")
+                            conn.sendall(b'exit talk\n')
                             command_mode = False
                     else:
                         continue

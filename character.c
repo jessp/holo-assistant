@@ -14,6 +14,7 @@ void InitCharacter(void){
     character.currentPose = idle;
     character.nextPose = idle;
     character.justEnter = true;
+    character.isTalking = false;
     UpdateModelAnimation(character.model, character.anims[0], character.animFrameCounter);
     SetMaterialTexture(&character.model.materials[0], MATERIAL_MAP_DIFFUSE, character.texture);
 }
@@ -45,17 +46,25 @@ void Talk(void){
     }
 }
 
+void SetTalk(bool isTalking){
+    //close the character's mouth if she's stopped talking
+    if (isTalking == false){
+        SetMaterialTexture(&character.model.materials[0], MATERIAL_MAP_DIFFUSE, character.texture);
+    }
+    character.isTalking = isTalking;
+}
+
 void DrawCharacter(void){
 	DrawModelEx(character.model, character.position, (Vector3){ 1.0f, 0.0f, 0.0f }, 0.0f, (Vector3){ 1.75f, 1.75f, 1.75f }, WHITE);
 }
 
-void goToNext(void){
+void GoToNext(void){
     if (character.currentPose != character.nextPose){
         character.currentPose = character.nextPose;
     }
 }
 
-void doPose(bool forward, bool loop, int poseIndex, bool backToIdle){
+void DoPose(bool forward, bool loop, int poseIndex, bool backToIdle){
     if (character.justEnter == true && character.currentPose == character.nextPose){
         if (forward){
             character.animFrameCounter = 0;
@@ -70,7 +79,7 @@ void doPose(bool forward, bool loop, int poseIndex, bool backToIdle){
             character.animFrameCounter++;
             if (character.animFrameCounter >= character.anims[poseIndex].frameCount){
                 character.animFrameCounter = 0;
-                goToNext();
+                GoToNext();
             }
         } else {
             if (character.animFrameCounter < character.anims[poseIndex].frameCount - 1){
@@ -79,7 +88,7 @@ void doPose(bool forward, bool loop, int poseIndex, bool backToIdle){
                     character.nextPose = idle;
                 }
             } else {
-                goToNext();
+                GoToNext();
             }
         }
     } else {
@@ -87,7 +96,7 @@ void doPose(bool forward, bool loop, int poseIndex, bool backToIdle){
             character.animFrameCounter--;
             if (character.animFrameCounter <= 0){
                 character.animFrameCounter = character.anims[poseIndex].frameCount - 1;
-                goToNext();
+                GoToNext();
             }
         } else {
             if (character.animFrameCounter > 0){
@@ -96,7 +105,7 @@ void doPose(bool forward, bool loop, int poseIndex, bool backToIdle){
                     character.nextPose = idle;
                 }
             } else {
-                goToNext();
+                GoToNext();
             }  
         }
 
@@ -106,15 +115,15 @@ void doPose(bool forward, bool loop, int poseIndex, bool backToIdle){
 }
 
 void EnterListenPose(void){
-    doPose(true, false, 1, false);
+    DoPose(true, false, 1, false);
 }
 
 void ExitListenPose(void){
-    doPose(false, false, 1, true);
+    DoPose(false, false, 1, true);
 }
 
 void IdlePose(void){
-    doPose(true, true, 0, false);
+    DoPose(true, true, 0, false);
 }
 
 void SetPose(int pose){
@@ -123,7 +132,10 @@ void SetPose(int pose){
 }
 
 void UpdateCharacter(void){
-    Talk();
+    if (character.isTalking){
+        Talk();
+    }
+
     if (character.currentPose == enterListen){
         EnterListenPose();
     } else if (character.currentPose == exitListen){

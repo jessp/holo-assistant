@@ -21,6 +21,7 @@ typedef struct Character {
     pose currentPose;
     pose nextPose;
     bool justEnter;
+    bool isTalking;
     // Load animation data
     ModelAnimation *anims;
 } Character;
@@ -40,11 +41,13 @@ void UnloadCharacter(void);
 void DrawCharacter(void);
 void UpdateCharacter(void);
 void Talk(void);
+void SetTalk(bool isTalking);
 void SetPose(int);
 void IdlePose(void);
 void ExitListenPose(void);
 void EnterListenPose(void);
-void doPose(bool forward, bool loop, int poseIndex, bool backToIdle);
+void DoPose(bool forward, bool loop, int poseIndex, bool backToIdle);
+void GoToNext(void);
 
 
 #endif 
