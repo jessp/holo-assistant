@@ -283,6 +283,7 @@ def main():
     config.sections()
     config.read('settings.config')
     weather_key = config['DEFAULT']['weatherApiKey']
+    speaking = False #is maria currently speaking?
 
     def exit_listen(conn):
         global command_mode
@@ -321,7 +322,9 @@ def main():
                     if spinner: spinner.start()
                     logging.debug("streaming frame")
                     try:
-                        stream_context.feedAudioContent(np.frombuffer(frame, np.int16))
+                        #don't analyze incoming audio from character speaking
+                        if not speaking:
+                            stream_context.feedAudioContent(np.frombuffer(frame, np.int16))
                     except:
                         stream_context = model.createStream()
                         #TODO - Debug this -- we shouldn't be hitting this point
@@ -343,6 +346,7 @@ def main():
                         t.start()
                     if command_mode:
                         if "whether" in text or "weather" in text:
+                            speaking = True
                             t.cancel()
                             conn.sendall(b'exit listen\n')
                             player = AudioPlayer()
@@ -355,6 +359,7 @@ def main():
                                 player.play(filename="./resources/sound_clips/latest_output.wav")
                             conn.sendall(b'exit talk\n')
                             command_mode = False
+                            speaking = False
                     else:
                         continue
 
