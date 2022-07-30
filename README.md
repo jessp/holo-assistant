@@ -21,9 +21,9 @@ For clientCharacter, install the following dependencies:
 
 Run the server/language processing program with
 ```
-cd serverAudio && /usr/local/bin/envs/pepperscone/bin/python main.py
+cd serverAudio && holovenv/bin/python main.py
 ```
-Though replace the env path and name with your own. :wink:
+Though replace `holovenv` with your own virtual env path. :wink:
 
 
 
