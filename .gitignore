@@ -1,5 +1,5 @@
-YourGame
-deepspeech*
-settings.config
-googleCredentials/*.json
-resources/sound_clips/latest_output.wav
+serverAudio/deepspeech*
+serverAudio/settings.config
+serverAudio/googleCredentials/*.json
+serverAudio/resources/sound_clips/latest_output.wav
+clientCharacter/HoloAssistant

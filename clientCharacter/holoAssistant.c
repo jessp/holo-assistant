@@ -1,8 +1,9 @@
 /*******************************************************************************************
 *
-* * cc yourgame.c character.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib` -o YourGame
-* * /usr/local/bin/envs/pepperscone/bin/python main.py
-* * source /usr/local/bin/envs/pepperscone/bin/activate
+* * Holographic Virutal Assistant
+* * 
+* * Run with:
+* * cd clientCharacter && cc holoAssistant.c character.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib` -o HoloAssistant && ./HoloAssistant
 *
 ********************************************************************************************/
 
