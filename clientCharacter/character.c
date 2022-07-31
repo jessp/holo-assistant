@@ -74,6 +74,16 @@ void DoPose(bool forward, bool loop, int poseIndex, bool backToIdle){
         character.justEnter = false;
     }
 
+    //the idle loop is long which creates the impression of a long time between
+    //hearing wakeword and responding. so, jump forward a bit where it makes
+    //sense in the animation
+    if (character.currentPose == idle && character.nextPose != character.currentPose){
+        if (character.animFrameCounter < 5 || character.animFrameCounter > 45 || (character.animFrameCounter > 21 && character.animFrameCounter < 29)){
+            GoToNext();
+        }
+    }
+
+
     if (forward){
         if (loop){
             character.animFrameCounter++;

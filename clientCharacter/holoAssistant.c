@@ -31,8 +31,8 @@
 //------------------------------------------------------------------------------------
 // Global Variables Declaration
 //------------------------------------------------------------------------------------
-const int screenWidth = 800;
-const int screenHeight = 600;
+const int screenWidth = 600;
+const int screenHeight = 450;
 const Vector3 tabletScreenScale = {4.0f, 3.0f, 1.0f};
 Rectangle dest = {0, 0, (float) screenWidth, (float) screenHeight}; //for final render texture
 //shader values
