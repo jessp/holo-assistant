@@ -21,7 +21,7 @@ For clientCharacter, install the following dependencies:
 
 Run the server/language processing program with
 ```
-cd serverAudio && holovenv/bin/python main.py
+cd serverAudio && ./../holovenv/bin/python main.py
 ```
 Though replace `holovenv` with your own virtual env path. :wink:
 

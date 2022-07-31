@@ -1,15 +1,13 @@
 import time, logging
 from datetime import datetime
-import threading, collections, queue, os, os.path
-import deepspeech
-import numpy as np
-import sounddevice as sd
-import soundfile as sf
-import webrtcvad
-from halo import Halo
-from scipy import signal
-import socket
 import time
+import threading, queue, os, os.path
+import sys
+import vosk
+import sounddevice as sd
+from pydub import AudioSegment
+from pydub.playback import play
+import socket
 import configparser
 import json
 import requests
@@ -18,128 +16,6 @@ import geograpy
 
 
 logging.basicConfig(level=20)
-
-class Audio(object):
-    """Streams raw audio from microphone. Data is received in a separate thread, and stored in a buffer, to be read from."""
-
-    DTYPE = "int16"
-    # Network/VAD rate-space
-    RATE_PROCESS = 16000
-    CHANNELS = 1
-    BLOCKS_PER_SECOND = 50
-
-    def __init__(self, callback=None, input_rate=RATE_PROCESS):
-        def proxy_callback(in_data, frame_count, time_info, status):
-            #pylint: disable=unused-argument
-            callback(in_data.copy())
-            return (None, 0)
-        if callback is None: 
-            callback = lambda in_data: self.buffer_queue.put(in_data)
-        self.buffer_queue = queue.Queue()
-        self.input_rate = input_rate
-        self.sample_rate = self.RATE_PROCESS
-        self.block_size = int(self.RATE_PROCESS / float(self.BLOCKS_PER_SECOND))
-        self.block_size_input = int(self.input_rate / float(self.BLOCKS_PER_SECOND))
-        self.pa = sd
-        kwargs = {
-            'dtype': self.DTYPE,
-            'channels': self.CHANNELS,
-            'samplerate': self.input_rate,
-            'callback': proxy_callback,
-            'blocksize': self.block_size_input
-        }
-
-        self.stream = self.pa.InputStream(**kwargs)
-        self.stream.start()
-
-    def resample(self, data, input_rate):
-        """
-        Microphone may not support our native processing sampling rate, so
-        resample from input_rate to RATE_PROCESS here for webrtcvad and
-        deepspeech
-
-        Args:
-            data (binary): Input audio stream
-            input_rate (int): Input audio rate to resample from
-        """
-        data16 = np.frombuffer(data, dtype=np.int16)
-        resample_size = int(len(data16) / self.input_rate * self.RATE_PROCESS)
-        resample = signal.resample(data16, resample_size)
-        resample16 = np.array(resample, dtype=np.int16)
-        return resample16.tobytes()
-
-    def read_resampled(self):
-        """Return a block of audio data resampled to 16000hz, blocking if necessary."""
-        return self.resample(data=self.buffer_queue.get(),
-                             input_rate=self.input_rate)
-
-    def read(self):
-        """Return a block of audio data, blocking if necessary."""
-        return self.buffer_queue.get()
-
-    def destroy(self):
-        self.stream.stop_stream()
-        self.stream.close()
-        self.pa.terminate()
-
-    frame_duration_ms = property(lambda self: 1000 * self.block_size // self.sample_rate)
-
-
-class VADAudio(Audio):
-    """Filter & segment audio with voice activity detection."""
-
-    def __init__(self, aggressiveness=3, input_rate=None):
-        super().__init__(input_rate=input_rate)
-        self.vad = webrtcvad.Vad(aggressiveness)
-
-    def frame_generator(self):
-        """Generator that yields all audio frames from microphone."""
-        if self.input_rate == self.RATE_PROCESS:
-            while True:
-                yield self.read()
-        else:
-            while True:
-                yield self.read_resampled()
-
-    def vad_collector(self, padding_ms=450, ratio=0.65, frames=None):
-        """Generator that yields series of consecutive audio frames comprising each utterence, separated by yielding a single None.
-            Determines voice activity by ratio of frames in padding_ms. Uses a buffer to include padding_ms prior to being triggered.
-            Example: (frame, ..., frame, None, frame, ..., frame, None, ...)
-                      |---utterence---|        |---utterence---|
-        """
-        if frames is None: frames = self.frame_generator()
-        num_padding_frames = padding_ms // self.frame_duration_ms
-        ring_buffer = collections.deque(maxlen=num_padding_frames)
-        triggered = False
-
-        frame_idx = 0
-        for frame in frames:
-            if len(frame) < 640:
-                return
-            is_speech = self.vad.is_speech(frame, self.sample_rate)
-            
-            if not triggered:
-                ring_buffer.append((frame, is_speech))
-                num_voiced = len([f for f, speech in ring_buffer if speech])
-                if num_voiced > ratio * ring_buffer.maxlen:
-                    triggered = True
-                    for f, s in ring_buffer:
-                        yield f
-                    ring_buffer.clear()
-
-            else:
-                yield frame
-                frame_idx += 1
-                ring_buffer.append((frame, is_speech))
-                num_unvoiced = len([f for f, speech in ring_buffer if not speech])
-                #track frame index and stop listening if more than 100 frames
-                #to prevent overlong periods before reporting back
-                if num_unvoiced > ratio * ring_buffer.maxlen or frame_idx > 100:
-                    triggered = False
-                    frame_idx = 0
-                    yield None
-                    ring_buffer.clear()
-
 
 
 class infinite_timer():
@@ -176,28 +52,6 @@ def int_or_str(text):
         return int(text)
     except ValueError:
         return text
-
-
-class AudioPlayer:
-    def __init__(self):
-        self.event = threading.Event()
-        self.current_frame = 0
-    def callback(self, outdata, frames, time, status):    
-        if status:
-            print(status)
-        chunksize = min(len(self.data) - self.current_frame, frames)
-        outdata[:chunksize] = self.data[self.current_frame:self.current_frame + chunksize]
-        if chunksize < frames:
-            outdata[chunksize:] = 0
-            raise sd.CallbackStop()
-        self.current_frame += chunksize
-    def play(self, filename):
-        self.data, self.fs = sf.read(filename, always_2d=True)
-        stream = sd.OutputStream(
-            samplerate=self.fs, channels=self.data.shape[1],
-            callback=self.callback, finished_callback=self.event.set)
-        with stream:
-            self.event.wait()  # Wait until playback is finished
 
 
 def synthesize_text(text, file_loc):
@@ -278,18 +132,21 @@ def main():
     HOST = "127.0.0.1"  # The server's hostname or IP address
     PORT = 65432  # The port used by the server
     start_time = time.time()
-    command_mode = False
     config = configparser.ConfigParser()
     config.sections()
-    config.read('settings.config')
+    config.read('./settings.config')
     weather_key = config['DEFAULT']['weatherApiKey']
     speaking = False #is maria currently speaking?
+    command_mode = False
+    q = queue.Queue()
+    wake_word = "maria"
 
-    def exit_listen(conn):
-        global command_mode
-        command_mode = False
-        conn.sendall(b'exit listen\n')
-        print("heard exit command")
+
+    def callback(indata, frames, time, status):
+        """This is called (from a separate thread) for each audio block."""
+        if status:
+            print(status, file=sys.stderr)
+        q.put(bytes(indata))
 
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -298,74 +155,64 @@ def main():
             conn, addr = s.accept()
             device_info = sd.query_devices(None, 'input')
             sample_rate = int(device_info['default_samplerate'])
-            DEFAULT_SAMPLE_RATE = sample_rate
-            # Load DeepSpeech model
-            print('Initializing model...')
-            model = deepspeech.Model('deepspeech-0.9.3-models.pbmm')
-            model.enableExternalScorer('deepspeech-0.9.3-models.scorer')
-            model.addHotWord("maria", 100)
+            # Load vosk model
+            model = vosk.Model(lang="en-us")
 
-            # Start audio with VAD
-            vad_audio = VADAudio(aggressiveness=2,
-                                input_rate=DEFAULT_SAMPLE_RATE)
-            print("Listening (ctrl-C to exit)...")
-            frames = vad_audio.vad_collector()
-            # Stream from microphone to DeepSpeech using VAD
-            spinner = Halo(spinner='line')
-            stream_context = model.createStream()
+            def exit_listen(conn):
+                global command_mode
+                command_mode = False
+                conn.sendall(b'exit listen\n')
+                print("heard exit command")
 
-            t = infinite_timer(20, exit_listen, conn)
+            t = infinite_timer(15, exit_listen, conn)
 
+            with sd.RawInputStream(samplerate=sample_rate, blocksize = 8000, 
+                device=0, dtype='int16', channels=1, callback=callback):
+                print('#' * 80)
+                print('Press Ctrl+C to stop the recording')
+                print('#' * 80)
 
-            for frame in frames:
-                if frame is not None:
-                    if spinner: spinner.start()
-                    logging.debug("streaming frame")
-                    try:
-                        #don't analyze incoming audio from character speaking
-                        if not speaking:
-                            stream_context.feedAudioContent(np.frombuffer(frame, np.int16))
-                    except:
-                        stream_context = model.createStream()
-                        #TODO - Debug this -- we shouldn't be hitting this point
-                else:
-                    if spinner: spinner.stop()
-                    logging.debug("end utterence")
-                    try:
-                        text = stream_context.finishStream()
-                    except:
-                        text = ""
-                        print("Finish stream error...")
-                    print("Recognized: %s" % text)
-                    if "maria" in text or "memoria" in text:
-                        print("heard name...")
-                        conn.sendall(b'listen\n')
-                        command_mode = True
-                        start_time = time.time()
-                        t.cancel()
-                        t.start()
-                    if command_mode:
-                        if "whether" in text or "weather" in text:
-                            speaking = True
-                            t.cancel()
-                            conn.sendall(b'exit listen\n')
-                            player = AudioPlayer()
-                            weather_resp = get_weather(weather_key, text)
-                            synthesize_text(weather_resp, config['DEFAULT']['googleFileLocation'])
-                            conn.sendall(b'talk\n')
-                            if weather_resp == -1:
-                                player.play(filename="./resources/sound_clips/sorry_no_info.wav")
-                            else:
-                                player.play(filename="./resources/sound_clips/latest_output.wav")
-                            conn.sendall(b'exit talk\n')
-                            command_mode = False
-                            speaking = False
+                rec = vosk.KaldiRecognizer(model, sample_rate)
+
+                while True:
+                    data = q.get()
+                    if rec.AcceptWaveform(data):
+                        heard = json.loads(rec.Result())["text"]
+                        if command_mode:
+                            if "whether" in heard or "weather" in heard:
+                                speaking = True
+                                t.cancel()
+                                conn.sendall(b'exit listen\n')
+                                # player = AudioPlayer()
+                                weather_resp = get_weather(weather_key, heard)
+                                synthesize_text(weather_resp, config['DEFAULT']['googleFileLocation'])
+                                conn.sendall(b'talk\n')
+                                if weather_resp == -1:
+                                    sound = AudioSegment.from_file("./resources/sound_clips/sorry_no_info.wav", format="wav")
+                                    play(sound)
+                                else:
+                                    sound = AudioSegment.from_file("./resources/sound_clips/latest_output.wav", format="wav")
+                                    play(sound)
+                                conn.sendall(b'exit talk\n')
+                                command_mode = False
+                                speaking = False
+                        else:
+                            continue
+                        print(heard)
                     else:
-                        continue
+                        heard = json.loads(rec.PartialResult())["partial"]
+                        if command_mode == False and wake_word in heard:
+                            conn.sendall(b'listen\n')
+                            command_mode = True
+                            start_time = time.time()
+                            t.cancel()
+                            t.start()
 
-                    stream_context = model.createStream()
+
     except KeyboardInterrupt:
         print("Exiting server...")
+    except Exception as e:
+        print(str(e))
 
 
 if __name__ == '__main__':
