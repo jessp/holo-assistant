@@ -105,7 +105,13 @@ int main(void)
     SetShaderValue(lightingShader, ambientLoc, (float[4]){ 2.5f, 2.5f, 2.5f, 1.0f }, SHADER_UNIFORM_VEC4);
     // Create lights
     Light lights[MAX_LIGHTS] = { 0 };
-    lights[0] = CreateLight(LIGHT_POINT, (Vector3){ 0, 0, -50 }, Vector3Zero(), WHITE, lightingShader);
+
+    if (GLSL_VERSION == 330) {
+        lights[0] = CreateLight(LIGHT_POINT, (Vector3){ 0, 0, -50 }, Vector3Zero(), WHITE, lightingShader);
+    }
+    else {
+        lights[0] = CreateLight(LIGHT_POINT, (Vector3){ 0, 0, 50 }, Vector3Zero(), WHITE, lightingShader);
+    }
 
     //apply the lighting shader to the character
     SetCharacterShader(lightingShader);
