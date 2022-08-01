@@ -15,8 +15,6 @@ varying vec2 fragTexCoord;
 varying vec4 fragColor;
 
 
-varying vec4 finalColor;
-
 
 bool inside(vec2 uv){
    highp float EPS = 1e-3;
@@ -34,19 +32,19 @@ void main()
 
    
    if (!inside(mapUV)) {
-      finalColor = BLACK;
+      gl_FragColor = BLACK;
    } 
 
    vec4 map = texture2D(texture1, mapUV);
 
    vec2 renderedTexUV = vec2(map.x, map.y);
    if (!inside(renderedTexUV)) {
-     finalColor = BLACK;
+     gl_FragColor = BLACK;
    } 
 
    vec4 temTexture = texture2D(texture0, renderedTexUV);
    
-   finalColor = _alpha * vec4 (pow(temTexture[0], _power),pow(temTexture[1], _power), pow(temTexture[2], _power), pow(temTexture[3], _power));
+   gl_FragColor = _alpha * vec4 (pow(temTexture[0], _power),pow(temTexture[1], _power), pow(temTexture[2], _power), pow(temTexture[3], _power));
 
 
 }
