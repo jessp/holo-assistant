@@ -94,11 +94,11 @@ int main(void)
     Texture2D map = decodedTex.texture;
 
     // Load postprocessing shader    
-    Shader shader = LoadShader(TextFormat("resources/shaders/glsl330/warp.vs"), TextFormat("resources/shaders/glsl330/warp.fs"));
+    Shader shader = LoadShader(TextFormat("resources/shaders/glsl%i/warp.vs", GLSL_VERSION), TextFormat("resources/shaders/glsl%i/warp.fs", GLSL_VERSION));
 
     //Load lighting shader
-    Shader lightingShader = LoadShader(TextFormat("resources/shaders/glsl330/base_lighting.vs"),
-                               TextFormat("resources/shaders/glsl330/lighting.fs"));
+    Shader lightingShader = LoadShader(TextFormat("resources/shaders/glsl%i/base_lighting.vs", GLSL_VERSION),
+                               TextFormat("resources/shaders/glsl%i/lighting.fs", GLSL_VERSION));
 
     // Get some required shader locations
     lightingShader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(lightingShader, "viewPos");
