@@ -92,7 +92,7 @@ int main(void)
     Texture2D map = decodedTex.texture;
 
     // Load postprocessing shader    
-    Shader shader = LoadShader(TextFormat("resources/shaders/glsl%i/warp.vs", GLSL_VERSION), TextFormat("resources/shaders/glsl%i/warp.fs", GLSL_VERSION));
+    Shader warpShader = LoadShader(TextFormat("resources/shaders/glsl%i/warp.vs", GLSL_VERSION), TextFormat("resources/shaders/glsl%i/warp.fs", GLSL_VERSION));
 
     //Load lighting shader
     Shader lightingShader = LoadShader(TextFormat("resources/shaders/glsl%i/base_lighting.vs", GLSL_VERSION),
@@ -116,11 +116,11 @@ int main(void)
     //--------------------------------------------------------------------------------------
 
     
-    int powerLoc = GetShaderLocation(shader, "_power");
-    int alphaLoc = GetShaderLocation(shader, "_alpha");
-    int texRotationVecLoc = GetShaderLocation(shader, "_TexRotationVec");
-    int mapLoc = GetShaderLocation(shader, "texture1");
-    int shaderLoc = GetShaderLocation(shader, "texture0");
+    int powerLoc = GetShaderLocation(warpShader, "_power");
+    int alphaLoc = GetShaderLocation(warpShader, "_alpha");
+    int texRotationVecLoc = GetShaderLocation(warpShader, "_TexRotationVec");
+    int mapLoc = GetShaderLocation(warpShader, "texture1");
+    int shaderLoc = GetShaderLocation(warpShader, "texture0");
 
     Vector3 axis = { 0, 0, 1 };
     Quaternion rot = QuaternionFromAxisAngle(axis, 0.0f);
@@ -135,9 +135,9 @@ int main(void)
             );
 
     Vector4 texRotationVec = { m.m0, m.m4, m.m1, m.m5 }; 
-    SetShaderValue(shader, powerLoc, &power, SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, alphaLoc, &alpha, SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, texRotationVecLoc, &texRotationVec, SHADER_UNIFORM_VEC4);
+    SetShaderValue(warpShader, powerLoc, &power, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(warpShader, alphaLoc, &alpha, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(warpShader, texRotationVecLoc, &texRotationVec, SHADER_UNIFORM_VEC4);
 
     pthread_t thread_id;
     pthread_create(&thread_id, NULL, runClientThread, &sock);
@@ -188,8 +188,8 @@ int main(void)
 
             if (showingShader){
                 // Enable shader using the custom uniform
-                BeginShaderMode(shader);
-                    SetShaderValueTexture(shader, mapLoc, map);
+                BeginShaderMode(warpShader);
+                    SetShaderValueTexture(warpShader, mapLoc, map);
                     // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
                     DrawTexturePro(target.texture, (Rectangle){ (float)target.texture.width/2-(float)screenWidth/4, -(float)screenHeight/2, (float)screenWidth/2, -(float)screenHeight/2 }, dest, (Vector2){0,0}, 0.0f, WHITE);
                 EndShaderMode();
@@ -211,7 +211,7 @@ int main(void)
     //--------------------------------------------------------------------------------------
     pthread_exit(NULL);
     close(sock);
-    UnloadShader(shader);               // Unload shader
+    UnloadShader(warpShader);               // Unload shader
     UnloadShader(lightingShader);   // Unload shader
     UnloadTexture(map);             // Unload texture
     UnloadRenderTexture(decodedTex);    // Unload texture
