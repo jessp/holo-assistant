@@ -29,12 +29,9 @@
 //------------------------------------------------------------------------------------
 // Global Variables Declaration
 //------------------------------------------------------------------------------------
-const int screenWidth = 600;
-const int screenHeight = 450;
 const Vector3 tabletScreenScale = {4.0f, 3.0f, 1.0f};
-Rectangle dest = {0, 0, (float) screenWidth, (float) screenHeight}; //for final render texture
 //shader values
-bool showingShader = false;
+bool showingShader = true;
 const float power = 1.0;
 const float alpha = 1.0;
 //classes
@@ -45,6 +42,7 @@ Character character = { 0 };
 // Module Functions Declaration (local)
 //------------------------------------------------------------------------------------
 RenderTexture2D convertRGBATexture2Map(Image encodedMap, bool flipTexture, RenderTexture2D decodedMapResult);
+int getAspectRatioScale(int screenX, int screenY, Vector3 resolution);
 static void InitProgram(void);
 void *runClientThread(void*);
 
@@ -54,8 +52,14 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    InitWindow(screenWidth, screenHeight, "raylib [shaders] example - custom uniform variable");
+    InitWindow(0, 0, "Holographic Virtual Assistant");
     InitProgram();
+    //get the largest 4 x 3 ractangle we can to show our image
+    int screenScale = getAspectRatioScale(GetScreenWidth(), GetScreenHeight(), tabletScreenScale);
+    int displayRatioWidth = screenScale * tabletScreenScale.x;
+    int displayRatioHeight = screenScale * tabletScreenScale.y;
+    Rectangle dest = {(int)((GetScreenWidth() - displayRatioWidth)/2), (int)((GetScreenHeight() - displayRatioHeight)/2), (float) displayRatioWidth, (float) displayRatioHeight}; //for final render texture
+
 
     SetConfigFlags(FLAG_MSAA_4X_HINT);      // Enable Multi Sampling Anti Aliasing 4x (if available)
 
@@ -116,7 +120,7 @@ int main(void)
     //apply the lighting shader to the character
     SetCharacterShader(lightingShader);
     // Create a RenderTexture2D to be used for render to texture
-    RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
+    RenderTexture2D target = LoadRenderTexture(displayRatioWidth, displayRatioHeight);
     
     SetTargetFPS(30);                   // Set our game to run at 30 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -145,8 +149,8 @@ int main(void)
     SetShaderValue(warpShader, alphaLoc, &alpha, SHADER_UNIFORM_FLOAT);
     SetShaderValue(warpShader, texRotationVecLoc, &texRotationVec, SHADER_UNIFORM_VEC4);
 
-    pthread_t thread_id;
-    pthread_create(&thread_id, NULL, runClientThread, &sock);
+    pthread_t threadId;
+    pthread_create(&threadId, NULL, runClientThread, &sock);
 
     // Main game loop
     while (!WindowShouldClose())        // Detect window close button or ESC key
@@ -190,17 +194,17 @@ int main(void)
         EndTextureMode();               // End drawing to texture (now we have a texture available for next passes)
 
         BeginDrawing();
-            ClearBackground(RAYWHITE);  // Clear screen background
+            ClearBackground(BLACK);  // Clear screen background
 
             if (showingShader){
                 // Enable shader using the custom uniform
                 BeginShaderMode(warpShader);
                     SetShaderValueTexture(warpShader, mapLoc, map);
                     // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
-                    DrawTexturePro(target.texture, (Rectangle){ (float)target.texture.width/2-(float)screenWidth/4, -(float)screenHeight/2, (float)screenWidth/2, -(float)screenHeight/2 }, dest, (Vector2){0,0}, 0.0f, WHITE);
+                    DrawTexturePro(target.texture, (Rectangle){ (float)target.texture.width/2-(float)displayRatioWidth/4, -(float)displayRatioHeight/2, (float)displayRatioWidth/2, -(float)displayRatioHeight/2 }, dest, (Vector2){0,0}, 0.0f, WHITE);
                 EndShaderMode();
             } else {
-                DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
+                DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ (int)((GetScreenWidth() - displayRatioWidth)/2), (int)((GetScreenHeight() - displayRatioHeight)/2) }, WHITE);
             }
 
             DrawFPS(10, 10);
@@ -274,31 +278,36 @@ RenderTexture2D convertRGBATexture2Map(Image encodedMap, bool flipTexture, Rende
         return decodedMapResult;
 }
 
-void *runClientThread(void* my_sock)
+void *runClientThread(void* mySock)
 {
-    char server_reply[2000];
+    char serverReply[2000];
     while(1)
     {
         //Receive a reply from the server
-        if( recv(* (int*)my_sock , server_reply , 2000 , 0) < 0)
+        if( recv(* (int*)mySock , serverReply , 2000 , 0) < 0)
         {
             puts("recv failed");
         }
             
         puts("Server reply :");
-        puts(server_reply);
-        if (TextIsEqual(server_reply, "listen\n")) {
+        puts(serverReply);
+        if (TextIsEqual(serverReply, "listen\n")) {
             SetPose(1);
         } 
-        if (TextIsEqual(server_reply, "exit listen\n")) {
+        if (TextIsEqual(serverReply, "exit listen\n")) {
             SetPose(2);
         } 
-        if (TextIsEqual(server_reply, "talk\n")) {
+        if (TextIsEqual(serverReply, "talk\n")) {
             SetTalk(true);
         } 
-        if (TextIsEqual(server_reply, "exit talk\n")) {
+        if (TextIsEqual(serverReply, "exit talk\n")) {
             SetTalk(false);
         } 
-        memset(server_reply, 0, 2000 * (sizeof server_reply[0]) );
+        memset(serverReply, 0, 2000 * (sizeof serverReply[0]) );
     }
+}
+
+int getAspectRatioScale(int screenX, int screenY, Vector3 resolution){
+    int scale = floor(fminf(screenX/resolution.x, screenY/resolution.y));
+    return scale;
 }
