@@ -54,11 +54,16 @@ int main(void)
     //--------------------------------------------------------------------------------------
     InitWindow(0, 0, "Holographic Virtual Assistant");
     InitProgram();
+    ToggleFullscreen();
+    DisableCursor();
+    int currentMonitor = GetCurrentMonitor();
+    int monitorWidth = GetMonitorWidth(currentMonitor);
+    int monitorHeight = GetMonitorHeight(currentMonitor);
     //get the largest 4 x 3 ractangle we can to show our image
-    int screenScale = getAspectRatioScale(GetScreenWidth(), GetScreenHeight(), tabletScreenScale);
+    int screenScale = getAspectRatioScale(monitorWidth, monitorHeight, tabletScreenScale);
     int displayRatioWidth = screenScale * tabletScreenScale.x;
     int displayRatioHeight = screenScale * tabletScreenScale.y;
-    Rectangle dest = {(int)((GetScreenWidth() - displayRatioWidth)/2), (int)((GetScreenHeight() - displayRatioHeight)/2), (float) displayRatioWidth, (float) displayRatioHeight}; //for final render texture
+    Rectangle dest = {(int)((monitorWidth - displayRatioWidth)/2), (int)((monitorHeight - displayRatioHeight)/2), (float) displayRatioWidth, (float) displayRatioHeight}; //for final render texture
 
 
     SetConfigFlags(FLAG_MSAA_4X_HINT);      // Enable Multi Sampling Anti Aliasing 4x (if available)
@@ -204,10 +209,9 @@ int main(void)
                     DrawTexturePro(target.texture, (Rectangle){ (float)target.texture.width/2-(float)displayRatioWidth/4, -(float)displayRatioHeight/2, (float)displayRatioWidth/2, -(float)displayRatioHeight/2 }, dest, (Vector2){0,0}, 0.0f, WHITE);
                 EndShaderMode();
             } else {
-                DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ (int)((GetScreenWidth() - displayRatioWidth)/2), (int)((GetScreenHeight() - displayRatioHeight)/2) }, WHITE);
+                DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ (int)((monitorWidth - displayRatioWidth)/2), (int)((monitorHeight - displayRatioHeight)/2) }, WHITE);
             }
 
-            DrawFPS(10, 10);
 
         EndDrawing();
 
