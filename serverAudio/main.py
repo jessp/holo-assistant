@@ -13,6 +13,7 @@ import json
 import requests
 import urllib.parse
 import geograpy
+from text_to_num import alpha2digit
 
 
 logging.basicConfig(level=20)
@@ -32,8 +33,14 @@ class infinite_timer():
         self.hFunction(self.conn)
         self.thread.cancel()
         
-    def start(self):
-        self.thread = threading.Timer(self.t, self.handle_function)
+    def start(self, t = None, f = None):
+        if t == None and f == None:
+            self.thread = threading.Timer(self.t, self.handle_function)
+        elif t != None and f != None:
+            self.thread.cancel()
+            self.thread = threading.Timer(t, f)
+        else:
+            print("arguments not defined")
         self.thread.start()
         
     def cancel(self):
@@ -127,6 +134,60 @@ def get_weather(key, text):
         print(weather_current_response.status_code)
         return -1
 
+def iter_time_text(split_text, denomination):
+    final_time = 0
+    idx = 0
+    for word in split_text:
+        if denomination["name"] in word:
+            try:
+                the_time = int(split_text[idx-1])
+                final_time = the_time * denomination["value"]
+                return (final_time, the_time, denomination["name"] + "s" if the_time > 1 else denomination["name"])
+            except:
+                return -1
+        idx = idx + 1
+    return -1
+
+
+
+def parser_timer_phrase(text):
+    too_long = ["year", "month", "week", "day"]
+    accepted = ["hour", "minute", "second"]
+    if any(duration in text for duration in too_long):
+        return (-1, "Sorry! I can only make a timer in hours, minutes, or seconds.")
+    elif any(duration in text for duration in accepted):
+        decoded_text = alpha2digit(text, "en")
+        split_text = decoded_text.split(" ")
+        final_time = 0
+        hour_time = iter_time_text(split_text, {"name": "hour", "value": 3600})
+        minute_time = iter_time_text(split_text, {"name": "minute", "value": 60})
+        second_time = iter_time_text(split_text, {"name": "second", "value": 1})
+        final_time = (0 if hour_time == -1 else hour_time[0]) + \
+        (0 if minute_time == -1 else minute_time[0]) + \
+        (0 if second_time == -1 else second_time[0])
+
+        if final_time > 21600:
+            return (-1, "Sorry! I can't make a timer that long.")
+        elif hour_time == -1 and minute_time == -1 and second_time == -1:
+            return (-1, "Sorry! I didn't catch that.")
+        else:
+            print(final_time)
+            def concat_statement(in_time):
+                print(in_time)
+                if in_time != -1:
+                    return str(in_time[1]) + in_time[2]
+                else:
+                    return ""
+            return_statement = "OK! Timer started for "
+            return_statement += concat_statement(hour_time)
+            return_statement += concat_statement(minute_time)
+            return_statement += concat_statement(second_time)
+            return_statement += "."
+            return (1, return_statement)
+
+    else:
+        return (-1, "Sorry! I didn't catch that.")
+
 
 def main():
     HOST = "127.0.0.1"  # The server's hostname or IP address
@@ -165,6 +226,7 @@ def main():
                 print("heard exit command")
 
             t = infinite_timer(15, exit_listen, conn)
+            timer_func = infinite_timer(0, 0, conn)
 
             with sd.RawInputStream(samplerate=sample_rate, blocksize = 12500, 
                 device=0, dtype='int16', channels=1, latency=0.35, callback=callback):
@@ -192,6 +254,20 @@ def main():
                                 else:
                                     sound = AudioSegment.from_file("./resources/sound_clips/latest_output.wav", format="wav")
                                     play(sound)
+                                conn.sendall(b'exit talk\n')
+                                command_mode = False
+                                speaking = False
+                            elif "timer" in heard:
+                                speaking = True
+                                t.cancel()
+                                conn.sendall(b'exit listen\n')
+                                timer_resp = parser_timer_phrase(heard)
+                                synthesize_text(timer_resp[1], config['DEFAULT']['googleFileLocation'])
+                                conn.sendall(b'talk\n')
+                                sound = AudioSegment.from_file("./resources/sound_clips/latest_output.wav", format="wav")
+                                play(sound)
+                                if (timer_resp[0] != -1):
+                                    print("start timer")
                                 conn.sendall(b'exit talk\n')
                                 command_mode = False
                                 speaking = False
