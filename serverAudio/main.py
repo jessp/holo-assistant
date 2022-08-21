@@ -166,8 +166,8 @@ def main():
 
             t = infinite_timer(15, exit_listen, conn)
 
-            with sd.RawInputStream(samplerate=sample_rate, blocksize = 12000, 
-                device=0, dtype='int16', channels=1, latency=0.3, callback=callback):
+            with sd.RawInputStream(samplerate=sample_rate, blocksize = 12500, 
+                device=0, dtype='int16', channels=1, latency=0.35, callback=callback):
                 print('#' * 80)
                 print('Press Ctrl+C to stop the recording')
                 print('#' * 80)
