@@ -141,7 +141,6 @@ def main():
     q = queue.Queue()
     wake_word = "maria"
 
-
     def callback(indata, frames, time, status):
         """This is called (from a separate thread) for each audio block."""
         if status:
@@ -153,6 +152,7 @@ def main():
             s.bind((HOST, PORT))
             s.listen()
             conn, addr = s.accept()
+
             device_info = sd.query_devices(None, 'input')
             sample_rate = int(device_info['default_samplerate'])
             # Load vosk model
@@ -166,8 +166,8 @@ def main():
 
             t = infinite_timer(15, exit_listen, conn)
 
-            with sd.RawInputStream(samplerate=sample_rate, blocksize = 8000, 
-                device=0, dtype='int16', channels=1, callback=callback):
+            with sd.RawInputStream(samplerate=sample_rate, blocksize = 12000, 
+                device=0, dtype='int16', channels=1, latency=0.3, callback=callback):
                 print('#' * 80)
                 print('Press Ctrl+C to stop the recording')
                 print('#' * 80)
@@ -183,7 +183,6 @@ def main():
                                 speaking = True
                                 t.cancel()
                                 conn.sendall(b'exit listen\n')
-                                # player = AudioPlayer()
                                 weather_resp = get_weather(weather_key, heard)
                                 synthesize_text(weather_resp, config['DEFAULT']['googleFileLocation'])
                                 conn.sendall(b'talk\n')
