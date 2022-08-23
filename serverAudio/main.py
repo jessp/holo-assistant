@@ -61,7 +61,7 @@ def int_or_str(text):
         return text
 
 
-def synthesize_text(text, file_loc):
+def synthesize_text(text, file_loc, out_name="./resources/sound_clips/latest_output.wav"):
     """Synthesizes speech from the input string of text."""
     import os
     from google.cloud import texttospeech
@@ -89,7 +89,7 @@ def synthesize_text(text, file_loc):
     )
 
     # The response's audio_content is binary.
-    with open("./resources/sound_clips/latest_output.wav", "wb") as out:
+    with open(out_name, "wb") as out:
         out.write(response.audio_content)
 
 def get_condition(json_string, condition):
@@ -154,7 +154,7 @@ def parser_timer_phrase(text):
     too_long = ["year", "month", "week", "day"]
     accepted = ["hour", "minute", "second"]
     if any(duration in text for duration in too_long):
-        return (-1, "Sorry! I can only make a timer in hours, minutes, or seconds.")
+        return (-1, "./resources/sound_clips/sorry_timer_format.wav")
     elif any(duration in text for duration in accepted):
         decoded_text = alpha2digit(text, "en")
         split_text = decoded_text.split(" ")
@@ -167,9 +167,9 @@ def parser_timer_phrase(text):
         (0 if second_time == -1 else second_time[0])
 
         if final_time > 21600:
-            return (-1, "Sorry! I can't make a timer that long.")
+            return (-1, "./resources/sound_clips/sorry_timer_not_long.wav")
         elif hour_time == -1 and minute_time == -1 and second_time == -1:
-            return (-1, "Sorry! I didn't catch that.")
+            return (-1, "./resources/sound_clips/sorry_not_catch.wav")
         else:
             print(final_time)
             def concat_statement(in_time):
@@ -186,7 +186,7 @@ def parser_timer_phrase(text):
             return (1, return_statement)
 
     else:
-        return (-1, "Sorry! I didn't catch that.")
+        return (-1, "./resources/sound_clips/sorry_not_catch.wav")
 
 
 def main():
@@ -262,10 +262,14 @@ def main():
                                 t.cancel()
                                 conn.sendall(b'exit listen\n')
                                 timer_resp = parser_timer_phrase(heard)
-                                synthesize_text(timer_resp[1], config['DEFAULT']['googleFileLocation'])
                                 conn.sendall(b'talk\n')
-                                sound = AudioSegment.from_file("./resources/sound_clips/latest_output.wav", format="wav")
-                                play(sound)
+                                if timer_resp[1][-4:] == ".wav":
+                                    sound = AudioSegment.from_file(timer_resp[1], format="wav")
+                                    play(sound)
+                                else:
+                                    synthesize_text(timer_resp[1], config['DEFAULT']['googleFileLocation'])
+                                    sound = AudioSegment.from_file("./resources/sound_clips/latest_output.wav", format="wav")
+                                    play(sound)
                                 if (timer_resp[0] != -1):
                                     print("start timer")
                                 conn.sendall(b'exit talk\n')
