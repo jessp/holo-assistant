@@ -33,12 +33,14 @@ class infinite_timer():
         self.hFunction(self.conn)
         self.thread.cancel()
         
-    def start(self, t = None, f = None):
-        if t == None and f == None:
+    def start(self, t = None,  hFunction = None):
+        if t == None and hFunction == None:
             self.thread = threading.Timer(self.t, self.handle_function)
-        elif t != None and f != None:
+        elif t != None and hFunction != None:
             self.thread.cancel()
-            self.thread = threading.Timer(t, f)
+            self.t = t
+            self.hFunction = hFunction
+            self.thread = threading.Timer(self.t, self.handle_function)
         else:
             print("arguments not defined")
         self.thread.start()
@@ -183,7 +185,7 @@ def parser_timer_phrase(text):
             return_statement += concat_statement(minute_time)
             return_statement += concat_statement(second_time)
             return_statement += "."
-            return (1, return_statement)
+            return (1, return_statement, final_time)
 
     else:
         return (-1, "./resources/sound_clips/sorry_not_catch.wav")
@@ -201,6 +203,7 @@ def main():
     command_mode = False
     q = queue.Queue()
     wake_word = "maria"
+
 
     def callback(indata, frames, time, status):
         """This is called (from a separate thread) for each audio block."""
@@ -224,6 +227,12 @@ def main():
                 command_mode = False
                 conn.sendall(b'exit listen\n')
                 print("heard exit command")
+
+            def play_timer_sound(conn):
+                conn.sendall(b'talk\n')
+                sound = AudioSegment.from_file("./resources/sound_clips/timer_up.wav", format="wav")
+                play(sound)
+                conn.sendall(b'exit talk\n')
 
             t = infinite_timer(15, exit_listen, conn)
             timer_func = infinite_timer(0, 0, conn)
@@ -271,7 +280,7 @@ def main():
                                     sound = AudioSegment.from_file("./resources/sound_clips/latest_output.wav", format="wav")
                                     play(sound)
                                 if (timer_resp[0] != -1):
-                                    print("start timer")
+                                    timer_func.start(timer_resp[2], play_timer_sound)
                                 conn.sendall(b'exit talk\n')
                                 command_mode = False
                                 speaking = False
