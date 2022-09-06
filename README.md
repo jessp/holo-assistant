@@ -5,8 +5,8 @@ This repo houses code for what will hopefully one day be a voice-activated virtu
 Currently, I have the following:
 - A Python server that listens for keywords using deepspeech and webrtvt (based on this [example](https://github.com/mozilla/DeepSpeech-examples/tree/r0.9/mic_vad_streaming)) 
 - A C program with a 3D character that uses Google's text-to-speech library to respond to queries. Currently this behaviour includes the following skill:
- - Gives the current and the next day's weather using [weatherApi](https://www.weatherapi.com/) 
- - Runs a simple timer program
+    - Gives the current and the next day's weather using [weatherApi](https://www.weatherapi.com/) 
+    - Runs a simple timer program
 - A simple shader to perspective-correct the character based on Roxanne Luo's [Pepper's Cone](https://github.com/roxanneluo/Pepper-s-Cone-Unity)
 
 ## Roadmap
