@@ -1,7 +1,7 @@
-serverAudio/deepspeech*
 serverAudio/settings.config
 serverAudio/googleCredentials/*.json
 serverAudio/resources/sound_clips/latest_output.wav
+serverAudio/__pycache__
 clientCharacter/HoloAssistant
 .DS_Store
 #my python virtual env - v3.8.13
