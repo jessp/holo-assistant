@@ -2,7 +2,7 @@ import json
 import geograpy
 import requests
 import urllib.parse
-from CharacterModule import CharacterModule
+from charactermodule import CharacterModule
 
 
 

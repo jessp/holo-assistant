@@ -9,10 +9,10 @@ import socket
 import configparser
 import json
 import urllib.parse
-from CharacterModule import CharacterModule
-from InfiniteTimer import InfiniteTimer
-from WeatherModule import WeatherModule
-from TimerModule import TimerModule
+from charactermodule import Charactermodule
+from infinitetimer import Infinitetimer
+from weathermodule import Weathermodule
+from timermodule import Timermodule
 
 
 logging.basicConfig(level=20)

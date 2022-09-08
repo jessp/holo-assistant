@@ -1,6 +1,6 @@
-from InfiniteTimer import InfiniteTimer
 from text_to_num import alpha2digit
-from CharacterModule import CharacterModule
+from infinitetimer import InfiniteTimer
+from charactermodule import CharacterModule
 
 
 class TimerModule(CharacterModule):

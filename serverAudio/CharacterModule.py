@@ -1,4 +1,4 @@
-from InfiniteTimer import InfiniteTimer
+from infinitetimer import InfiniteTimer
 from pydub import AudioSegment
 from pydub.playback import play
 import os, os.path
