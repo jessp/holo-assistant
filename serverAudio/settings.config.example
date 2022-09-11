@@ -1,3 +1,6 @@
 [DEFAULT]
 weatherApiKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 googleFileLocation: ./googleCredentials/xxxxxxxx.json
+spotifyClientId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+spotifyClientSecret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+spotifyRedirectURL: http://localhost:9876

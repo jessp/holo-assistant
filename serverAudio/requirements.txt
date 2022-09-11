@@ -9,3 +9,4 @@ google-cloud-texttospeech==2.12.1
 # realistically, we only need the below on raspberry pi but i don't know how to target more effectively
 grpcio==1.44.0 --no-binary=grpcio; os_name == 'posix'
 grpcio-tools==1.44.0 --no-binary=grpcio-tools; os_name == 'posix'
+spotipy==2.20.0

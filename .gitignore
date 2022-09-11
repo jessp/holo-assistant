@@ -6,3 +6,4 @@ clientCharacter/HoloAssistant
 .DS_Store
 #my python virtual env - v3.8.13
 holovenv 
+.cache
