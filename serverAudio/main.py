@@ -102,6 +102,17 @@ def main():
 								weather_module.hear_value()
 								weather_module.listen(heard)
 								command_mode = False
+							elif "stop" in heard or "cancel" in heard:
+								if "music" in heard or "song" in heard:
+									music_module.hear_value()
+									music_module.pause_playback()
+									command_mode = False
+								elif "timer" in heard:
+									timer_module.hear_value()
+									timer_module.pause_timer()
+									command_mode = False
+								else:
+									command_mode = False
 							elif "timer" in heard:
 								timer_module.hear_value()
 								timer_module.listen(heard)

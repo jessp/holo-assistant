@@ -9,6 +9,12 @@ class InfiniteTimer():
         self.hFunction = hFunction
         self.conn = conn
         self.thread = threading.Timer(self.t, self.handle_function)
+
+    def is_timer_on(self):
+        if self.thread.is_alive() and not self.thread.finished.is_set():
+            return True
+        else:
+            return False
         
     def handle_function(self):
         self.hFunction(self.conn)

@@ -1,6 +1,5 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from pprint import pprint
 import json
 from charactermodule import CharacterModule
 
@@ -10,17 +9,15 @@ class MusicModule(CharacterModule):
 		super().__init__(connection, global_timer, google_key)
 		scope = "user-read-playback-state,user-modify-playback-state"
 		self.sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id, client_secret=secret, redirect_uri=redirect, scope=scope))
-		self.synthesize_text("On second thought, I can't play that right now.", "./resources/sound_clips/backup_song.wav")
+		self.synthesize_text("Alright, I'll stop the music.", "./resources/sound_clips/stop_song.wav")
 
 	def listen(self, heard):
 		device = self.find_device()
-		pprint(device)
 		if device == -1:
 			self.talk("no_device.wav")
 		else:
 			#Get next text after play
 			the_song = self.find_song(heard.split("play", 1)[1].strip())
-			print(the_song)
 			if the_song[0] == -1:
 				if the_song[1] != "":
 					self.talk(the_song[1])
@@ -32,6 +29,19 @@ class MusicModule(CharacterModule):
 				except:
 					# generic message on playback errors
 					self.talk("backup_song.wav")
+
+	def pause_playback(self):
+		device = self.find_device()
+		if device == -1:
+			print("error with device")
+			self.talk("connect_device.wav")
+		else:
+			try:
+				self.talk("stop_song.wav")
+				self.sp.pause_playback()
+			except:
+				print("error attempting to pause")
+				self.talk("connect_device.wav")
 
 
 	def find_song(self, heard):

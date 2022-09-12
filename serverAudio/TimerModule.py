@@ -18,6 +18,13 @@ class TimerModule(CharacterModule):
 	def play_timer_sound(self, conn):
 		self.talk("timer_up.wav")
 
+	def pause_timer(self):
+		if self.timer_func.is_timer_on():
+			self.timer_func.cancel()
+			self.talk("stop_timer.wav")
+		else:
+			self.talk("no_timer.wav")
+
 	def iter_time_text(self, split_text, denomination):
 		final_time = 0
 		idx = 0
