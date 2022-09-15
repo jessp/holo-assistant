@@ -7,6 +7,7 @@ Currently, I have the following:
 - A C program with a 3D character that uses Google's text-to-speech library to respond to queries. Currently this behaviour includes the following skill:
     - Gives the current and the next day's weather using [weatherApi](https://www.weatherapi.com/) 
     - Runs a simple timer program
+    - Plays music using the Spotify API on a local device (not Sonos though :pensive:)
 - A simple shader to perspective-correct the character based on Roxanne Luo's [Pepper's Cone](https://github.com/roxanneluo/Pepper-s-Cone-Unity)
 
 ## Roadmap
