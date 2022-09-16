@@ -20,15 +20,6 @@ logging.basicConfig(level=20)
 
 
 
-def int_or_str(text):
-	"""Helper function for argument parsing."""
-	try:
-		return int(text)
-	except ValueError:
-		return text
-
-
-
 def iter_time_text(split_text, denomination):
 	final_time = 0
 	idx = 0
