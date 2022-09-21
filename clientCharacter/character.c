@@ -136,6 +136,10 @@ void IdlePose(void){
     DoPose(true, true, 0, false);
 }
 
+void DabPose(void){
+    DoPose(true, false, 2, true);
+}
+
 void SetPose(int pose){
     character.nextPose = pose;
     character.justEnter = true;
@@ -150,6 +154,8 @@ void UpdateCharacter(void){
         EnterListenPose();
     } else if (character.currentPose == exitListen){
         ExitListenPose();
+    } else if (character.currentPose == dab){
+        DabPose();
     } else {
         IdlePose();
     }

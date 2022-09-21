@@ -19,6 +19,9 @@ class CharacterModule:
 		play(sound)
 		self.connection.sendall(b'exit talk\n')
 
+	def send_command(self, command):
+		self.connection.sendall(bytes(command + '\n', 'utf-8'))
+
 	def synthesize_text(self, text, out_name="./resources/sound_clips/latest_output.wav"):
 		"""Synthesizes speech from the input string of text."""
 		import os

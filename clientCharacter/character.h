@@ -8,7 +8,8 @@ typedef enum
 {
     idle = 0,
     enterListen,
-    exitListen
+    exitListen,
+    dab
 } pose;
 
 typedef struct Character {
@@ -46,6 +47,7 @@ void SetPose(int);
 void IdlePose(void);
 void ExitListenPose(void);
 void EnterListenPose(void);
+void DabPose(void);
 void DoPose(bool forward, bool loop, int poseIndex, bool backToIdle);
 void GoToNext(void);
 

@@ -25,6 +25,7 @@ class MusicModule(CharacterModule):
 				self.synthesize_text(the_song[1])
 				self.talk("latest_output.wav")
 				try:
+					self.send_command('dab')
 					self.sp.start_playback(uris=[the_song[2]["uri"]])
 				except:
 					# generic message on playback errors
