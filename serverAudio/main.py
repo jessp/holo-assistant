@@ -65,7 +65,7 @@ def main():
 			model = vosk.Model(lang="en-us")
 
 			def exit_listen(conn):
-				global command_mode
+				nonlocal command_mode
 				command_mode = False
 				conn.sendall(b'exit listen\n')
 				print("heard exit command")
