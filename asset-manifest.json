@@ -1,9 +1,9 @@
 {
-  "main.css": "/holo-assistant/static/css/main.9248817b.chunk.css",
-  "main.js": "/holo-assistant/static/js/main.12623c6b.chunk.js",
-  "main.js.map": "/holo-assistant/static/js/main.12623c6b.chunk.js.map",
-  "static/js/1.41e4ec44.chunk.js": "/holo-assistant/static/js/1.41e4ec44.chunk.js",
-  "static/js/1.41e4ec44.chunk.js.map": "/holo-assistant/static/js/1.41e4ec44.chunk.js.map",
+  "main.css": "/holo-assistant/static/css/main.d1f450f4.chunk.css",
+  "main.js": "/holo-assistant/static/js/main.4b0c8a90.chunk.js",
+  "main.js.map": "/holo-assistant/static/js/main.4b0c8a90.chunk.js.map",
+  "static/js/1.597585ec.chunk.js": "/holo-assistant/static/js/1.597585ec.chunk.js",
+  "static/js/1.597585ec.chunk.js.map": "/holo-assistant/static/js/1.597585ec.chunk.js.map",
   "runtime~main.js": "/holo-assistant/static/js/runtime~main.c6b59ac9.js",
   "runtime~main.js.map": "/holo-assistant/static/js/runtime~main.c6b59ac9.js.map",
   "static/media/maria.svg": "/holo-assistant/static/media/maria.fc18eb3c.svg",
@@ -12,8 +12,8 @@
   "static/media/top-ornamental-frame.svg": "/holo-assistant/static/media/top-ornamental-frame.333e6965.svg",
   "static/media/drawing.png": "/holo-assistant/static/media/drawing.2d7259fe.png",
   "static/media/App.css": "/holo-assistant/static/media/dark-heart.940d9d48.svg",
-  "static/css/main.9248817b.chunk.css.map": "/holo-assistant/static/css/main.9248817b.chunk.css.map",
+  "static/css/main.d1f450f4.chunk.css.map": "/holo-assistant/static/css/main.d1f450f4.chunk.css.map",
   "index.html": "/holo-assistant/index.html",
-  "precache-manifest.7e086ed5d061127d62aa8db2e6f53f1c.js": "/holo-assistant/precache-manifest.7e086ed5d061127d62aa8db2e6f53f1c.js",
+  "precache-manifest.2a2dd7c996d8bdc21238bd2318e3d080.js": "/holo-assistant/precache-manifest.2a2dd7c996d8bdc21238bd2318e3d080.js",
   "service-worker.js": "/holo-assistant/service-worker.js"
 }
