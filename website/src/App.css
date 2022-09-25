@@ -16,8 +16,13 @@
   width:  100%;
 }
 
+main {
+  width:  calc(80% - calc(var(--big-margin) * 2));
+  margin: calc(var(--big-margin) * 7) auto;  
+}
+
 h1, h2, h3 {
-  font-family: Bungee;
+  font-family: 'Bungee';
 }
 
 h2 {
@@ -25,6 +30,16 @@ h2 {
   line-height: 95%;
   color: transparent;
   text-shadow: 0 0 1px var(--mid-blue);
+}
+
+h3 {
+  font-size: 4em;
+  line-height: 125%;
+}
+
+p {
+  font-size: 2em;
+  font-family: 'Work Sans';
 }
 
 .heroVideo {
@@ -36,7 +51,7 @@ h2 {
 }
 
 .navList {
-  font-family: Bungee;
+  font-family: 'Bungee';
   font-size: 3em;
   line-height: 95%;
   counter-reset: css-counter 0;
@@ -89,7 +104,7 @@ h2 {
 
 .drawing {
   position: absolute;
-  bottom: 0px;
+  bottom: 0.4%;
   right: 0px;
   width: 75%;
 }

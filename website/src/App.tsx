@@ -1,4 +1,5 @@
 import React from 'react';
+import Step from './components/Step';
 import logo from './assets/maria.svg';
 import instructionsTitle from './assets/instructions.svg';
 import bottomFrame from './assets/bottom-ornamental-frame.svg';
@@ -33,6 +34,15 @@ function App() {
             </p>
           </nav>
         <main>
+          <Step title={"Assemble your materials"}>
+            <p>Boop</p>
+          </Step>
+          <Step title={"Sign up for APIs"}>
+            <p>Boop</p>
+          </Step>
+          <Step title={"Set up your pi with a keyboard and mouse"}>
+            <p>Boop</p>
+          </Step>
         </main>
       </div>
     </div>

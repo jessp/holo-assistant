@@ -1,0 +1,19 @@
+.step > div {
+	margin-bottom: calc(var(--big-margin) * 4);
+}
+
+.step p {
+	color:  black;
+	margin:  0;
+}
+
+.step h3 {
+	color: transparent;
+	text-shadow: 0 0 1px var(--dark-blue);
+	margin: 0px 0px var(--small-margin) 0px;
+
+}
+
+.step:nth-child(even) h3{
+	text-shadow: 0 0 1px var(--mid-blue);
+}
