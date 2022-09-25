@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "6ace41fa9a8ed42b9e6e",
-    "url": "/holo-assistant/static/css/main.c9fc1a51.chunk.css"
+    "revision": "12623c6b011e73b4cdd5",
+    "url": "/holo-assistant/static/css/main.9248817b.chunk.css"
   },
   {
-    "revision": "6ace41fa9a8ed42b9e6e",
-    "url": "/holo-assistant/static/js/main.6ace41fa.chunk.js"
+    "revision": "12623c6b011e73b4cdd5",
+    "url": "/holo-assistant/static/js/main.12623c6b.chunk.js"
   },
   {
     "revision": "41e4ec44fab7740fb5a5",
@@ -32,8 +32,8 @@ self.__precacheManifest = [
     "url": "/holo-assistant/static/media/top-ornamental-frame.333e6965.svg"
   },
   {
-    "revision": "c272904ddc8d4bc4f836c5277118fbf5",
-    "url": "/holo-assistant/static/media/drawing.c272904d.png"
+    "revision": "2d7259fe8cfb972fd2ae51386c6d2662",
+    "url": "/holo-assistant/static/media/drawing.2d7259fe.png"
   },
   {
     "revision": "16a2ae42797f85894ef42447afabf2c2",
@@ -44,7 +44,7 @@ self.__precacheManifest = [
     "url": "/holo-assistant/static/media/dark-heart.940d9d48.svg"
   },
   {
-    "revision": "e823ed882ce0a36e585d8565eb6b12de",
+    "revision": "52bc78e35cc7afca556f975458dc83c6",
     "url": "/holo-assistant/index.html"
   }
 ];
