@@ -46,6 +46,7 @@ h2 {
   color: transparent;
   text-shadow: 0 0 1px var(--dark-blue);
   counter-increment: css-counter 1;
+  margin-right: 16px;
 }
 
 .navList span:before {
@@ -59,7 +60,7 @@ h2 {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: 50% 54%;
-  margin: 0px 8px;
+  margin: 0 16px 0 0;
   color: var(--bg);
 }
 
@@ -69,10 +70,6 @@ h2 {
 
 .navList span:nth-child(even):before {
   background-image: url('~./assets/mid-heart.svg');
-}
-
-.navList span:first-child:before{
-  margin: 0px 8px 0px 0px;
 }
 
 .overlay {
@@ -101,13 +98,8 @@ h2 {
   .navList span:before {
     background-image: none;
     font-size: 1em;
-    margin: 0px 16px;
     width:  0.5em;
     color: var(--dark-blue);
-  }
-
-  .navList span:first-child:before{
-    margin: 0px 16px 0px 0px;
   }
 
   .navList span:nth-child(even):before {
