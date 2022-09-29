@@ -1,5 +1,15 @@
 # Holo-assistant
-This repo houses code for what will hopefully one day be a voice-activated virtual assistant with a simple holographic display. Currently, though, it's just a bunch of bits and pieces.
+This repo houses code for what will hopefully one day be a voice-activated virtual assistant with a simple holographic display. 
+
+
+
+
+
+https://user-images.githubusercontent.com/3848662/191604840-3753f7b8-5d2e-4af8-b8cb-4f3f4bc90a3f.mp4
+
+
+
+
 
 ## About the project
 Currently, I have the following:
@@ -11,7 +21,7 @@ Currently, I have the following:
 - A simple shader to perspective-correct the character based on Roxanne Luo's [Pepper's Cone](https://github.com/roxanneluo/Pepper-s-Cone-Unity)
 
 ## Roadmap
-Eventually, this is meant to be run on a Raspberry Pi with all the hardware and stuff to make it a holographic virtual assistant. Will it get there? Probably not.
+Better documentation (including roadmap!) coming soon.
 
 ## Platforms
 This project is developed on an M1 Mac running MacOs 12.3.
