@@ -35,7 +35,8 @@ function App() {
           </nav>
         <main>
           <Step title={"Assemble your materials"}>
-            <p>Boop</p>
+            <p>Labore ipsum velit. Architecto nobis est provident est. Ut fuga temporibus nihil sed. Sed voluptates iure repellat ducimus ex. Porro mollitia voluptate in quisquam quibusdam natus aliquam.</p>
+            <p>Labore ipsum velit. Architecto nobis est provident est. Ut fuga temporibus nihil sed. Sed voluptates iure repellat ducimus ex. Porro mollitia voluptate in quisquam quibusdam natus aliquam.</p>
           </Step>
           <Step title={"Sign up for APIs"}>
             <p>Boop</p>

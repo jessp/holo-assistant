@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Inline&family=Work+Sans&display=swap');
 
 :root {
-  --big-margin: 24px;
-  --small-margin:  16px;
+  --mini-margin: 8px;
+  --small-margin:  calc(var(--mini-margin) * 2);
+  --big-margin: calc(var(--mini-margin) * 3);
   --dark-blue: #1257BF;
   --mid-blue: #5392CC;
   --dark-red: #D85858;

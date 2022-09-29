@@ -17,8 +17,9 @@
 }
 
 main {
-  width:  calc(80% - calc(var(--big-margin) * 2));
-  margin: calc(var(--big-margin) * 7) auto;  
+  width:  80%;
+  margin: 7em auto;  
+  position: relative;
 }
 
 h1, h2, h3 {
@@ -61,7 +62,7 @@ p {
   color: transparent;
   text-shadow: 0 0 1px var(--dark-blue);
   counter-increment: css-counter 1;
-  margin-right: 16px;
+  margin-right: var(--small-margin);
 }
 
 .navList span:before {
@@ -75,7 +76,7 @@ p {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: 50% 54%;
-  margin: 0 16px 0 0;
+  margin: 0 var(--small-margin) 0 0;
   color: var(--bg);
 }
 
@@ -95,16 +96,16 @@ p {
 
 .frameOverlay {
   position: absolute;
-  width: 105%;
-  height: 105%;
-  left: -2.5%;
-  top: -2.5%;
+  width: 104.5%;
+  height: 104.5%;
+  left: -2.25%;
+  top: -2.25%;
 
 }
 
 .drawing {
   position: absolute;
-  bottom: 0.4%;
+  bottom: 0.35%;
   right: 0px;
   width: 75%;
 }
@@ -120,6 +121,11 @@ p {
   .navList span:nth-child(even):before {
     background-image: none;
     color: var(--mid-blue);
+  }
+
+  main {
+    width:  100%;
+    margin: 7em 0 0 0;  
   }
 
 }

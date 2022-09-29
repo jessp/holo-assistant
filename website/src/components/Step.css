@@ -1,19 +1,43 @@
+.step {
+	position: relative;
+}
+
 .step > div {
-	margin-bottom: calc(var(--big-margin) * 4);
+	margin-bottom: calc(var(--big-margin) * 3);
+}
+
+.step h3:before {
+	content: "1";
+    font-family: "Bungee";
+    position: absolute;
+    font-size: 2em;
+    left: -0.25em;
+    top:  -0.25em;
 }
 
 .step p {
-	color:  black;
 	margin:  0;
+	margin-bottom: 1em;
+	color: var(--dark-blue);
+}
+
+.step:nth-child(even) p {
+	color: var(--mid-blue);
 }
 
 .step h3 {
 	color: transparent;
 	text-shadow: 0 0 1px var(--dark-blue);
-	margin: 0px 0px var(--small-margin) 0px;
-
+	/*margin: 0px 0px var(--small-margin) 0px;*/
+	margin: 0px 0px var(--small-margin) 1em;
 }
 
 .step:nth-child(even) h3{
 	text-shadow: 0 0 1px var(--mid-blue);
+}
+
+@media all and (max-width: 1200px) {
+	.step h3 {
+		line-height: 100%;
+	}
 }
