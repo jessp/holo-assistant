@@ -83,6 +83,7 @@ def main():
 				print('#' * 80)
 
 				rec = vosk.KaldiRecognizer(model, sample_rate)
+				conn.sendall(b'wave\n')
 
 				while True:
 					data = q.get()

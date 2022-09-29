@@ -304,6 +304,9 @@ void *runClientThread(void* mySock)
         if (TextIsEqual(serverReply, "dab\n")) {
             SetPose(3);
         } 
+        if (TextIsEqual(serverReply, "wave\n")) {
+            SetPose(4);
+        } 
         if (TextIsEqual(serverReply, "talk\n")) {
             SetTalk(true);
         } 

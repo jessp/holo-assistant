@@ -140,6 +140,10 @@ void DabPose(void){
     DoPose(true, false, 2, true);
 }
 
+void WavePose(void){
+    DoPose(true, false, 3, true);
+}
+
 void SetPose(int pose){
     character.nextPose = pose;
     character.justEnter = true;
@@ -156,6 +160,8 @@ void UpdateCharacter(void){
         ExitListenPose();
     } else if (character.currentPose == dab){
         DabPose();
+    } else if (character.currentPose == wave){
+        WavePose();
     } else {
         IdlePose();
     }
