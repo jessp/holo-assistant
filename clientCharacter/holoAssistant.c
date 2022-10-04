@@ -3,7 +3,7 @@
 * * Holographic Virutal Assistant
 * * 
 * * Run with:
-* * cd clientCharacter && cc holoAssistant.c character.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib` -o HoloAssistant && ./HoloAssistant
+* * cd clientCharacter && cc holoAssistant.c character.c stopWatch.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib` -o HoloAssistant && ./HoloAssistant
 *
 ********************************************************************************************/
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "character.h"
+#include "stopWatch.h"
 #include <string.h>
 #include <sys/socket.h> //socket
 #include <arpa/inet.h>  //inet_addr
@@ -37,6 +38,7 @@ const float alpha = 1.0;
 //classes
 Camera camera = { 0 };
 Character character = { 0 };
+StopWatch stopWatch = { 0 };
 
 //------------------------------------------------------------------------------------
 // Module Functions Declaration (local)
@@ -181,6 +183,7 @@ int main(void)
         SetShaderValue(lightingShader, lightingShader.locs[SHADER_LOC_VECTOR_VIEW], cameraPos, SHADER_UNIFORM_VEC3);
 
         UpdateCharacter();
+        UpdateStopWatch();
 
         //----------------------------------------------------------------------------------
 
@@ -193,6 +196,7 @@ int main(void)
                 rlPushMatrix();
                 rlRotatef(180.0f, 0.0f, 1.0f, 0.0f);
                     DrawCharacter();
+                    DrawStopWatch();
                 rlPopMatrix();
             EndMode3D();                // End 3d mode drawing, returns to orthographic 2d mode
 
@@ -231,6 +235,7 @@ int main(void)
     UnloadRenderTexture(decodedTex);    // Unload texture
     UnloadRenderTexture(target);        // Unload render texture
     UnloadCharacter();
+    UnloadStopWatch();
     CloseWindow();                      // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
@@ -247,6 +252,7 @@ void InitProgram(void)
     camera.projection = CAMERA_PERSPECTIVE;
 
     InitCharacter();
+    InitStopWatch();
 }
 
 RenderTexture2D convertRGBATexture2Map(Image encodedMap, bool flipTexture, RenderTexture2D decodedMapResult){
