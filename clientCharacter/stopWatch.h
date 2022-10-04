@@ -9,7 +9,9 @@ typedef struct StopWatch {
     Texture2D texture;
     // Load animation data
     ModelAnimation *anims;
-    int firstHalf;
+    bool firstHalf;
+    float rotation;
+    float rotationSpeed;
 } StopWatch;
 
 //----------------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include "rlgl.h"
 #include "stopWatch.h"
 #include <stdio.h>
 
@@ -8,7 +9,7 @@ void InitStopWatch(void){
     stopWatch.animsCount = 0;
     stopWatch.animFrameCounter = 0;
     stopWatch.anims = LoadModelAnimations("resources/models/clock.iqm", &stopWatch.animsCount);
-    stopWatch.position = (Vector3){ 0.0f, -1.0f, 0.0f };
+    stopWatch.position = (Vector3){ 0.0f, -0.75f, -2.75f };
     SetMaterialTexture(&stopWatch.model.materials[0], MATERIAL_MAP_DIFFUSE, stopWatch.texture);
     
     /*
@@ -16,12 +17,20 @@ void InitStopWatch(void){
     into two segments when exporting, otherwise it alternates between just the first and last frame.
     FirstHalf measures whether we're playing the first or second clock hand animation.
     */
-    stopWatch.firstHalf = 0; 
+    stopWatch.firstHalf = false; 
     UpdateModelAnimation(stopWatch.model, stopWatch.anims[stopWatch.firstHalf], stopWatch.animFrameCounter);
+
+    stopWatch.rotation = 0.0f;
+    stopWatch.rotationSpeed = 6.0f;
+
 }
 
 void DrawStopWatch(void){
-	DrawModelEx(stopWatch.model, stopWatch.position, (Vector3){ 0.0f, 0.0f, 1.0f }, -90.0f, (Vector3){ 1.0f, 1.0f, 1.0f }, WHITE);
+    stopWatch.rotation += (stopWatch.rotationSpeed);
+    rlPushMatrix();
+        rlRotatef(stopWatch.rotation, 0.0f, 1.0f, 0.0f);
+        DrawModelEx(stopWatch.model, stopWatch.position, (Vector3){ 0.0f, 0.0f, 1.0f }, -90.0f, (Vector3){ 0.6f, 0.6f, 0.6f }, WHITE);
+    rlPopMatrix();
 }
 
 
@@ -30,11 +39,7 @@ void UpdateStopWatch(void){
 
     if (stopWatch.animFrameCounter >= stopWatch.anims[stopWatch.firstHalf].frameCount){
     	stopWatch.animFrameCounter = 0;
-        if (stopWatch.firstHalf == 0){
-            stopWatch.firstHalf = 1;
-        } else {
-            stopWatch.firstHalf = 0;
-        }
+        stopWatch.firstHalf = !stopWatch.firstHalf;
     }
 
     UpdateModelAnimation(stopWatch.model, stopWatch.anims[stopWatch.firstHalf], stopWatch.animFrameCounter);
