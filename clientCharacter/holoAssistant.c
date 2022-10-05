@@ -314,6 +314,12 @@ void *runClientThread(void* mySock)
         if (TextIsEqual(serverReply, "wave\n")) {
             SetPose(4);
         } 
+        if (TextIsEqual(serverReply, "clock\n")) {
+            stopWatch.showing = true;
+        } 
+        if (TextIsEqual(serverReply, "exit clock\n")) {
+            stopWatch.fadeOut = true;
+        } 
         if (TextIsEqual(serverReply, "talk\n")) {
             SetTalk(true);
         } 

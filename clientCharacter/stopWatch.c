@@ -21,7 +21,9 @@ void InitStopWatch(void){
     UpdateModelAnimation(stopWatch.model, stopWatch.anims[stopWatch.firstHalf], stopWatch.animFrameCounter);
 
     stopWatch.rotation = 0.0f;
-    stopWatch.rotationSpeed = 6.0f;
+    stopWatch.rotationSpeed = 5.0f;
+    stopWatch.showing = false;
+    stopWatch.fadeOut = false;
 
 }
 
@@ -30,23 +32,34 @@ void SetClockShader(Shader lightShader){
 }
 
 void DrawStopWatch(void){
-    stopWatch.rotation += (stopWatch.rotationSpeed);
-    rlPushMatrix();
-        rlRotatef(stopWatch.rotation, 0.0f, 1.0f, 0.0f);
-        DrawModelEx(stopWatch.model, stopWatch.position, (Vector3){ 0.0f, 0.0f, 1.0f }, -90.0f, (Vector3){ 0.6f, 0.6f, 0.6f }, WHITE);
-    rlPopMatrix();
+    if (stopWatch.showing){
+        stopWatch.rotation += (stopWatch.rotationSpeed);
+        if (stopWatch.rotation == 360.0f){
+            stopWatch.rotation = 0.0f;
+            if (stopWatch.fadeOut == true){
+                stopWatch.showing = false;
+                stopWatch.fadeOut = false;
+            }
+        }
+        rlPushMatrix();
+            rlRotatef(stopWatch.rotation, 0.0f, 1.0f, 0.0f);
+            DrawModelEx(stopWatch.model, stopWatch.position, (Vector3){ 0.0f, 0.0f, 1.0f }, -90.0f, (Vector3){ 0.6f, 0.6f, 0.6f }, WHITE);
+        rlPopMatrix();
+    }
 }
 
 
 void UpdateStopWatch(void){
-	stopWatch.animFrameCounter++;
+    if (stopWatch.showing){
+    	stopWatch.animFrameCounter++;
 
-    if (stopWatch.animFrameCounter >= stopWatch.anims[stopWatch.firstHalf].frameCount){
-    	stopWatch.animFrameCounter = 0;
-        stopWatch.firstHalf = !stopWatch.firstHalf;
+        if (stopWatch.animFrameCounter >= stopWatch.anims[stopWatch.firstHalf].frameCount){
+        	stopWatch.animFrameCounter = 0;
+            stopWatch.firstHalf = !stopWatch.firstHalf;
+        }
+
+        UpdateModelAnimation(stopWatch.model, stopWatch.anims[stopWatch.firstHalf], stopWatch.animFrameCounter);
     }
-
-    UpdateModelAnimation(stopWatch.model, stopWatch.anims[stopWatch.firstHalf], stopWatch.animFrameCounter);
 }
 
 

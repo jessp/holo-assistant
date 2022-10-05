@@ -1,3 +1,4 @@
+import time
 from text_to_num import alpha2digit
 from infinitetimer import InfiniteTimer
 from charactermodule import CharacterModule
@@ -14,14 +15,18 @@ class TimerModule(CharacterModule):
 		self.talk(timer_resp[1])
 		if timer_resp[0] != -1:
 			self.timer_func.start(timer_resp[2], self.play_timer_sound)
+			self.send_command('clock')
 
 	def play_timer_sound(self, conn):
+		self.send_command('exit clock')
+		time.sleep(0.01)
 		self.talk("timer_up.wav")
 
 	def pause_timer(self):
 		if self.timer_func.is_timer_on():
 			self.timer_func.cancel()
 			self.talk("stop_timer.wav")
+			self.send_command('exit clock')
 		else:
 			self.talk("no_timer.wav")
 

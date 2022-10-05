@@ -12,6 +12,8 @@ typedef struct StopWatch {
     bool firstHalf;
     float rotation;
     float rotationSpeed;
+    bool showing;
+    bool fadeOut;
 } StopWatch;
 
 //----------------------------------------------------------------------------------
