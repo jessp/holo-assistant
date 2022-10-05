@@ -1,4 +1,5 @@
 import threading
+import time
 
 class InfiniteTimer():
     """
@@ -9,6 +10,7 @@ class InfiniteTimer():
         self.hFunction = hFunction
         self.conn = conn
         self.thread = threading.Timer(self.t, self.handle_function)
+        self.begin = time.time()
 
     def is_timer_on(self):
         if self.thread.is_alive() and not self.thread.finished.is_set():
@@ -31,6 +33,10 @@ class InfiniteTimer():
         else:
             print("arguments not defined")
         self.thread.start()
+        self.begin = time.time()
+
+    def remaining(self):
+        return self.t - (time.time() - self.begin)
         
     def cancel(self):
         self.thread.cancel()

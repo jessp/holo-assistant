@@ -9,7 +9,6 @@ class MusicModule(CharacterModule):
 		super().__init__(connection, global_timer, google_key)
 		scope = "user-read-playback-state,user-modify-playback-state"
 		self.sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id, client_secret=secret, redirect_uri=redirect, scope=scope))
-		self.synthesize_text("Alright, I'll stop the music.", "./resources/sound_clips/stop_song.wav")
 
 	def listen(self, heard):
 		device = self.find_device()
