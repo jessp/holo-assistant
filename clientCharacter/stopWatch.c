@@ -25,6 +25,10 @@ void InitStopWatch(void){
 
 }
 
+void SetClockShader(Shader lightShader){
+    stopWatch.model.materials[0].shader = lightShader;
+}
+
 void DrawStopWatch(void){
     stopWatch.rotation += (stopWatch.rotationSpeed);
     rlPushMatrix();

@@ -124,8 +124,9 @@ int main(void)
         lights[0] = CreateLight(LIGHT_POINT, (Vector3){ 0, 0, 50 }, Vector3Zero(), WHITE, lightingShader);
     }
 
-    //apply the lighting shader to the character
+    //apply the lighting shader to the models
     SetCharacterShader(lightingShader);
+    SetClockShader(lightingShader);
     // Create a RenderTexture2D to be used for render to texture
     RenderTexture2D target = LoadRenderTexture(displayRatioWidth, displayRatioHeight);
     

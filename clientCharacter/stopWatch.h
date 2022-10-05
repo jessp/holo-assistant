@@ -23,6 +23,7 @@ extern StopWatch stopWatch;
 // Functions Declaration
 //----------------------------------------------------------------------------------
 void InitStopWatch(void);
+void SetClockShader(Shader lightShader);
 void DrawStopWatch(void);
 void UpdateStopWatch(void);
 void UnloadStopWatch(void);
