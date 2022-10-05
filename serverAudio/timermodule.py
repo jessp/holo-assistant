@@ -1,3 +1,4 @@
+import time
 from text_to_num import alpha2digit
 from infinitetimer import InfiniteTimer
 from charactermodule import CharacterModule
@@ -7,21 +8,29 @@ class TimerModule(CharacterModule):
 	def __init__(self, connection, global_timer, google_key):
 		super().__init__(connection, global_timer, google_key)
 		self.timer_func = InfiniteTimer(0, 0, self.connection)
-								
 
 	def listen(self, heard):
-		timer_resp = self.parse_timer_phrase(heard)
-		self.talk(timer_resp[1])
-		if timer_resp[0] != -1:
-			self.timer_func.start(timer_resp[2], self.play_timer_sound)
+		if self.timer_func.is_timer_on():
+			#don't interrupt timer from going off to say you can't have multiple timers at once
+			if (self.timer_func.remaining() > 3.0):
+				self.talk("one_timer.wav")
+		else:
+			timer_resp = self.parse_timer_phrase(heard)
+			self.talk(timer_resp[1])
+			if timer_resp[0] != -1:
+				self.timer_func.start(timer_resp[2], self.play_timer_sound)
+				self.send_command('clock')
 
 	def play_timer_sound(self, conn):
+		self.send_command('exit clock')
+		time.sleep(0.01)
 		self.talk("timer_up.wav")
 
 	def pause_timer(self):
 		if self.timer_func.is_timer_on():
 			self.timer_func.cancel()
 			self.talk("stop_timer.wav")
+			self.send_command('exit clock')
 		else:
 			self.talk("no_timer.wav")
 

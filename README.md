@@ -48,11 +48,11 @@ Though replace `holovenv` with your own virtual env path. :wink:
 
 On a Mac, you can compile and run the client/3D character with
 ```
-cd clientCharacter && cc holoAssistant.c character.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib` -o HoloAssistant && ./HoloAssistant
+cd clientCharacter && cc holoAssistant.c character.c stopWatch.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib` -o HoloAssistant && ./HoloAssistant
 ```
 
 On a Raspberry Pi 4, you can compile and run the client/3D character with
 ```
-cd clientCharacter && cc holoAssistant.c character.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -o HoloAssistant && ./HoloAssistant 
+cd clientCharacter && cc holoAssistant.c character.c stopWatch.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -o HoloAssistant && ./HoloAssistant 
 ```
 If you are ssh-ing in, you may need to run `export DISPLAY=:0.0` before using the call above.
