@@ -70,11 +70,15 @@ def main():
 				conn.sendall(b'exit listen\n')
 				print("heard exit command")
 
+			def command_off():
+				nonlocal command_mode
+				command_mode = False
+
 
 			t = InfiniteTimer(15, exit_listen, conn)
-			weather_module = WeatherSkill(conn, t, config['DEFAULT']['googleFileLocation'], config['DEFAULT']['weatherApiKey'])
-			timer_module = TimerSkill(conn, t, config['DEFAULT']['googleFileLocation'])
-			music_module = MusicSkill(conn, t, config['DEFAULT']['googleFileLocation'], config['DEFAULT']['spotifyClientId'], config['DEFAULT']['spotifyClientSecret'], config['DEFAULT']['spotifyRedirectURL'])
+			weather_module = WeatherSkill(conn, t, config['DEFAULT']['googleFileLocation'], command_off, [["whether"], ["weather"]], config['DEFAULT']['weatherApiKey'])
+			timer_module = TimerSkill(conn, t, config['DEFAULT']['googleFileLocation'], command_off, [["timer"]])
+			music_module = MusicSkill(conn, t, config['DEFAULT']['googleFileLocation'], command_off, [["play"], ["stop", "music"], ["stop", "song"], ["cancel", "music"], ["cancel", "song"], ["pause", "music"], ["pause", "song"]], config['DEFAULT']['spotifyClientId'], config['DEFAULT']['spotifyClientSecret'], config['DEFAULT']['spotifyRedirectURL'])
 
 			with sd.RawInputStream(samplerate=sample_rate, blocksize = 0, 
 				device=0, dtype='int16', channels=1, latency=0.5, callback=callback):
@@ -90,29 +94,9 @@ def main():
 					if rec.AcceptWaveform(data):
 						heard = json.loads(rec.Result())["text"]
 						if command_mode:
-							if "whether" in heard or "weather" in heard:
-								weather_module.hear_value()
-								weather_module.listen(heard)
-								command_mode = False
-							elif "stop" in heard or "cancel" in heard:
-								if "music" in heard or "song" in heard:
-									music_module.hear_value()
-									music_module.pause_playback()
-									command_mode = False
-								elif "timer" in heard:
-									timer_module.hear_value()
-									timer_module.pause_timer()
-									command_mode = False
-								else:
-									command_mode = False
-							elif "timer" in heard:
-								timer_module.hear_value()
-								timer_module.listen(heard)
-								command_mode = False
-							elif "play" in heard:
-								music_module.hear_value()
-								music_module.listen(heard)
-								command_mode = False
+							weather_module.hear_value(heard)
+							music_module.hear_value(heard)
+							timer_module.hear_value(heard)
 						else:
 							continue
 					else:

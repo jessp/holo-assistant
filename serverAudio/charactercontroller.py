@@ -4,14 +4,20 @@ from pydub.playback import play
 import os, os.path
 
 class CharacterController:
-	def __init__(self, connection, global_timer, google_key):
+	def __init__(self, connection, global_timer, google_key, callback, terms):
 		self.connection = connection
 		self.global_timer = global_timer
 		self.google_key = google_key
+		self.callback = callback
+		self.terms = terms
 
-	def hear_value(self):
-		self.global_timer.cancel()
-		self.connection.sendall(b'exit listen\n')
+	def hear_value(self, heard):
+		if (any(all(word in heard for word in term_list) for term_list in self.terms)):
+			print("here")
+			self.global_timer.cancel()
+			self.connection.sendall(b'exit listen\n')
+			self.listen(heard)
+			self.callback()
 
 	def talk(self, file):
 		self.connection.sendall(b'talk\n')
