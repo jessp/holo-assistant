@@ -3,7 +3,7 @@ from pydub import AudioSegment
 from pydub.playback import play
 import os, os.path
 
-class CharacterModule:
+class CharacterController:
 	def __init__(self, connection, global_timer, google_key):
 		self.connection = connection
 		self.global_timer = global_timer

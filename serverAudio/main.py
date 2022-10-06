@@ -9,11 +9,11 @@ import socket
 import configparser
 import json
 import urllib.parse
-from charactermodule import CharacterModule
+from charactercontroller import CharacterController
 from infinitetimer import InfiniteTimer
-from weathermodule import WeatherModule
-from timermodule import TimerModule
-from musicmodule import MusicModule
+from weatherskill import WeatherSkill
+from timerskill import TimerSkill
+from musicskill import MusicSkill
 
 
 logging.basicConfig(level=20)
@@ -72,9 +72,9 @@ def main():
 
 
 			t = InfiniteTimer(15, exit_listen, conn)
-			weather_module = WeatherModule(conn, t, config['DEFAULT']['googleFileLocation'], config['DEFAULT']['weatherApiKey'])
-			timer_module = TimerModule(conn, t, config['DEFAULT']['googleFileLocation'])
-			music_module = MusicModule(conn, t, config['DEFAULT']['googleFileLocation'], config['DEFAULT']['spotifyClientId'], config['DEFAULT']['spotifyClientSecret'], config['DEFAULT']['spotifyRedirectURL'])
+			weather_module = WeatherSkill(conn, t, config['DEFAULT']['googleFileLocation'], config['DEFAULT']['weatherApiKey'])
+			timer_module = TimerSkill(conn, t, config['DEFAULT']['googleFileLocation'])
+			music_module = MusicSkill(conn, t, config['DEFAULT']['googleFileLocation'], config['DEFAULT']['spotifyClientId'], config['DEFAULT']['spotifyClientSecret'], config['DEFAULT']['spotifyRedirectURL'])
 
 			with sd.RawInputStream(samplerate=sample_rate, blocksize = 0, 
 				device=0, dtype='int16', channels=1, latency=0.5, callback=callback):

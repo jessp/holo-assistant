@@ -1,10 +1,10 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import json
-from charactermodule import CharacterModule
+from charactercontroller import CharacterController
 
 
-class MusicModule(CharacterModule):
+class MusicSkill(CharacterController):
 	def __init__(self, connection, global_timer, google_key, client_id, secret, redirect):
 		super().__init__(connection, global_timer, google_key)
 		scope = "user-read-playback-state,user-modify-playback-state"

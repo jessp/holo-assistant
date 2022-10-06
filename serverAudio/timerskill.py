@@ -1,10 +1,10 @@
 import time
 from text_to_num import alpha2digit
 from infinitetimer import InfiniteTimer
-from charactermodule import CharacterModule
+from charactercontroller import CharacterController
 
 
-class TimerModule(CharacterModule):
+class TimerSkill(CharacterController):
 	def __init__(self, connection, global_timer, google_key):
 		super().__init__(connection, global_timer, google_key)
 		self.timer_func = InfiniteTimer(0, 0, self.connection)
