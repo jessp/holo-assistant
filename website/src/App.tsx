@@ -5,6 +5,7 @@ import instructionsTitle from './assets/instructions.svg';
 import bottomFrame from './assets/bottom-ornamental-frame.svg';
 import topFrame from './assets/top-ornamental-frame.svg';
 import drawing from './assets/drawing.png';
+import eyes from './assets/animated_eyes.png';
 import './App.css';
 
 
@@ -20,6 +21,7 @@ function App() {
             <div className="overlay">
               <img src={topFrame} className="frameOverlay" alt="" />
               <img src={drawing} className="drawing" alt="An anime character says in Japanese 'I am powered by Raspberry Pi.'"/>
+              <img src={eyes} className="eyes" alt="''"/>
               <img src={bottomFrame} className="frameOverlay" alt="" />
             </div>
           </div>
