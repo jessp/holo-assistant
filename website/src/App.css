@@ -20,10 +20,12 @@ main {
   width:  80%;
   margin: 7em auto;  
   position: relative;
+  counter-reset: big-step 0;
 }
 
 h1, h2, h3 {
   font-family: 'Bungee';
+  font-weight: 500;
 }
 
 h2 {
@@ -35,7 +37,7 @@ h2 {
 
 h3 {
   font-size: 4em;
-  line-height: 125%;
+  line-height: 98%;
 }
 
 p {
@@ -55,18 +57,18 @@ p {
   font-family: 'Bungee';
   font-size: 3em;
   line-height: 95%;
-  counter-reset: css-counter 0;
+  counter-reset: small-step 0;
 }
 
 .navList span {
   color: transparent;
   text-shadow: 0 0 1px var(--dark-blue);
-  counter-increment: css-counter 1;
+  counter-increment: small-step 1;
   margin-right: var(--small-margin);
 }
 
 .navList span:before {
-  content: counter(css-counter);
+  content: counter(small-step);
   font-size: 0.45em;
   display: inline-block;
   vertical-align: bottom;
