@@ -1,15 +1,15 @@
 self.__precacheManifest = [
   {
-    "revision": "4b0c8a909cf625cdbe3a",
-    "url": "/holo-assistant/static/css/main.d1f450f4.chunk.css"
+    "revision": "5605ae3953d2b7db1043",
+    "url": "/holo-assistant/static/css/main.19c08db6.chunk.css"
   },
   {
-    "revision": "4b0c8a909cf625cdbe3a",
-    "url": "/holo-assistant/static/js/main.4b0c8a90.chunk.js"
+    "revision": "5605ae3953d2b7db1043",
+    "url": "/holo-assistant/static/js/main.5605ae39.chunk.js"
   },
   {
-    "revision": "597585ece6dd72dcb1fb",
-    "url": "/holo-assistant/static/js/1.597585ec.chunk.js"
+    "revision": "378c163ccacbf90f53d1",
+    "url": "/holo-assistant/static/js/1.378c163c.chunk.js"
   },
   {
     "revision": "c6b59ac924bbcfa55bd6",
@@ -32,19 +32,27 @@ self.__precacheManifest = [
     "url": "/holo-assistant/static/media/top-ornamental-frame.333e6965.svg"
   },
   {
-    "revision": "2d7259fe8cfb972fd2ae51386c6d2662",
-    "url": "/holo-assistant/static/media/drawing.2d7259fe.png"
+    "revision": "a0c993ce6ac8c6a3a4d3ecf5ab79d05c",
+    "url": "/holo-assistant/static/media/drawing.a0c993ce.png"
   },
   {
-    "revision": "16a2ae42797f85894ef42447afabf2c2",
-    "url": "/holo-assistant/static/media/mid-heart.16a2ae42.svg"
+    "revision": "22d9ed380ac95bf1e6216b65bfd4d624",
+    "url": "/holo-assistant/static/media/animated_eyes.22d9ed38.png"
   },
   {
     "revision": "940d9d48d3b279d878a6740fb5632bc8",
     "url": "/holo-assistant/static/media/dark-heart.940d9d48.svg"
   },
   {
-    "revision": "6fc8ba9653b5a59df3b3f42f34f20a10",
+    "revision": "16a2ae42797f85894ef42447afabf2c2",
+    "url": "/holo-assistant/static/media/mid-heart.16a2ae42.svg"
+  },
+  {
+    "revision": "494d81cceb0b6b35eb6d86a2a1826971",
+    "url": "/holo-assistant/static/media/sparkle.494d81cc.svg"
+  },
+  {
+    "revision": "57009fbeef6bb361427afb2351de22e2",
     "url": "/holo-assistant/index.html"
   }
 ];
