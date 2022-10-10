@@ -10,7 +10,7 @@ class Step extends React.Component {
   render() {
     return (
       <div className="step">
-        <h3><span>{this.props.title}</span></h3>
+        <h3 id={`step-${this.props.index}`}>{this.props.title}</h3>
         <div>
           {this.props.children}
         </div>

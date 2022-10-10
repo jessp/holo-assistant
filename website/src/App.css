@@ -58,13 +58,28 @@ p {
   font-size: 3em;
   line-height: 95%;
   counter-reset: small-step 0;
+  position: relative;
 }
 
 .navList span {
+  counter-increment: small-step 1;
+}
+
+.navList span a {
+  position: relative;
+  z-index: 3;
+}
+
+.navList span a:hover {
+  z-index: 1;
+}
+
+
+.navList span, .navList span a {
   color: transparent;
   text-shadow: 0 0 1px var(--dark-blue);
-  counter-increment: small-step 1;
   margin-right: var(--small-margin);
+  text-decoration: none;
 }
 
 .navList span:before {
@@ -80,9 +95,35 @@ p {
   background-position: 50% 54%;
   margin: 0 var(--small-margin) 0 0;
   color: var(--bg);
+  background-color: var(--bg);
+  z-index: 3;
 }
 
-.navList span:nth-child(even){
+
+.navList span:after {
+  background-image: url('~./assets/sparkle.svg');
+  background-size: cover;
+  content:  '';
+  position: absolute;
+  top:  0px;
+  left:  0px;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  transition: left 2s;
+  opacity: 0;
+}
+
+.navList span:hover:after {
+  left: 10px;
+  top:  -5px;
+  opacity: 1;
+  transition: left 4s, opacity 2s;
+}
+
+
+.navList span:nth-child(even), .navList span:nth-child(even) a {
   text-shadow: 0 0 1px var(--mid-blue);
 }
 

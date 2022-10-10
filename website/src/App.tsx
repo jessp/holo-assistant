@@ -30,20 +30,20 @@ function App() {
             <h3 className="sr-only">Instructions</h3>
             <img src={instructionsTitle} className="fullWidth" alt="" />
             <p className="navList">
-              <span>Assemble your materials</span>
-              <span>Sign up for APIs</span>
-              <span>Set up your pi with a keyboard and mouse</span>
+              <span><a href="#step-1">Assemble your materials</a></span>
+              <span><a href="#step-2">Sign up for APIs</a></span>
+              <span><a href="#step-3">Set up your pi with a keyboard and mouse</a></span>
             </p>
           </nav>
         <main>
-          <Step title={"Assemble your materials"}>
+          <Step title={"Assemble your materials"} index={1}>
             <p>Labore ipsum velit. Architecto nobis est provident est. Ut fuga temporibus nihil sed. Sed voluptates iure repellat ducimus ex. Porro mollitia voluptate in quisquam quibusdam natus aliquam.</p>
             <p>Labore ipsum velit. Architecto nobis est provident est. Ut fuga temporibus nihil sed. Sed voluptates iure repellat ducimus ex. Porro mollitia voluptate in quisquam quibusdam natus aliquam.</p>
           </Step>
-          <Step title={"Sign up for APIs"}>
+          <Step title={"Sign up for APIs"} index={2}>
             <p>Boop</p>
           </Step>
-          <Step title={"Set up your pi with a keyboard and mouse"}>
+          <Step title={"Set up your pi with a keyboard and mouse"} index={3}>
             <p>Boop</p>
           </Step>
         </main>
