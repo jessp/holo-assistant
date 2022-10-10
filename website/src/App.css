@@ -119,7 +119,7 @@ p {
   left: 10px;
   top:  -5px;
   opacity: 1;
-  transition: left 4s, opacity 2s;
+  transition: left 3s, opacity 1s;
 }
 
 
@@ -158,7 +158,7 @@ p {
   top: 6.25%;
   right: 36%;
   width: 11.25%;
-  opacity: 0.5;
+  opacity: 1;
   user-select: none;
 }
 
