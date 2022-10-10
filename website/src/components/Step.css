@@ -10,9 +10,9 @@
 .step h3 {
 	display: flex;
 	position: relative;
-	color: transparent;
-	text-shadow: 0 0 1px var(--dark-blue);
+	color: var(--dark-blue);
 	height: 100%;
+	align-items: center;
 }
 
 .step h3:before {
@@ -37,7 +37,7 @@
 
 
 .step:nth-child(even) h3{
-	text-shadow: 0 0 1px var(--mid-blue);
+	color: var(--mid-blue);
 }
 
 @media all and (min-width: 1200px) {

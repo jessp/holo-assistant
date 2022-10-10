@@ -31,8 +31,7 @@ h1, h2, h3 {
 h2 {
   font-size: 4.25em;
   line-height: 95%;
-  color: transparent;
-  text-shadow: 0 0 1px var(--mid-blue);
+  color: var(--mid-blue);
 }
 
 h3 {
@@ -68,6 +67,7 @@ p {
 .navList span a {
   position: relative;
   z-index: 3;
+  margin-right: var(--small-margin);
 }
 
 .navList span a:hover {
@@ -76,9 +76,7 @@ p {
 
 
 .navList span, .navList span a {
-  color: transparent;
-  text-shadow: 0 0 1px var(--dark-blue);
-  margin-right: var(--small-margin);
+  color: var(--dark-blue);
   text-decoration: none;
 }
 
@@ -111,20 +109,19 @@ p {
   height: 100%;
   z-index: 2;
   pointer-events: none;
-  transition: left 2s;
   opacity: 0;
 }
 
 .navList span:hover:after {
-  left: 10px;
-  top:  -5px;
+  left: 2%;
+  top:  -5%;
   opacity: 1;
-  transition: left 3s, opacity 1s;
+  transition: left 3s, opacity 1s, top  3s;
 }
 
 
 .navList span:nth-child(even), .navList span:nth-child(even) a {
-  text-shadow: 0 0 1px var(--mid-blue);
+  color: var(--mid-blue);
 }
 
 .navList span:nth-child(even):before {
@@ -166,7 +163,7 @@ p {
   .navList span:before {
     background-image: none;
     font-size: 1em;
-    width:  0.5em;
+    width: 0.225em;
     color: var(--dark-blue);
   }
 
@@ -179,5 +176,7 @@ p {
     width:  100%;
     margin: 7em 0 0 0;  
   }
+
+
 
 }
