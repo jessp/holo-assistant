@@ -4,7 +4,7 @@
 }
 
 .content {
-  margin: var(--big-margin);
+  margin: max(2.25%, var(--small-margin));
 }
 
 .content > * > *:not(.sr-only):not(.heroVideo) {
@@ -177,6 +177,28 @@ p {
     margin: 7em 0 0 0;  
   }
 
+  h2 {
+    hyphens: manual;
+  }
 
+}
 
+@media all and (max-width: 950px) {
+  .heroVideo {
+    margin-top:  3.25em;
+  }
+}
+
+@media all and (max-width: 500px) {
+  h2 {
+    font-size: 3.5em;
+  }
+
+  .content {
+    margin: var(--mini-margin);
+  }
+
+  .heroVideo {
+    margin-top:  3.25em;
+  }
 }
