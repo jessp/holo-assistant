@@ -150,15 +150,6 @@ p {
   width: 75%;
 }
 
-.eyes {
-  position: absolute;
-  top: 6.25%;
-  right: 36%;
-  width: 11.25%;
-  opacity: 1;
-  user-select: none;
-}
-
 @media all and (max-width: 1200px) {
   .navList span:before {
     background-image: none;
