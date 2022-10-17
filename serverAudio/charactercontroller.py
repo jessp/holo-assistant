@@ -13,7 +13,6 @@ class CharacterController:
 
 	def hear_value(self, heard):
 		if (any(all(word in heard for word in term_list) for term_list in self.terms)):
-			print("here")
 			self.global_timer.cancel()
 			self.connection.sendall(b'exit listen\n')
 			self.listen(heard)
