@@ -1,4 +1,6 @@
 import time
+import subprocess
+
 
 print("""
 
@@ -36,9 +38,10 @@ a prerequisite, just keep rerunning the file until you see the message saying \"
 
 time.sleep(1)
 
-print("Installing numpy dependencies for Rasbperry Pi...\n\n")
+print("Installing numpy dependencies for Rasbperry Pi. You're going to have to enter your password...\n\n")
 
-!sudo apt-get install libatlas-base-dev
+subprocess.run(["sudo apt-get install libatlas-base-dev", "-l"])
+
 
 time.sleep(1)
 
