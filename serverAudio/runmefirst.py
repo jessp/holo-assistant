@@ -40,7 +40,7 @@ time.sleep(1)
 
 print("Installing numpy dependencies for Rasbperry Pi. You're going to have to enter your password...\n\n")
 
-subprocess.run(["sudo apt-get install libatlas-base-dev", "-l"])
+subprocess.run(["sudo apt-get install libatlas-base-dev"])
 
 
 time.sleep(1)
