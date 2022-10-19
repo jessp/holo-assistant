@@ -36,6 +36,13 @@ a prerequisite, just keep rerunning the file until you see the message saying \"
 
 time.sleep(1)
 
+print("Installing numpy dependencies for Rasbperry Pi...\n\n")
+
+!sudo apt-get install libatlas-base-dev
+
+time.sleep(1)
+
+
 import geograpy
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
