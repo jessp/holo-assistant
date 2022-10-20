@@ -33,7 +33,7 @@ Requirements for serverAudio are recorded in serverAudio/requirements.txt. You m
 
 For clientCharacter, make sure you install [Raylib](https://github.com/raysan5/raylib).
 
-I used a homebrew installation of Raylib on Mac, and for Raspberry Pi, I installed used `make install PLATFORM=PLATFORM_DESKTOP GRAPHICS=GRAPHICS_API_OPENGL_21`.
+I used a homebrew installation of Raylib on Mac, and for Raspberry Pi, I installed used `sudo make install PLATFORM=PLATFORM_DESKTOP GRAPHICS=GRAPHICS_API_OPENGL_21`.
 
 
 ## Compiling and Running
