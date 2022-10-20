@@ -16,6 +16,11 @@
   width:  100%;
 }
 
+
+.bold {
+  font-weight: bold;
+}
+
 main {
   width:  80%;
   margin: 7em auto;  
@@ -42,6 +47,16 @@ h3 {
 p {
   font-size: 2em;
   font-family: 'Work Sans';
+}
+
+li {
+  font-size: 1.85em;
+  margin-bottom: 0.5em;
+  font-family: 'Work Sans';
+}
+
+ul {
+  margin-bottom: var(--big-margin);
 }
 
 .heroVideo {

@@ -28,17 +28,9 @@
 .step p {
 	margin:  0;
 	margin-bottom: 1em;
-	color: var(--dark-blue);
-}
-
-.step:nth-child(even) p {
-	color: var(--mid-blue);
 }
 
 
-.step:nth-child(even) h3{
-	color: var(--mid-blue);
-}
 
 @media all and (min-width: 1200px) {
 	.step h3 {

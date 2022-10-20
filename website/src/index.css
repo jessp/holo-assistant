@@ -28,8 +28,9 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: Consolas, source-code-pro, Menlo, Monaco, 'Courier New',
     monospace;
+  font-size: 90%;
 }
 
 .sr-only {
