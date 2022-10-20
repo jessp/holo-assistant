@@ -1,15 +1,15 @@
 self.__precacheManifest = [
   {
-    "revision": "1e617593e13e623385c7",
-    "url": "/holo-assistant/static/css/main.0949763c.chunk.css"
+    "revision": "a694b64f2452c7ed0af9",
+    "url": "/holo-assistant/static/css/main.7f89d3eb.chunk.css"
   },
   {
-    "revision": "1e617593e13e623385c7",
-    "url": "/holo-assistant/static/js/main.1e617593.chunk.js"
+    "revision": "a694b64f2452c7ed0af9",
+    "url": "/holo-assistant/static/js/main.a694b64f.chunk.js"
   },
   {
-    "revision": "378c163ccacbf90f53d1",
-    "url": "/holo-assistant/static/js/1.378c163c.chunk.js"
+    "revision": "597585ece6dd72dcb1fb",
+    "url": "/holo-assistant/static/js/1.597585ec.chunk.js"
   },
   {
     "revision": "c6b59ac924bbcfa55bd6",
@@ -32,12 +32,8 @@ self.__precacheManifest = [
     "url": "/holo-assistant/static/media/top-ornamental-frame.333e6965.svg"
   },
   {
-    "revision": "a0c993ce6ac8c6a3a4d3ecf5ab79d05c",
-    "url": "/holo-assistant/static/media/drawing.a0c993ce.png"
-  },
-  {
-    "revision": "22d9ed380ac95bf1e6216b65bfd4d624",
-    "url": "/holo-assistant/static/media/animated_eyes.22d9ed38.png"
+    "revision": "7016e6a432c51e2794bd381d5934aa14",
+    "url": "/holo-assistant/static/media/drawing.7016e6a4.png"
   },
   {
     "revision": "940d9d48d3b279d878a6740fb5632bc8",
@@ -52,7 +48,7 @@ self.__precacheManifest = [
     "url": "/holo-assistant/static/media/sparkle.494d81cc.svg"
   },
   {
-    "revision": "6b6a492d10a4c0a2ee32ab96b875a63d",
+    "revision": "aec5ae8a8f28a12708c1f7d34c444065",
     "url": "/holo-assistant/index.html"
   }
 ];
