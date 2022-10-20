@@ -28,8 +28,8 @@ time.sleep(0.5)
 print("This file was made to help you get started with holographic virtual assistant Maria.\n\
 In a moment, the file will call actions that should trigger libraries to install various \nprerequisites you need to use Maria's services. \
 It's annoying, but it's easier to run \nthese functions up front rather than have them be triggered the first time you use Maria.\n\
-I suggest running this file on your Rasbperry Pi on its little terminal \nwith a keyboard and mouse attached. \
-These are helpful for authenticating with \nSpotipy--the Python library for Spotify's API--which \nrequires interaction in the broswer.\n")
+I suggest running this file on your Rasbperry Pi on its little terminal with a keyboard \nand mouse attached. \
+These are helpful for authenticating with Spotipy--the Python library \nfor Spotify's API--which requires interaction in the broswer.\n")
 
 time.sleep(1)
 
