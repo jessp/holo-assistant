@@ -74,7 +74,7 @@ function App() {
             <p>Maria is powered by a few different APIs. You'll need to sign up for accounts in order to interact with her.</p>
             <p className={"bold"}>APIs</p>
             <ul>
-              <li>Signing up for <a href="https://www.weatherapi.com/" target="blank">WeatherAPI.com</a> is pretty straight-forward</li>
+              <li>Signing up for <a href="https://www.weatherapi.com/" target="blank">WeatherAPI.com</a> is pretty straight-forward.</li>
               <li>Sign up for a <a href="https://developer.spotify.com/" target="blank">Spotify developer account</a>. Create an app. Under the app's settings, enter http://localhost:9876 under Redirect URIs.</li>
               <li>Sign up for <a href="https://console.cloud.google.com/" target="blank">Google Cloud's</a> Text-to-Speech service. </li>
               <ul>
