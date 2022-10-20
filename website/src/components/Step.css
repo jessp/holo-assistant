@@ -30,6 +30,9 @@
 	margin-bottom: 1em;
 }
 
+.step:nth-child(even) h3 {
+	color: var(--mid-blue);
+}
 
 
 @media all and (min-width: 1200px) {

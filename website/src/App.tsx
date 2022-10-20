@@ -82,7 +82,7 @@ function App() {
                 <li>Place the json file you download in holo-assistant/serverAudio/googleCredentials.</li>
               </ul>
             </ul>
-            <p>Once you have all your keys, create a new file called settings.config in holo-assistant/serverAudio. Copy the structure of the file from settings.config.example, but fill in the keys you acquired by signing up for the other API services.</p>
+            <p>Once you have all your keys, create a new file called settings.config in holo-assistant/serverAudio. Copy the structure of the file from settings.config.example, but fill in the keys you acquired by signing up for the API services.</p>
           </Step>
           <Step title={"Install Python dependencies"} index={4}>
             <p>Still SSH-ing into your Pi, <a href="https://docs.python.org/3/library/venv.html" target="blank">create a virtual environment</a> at the top-level of your holo-assistant directory named "holovenv."" To do this, run the command <code>python3 -m venv holovenv</code>.</p>

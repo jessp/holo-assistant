@@ -7,7 +7,7 @@
   --dark-blue: #1257BF;
   --mid-blue: #5392CC;
   --dark-red: #D85858;
-  --mid-red: #E08989;
+  --mid-red: #DA7A7A;
   --bg: #FAF2E6;
 }
 
@@ -23,14 +23,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg);
-  font-size: min(calc(3px + 0.85vw), 16px);
+  font-size: min(calc(3px + 0.825vw), 16px);
   overflow-y: auto;
 }
 
 code {
   font-family: Consolas, source-code-pro, Menlo, Monaco, 'Courier New',
     monospace;
-  font-size: 90%;
+  font-size: 85%;
+  background-color: #F2D6D6;
+  border-radius: 3px;
+  padding: 0 3px;
+}
+
+a {
+  color: #bd2929;
 }
 
 .sr-only {

@@ -135,7 +135,11 @@ ul {
 }
 
 
-.navList span:nth-child(even), .navList span:nth-child(even) a {
+.navList span:nth-child(3n - 1), .navList span:nth-child(3n - 1) a {
+  color: var(--mid-red);
+}
+
+.navList span:nth-child(3n), .navList span:nth-child(3n) a {
   color: var(--mid-blue);
 }
 
