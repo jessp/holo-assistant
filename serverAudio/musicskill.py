@@ -1,35 +1,40 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import json
-from charactermodule import CharacterModule
+from charactercontroller import CharacterController
 
 
-class MusicModule(CharacterModule):
-	def __init__(self, connection, global_timer, google_key, client_id, secret, redirect):
-		super().__init__(connection, global_timer, google_key)
+class MusicSkill(CharacterController):
+	def __init__(self, connection, global_timer, google_key, callback, terms, client_id, secret, redirect):
+		super().__init__(connection, global_timer, google_key, callback, terms)
 		scope = "user-read-playback-state,user-modify-playback-state"
 		self.sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id, client_secret=secret, redirect_uri=redirect, scope=scope))
-		self.synthesize_text("Alright, I'll stop the music.", "./resources/sound_clips/stop_song.wav")
 
 	def listen(self, heard):
-		device = self.find_device()
-		if device == -1:
-			self.talk("no_device.wav")
-		else:
-			#Get next text after play
-			the_song = self.find_song(heard.split("play", 1)[1].strip())
-			if the_song[0] == -1:
-				if the_song[1] != "":
-					self.talk(the_song[1])
+		#our only music commands are play and variations of stop,
+		#so if we're not playing, we know we're stopping
+		if ("play" in heard):
+			device = self.find_device()
+			if device == -1:
+				self.talk("no_device.wav")
 			else:
-				self.synthesize_text(the_song[1])
-				self.talk("latest_output.wav")
-				try:
-					self.send_command('dab')
-					self.sp.start_playback(uris=[the_song[2]["uri"]])
-				except:
-					# generic message on playback errors
-					self.talk("backup_song.wav")
+				#Get next text after play
+				the_song = self.find_song(heard.split("play", 1)[1].strip())
+				if the_song[0] == -1:
+					if the_song[1] != "":
+						self.talk(the_song[1])
+				else:
+					self.synthesize_text(the_song[1])
+					self.talk("latest_output.wav")
+					try:
+						self.send_command('dab')
+						self.sp.start_playback(uris=[the_song[2]["uri"]])
+					except:
+						# generic message on playback errors
+						self.talk("backup_song.wav")
+		else:
+			self.pause_playback()
+
 
 	def pause_playback(self):
 		device = self.find_device()

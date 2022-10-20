@@ -1,5 +1,15 @@
 # Holo-assistant
-This repo houses code for what will hopefully one day be a voice-activated virtual assistant with a simple holographic display. Currently, though, it's just a bunch of bits and pieces.
+This repo houses code for what will hopefully one day be a voice-activated virtual assistant with a simple holographic display. 
+
+
+
+
+
+https://user-images.githubusercontent.com/3848662/191604840-3753f7b8-5d2e-4af8-b8cb-4f3f4bc90a3f.mp4
+
+
+
+
 
 ## About the project
 Currently, I have the following:
@@ -11,7 +21,7 @@ Currently, I have the following:
 - A simple shader to perspective-correct the character based on Roxanne Luo's [Pepper's Cone](https://github.com/roxanneluo/Pepper-s-Cone-Unity)
 
 ## Roadmap
-Eventually, this is meant to be run on a Raspberry Pi with all the hardware and stuff to make it a holographic virtual assistant. Will it get there? Probably not.
+Better documentation (including roadmap!) coming soon.
 
 ## Platforms
 This project is developed on an M1 Mac running MacOs 12.3.
@@ -23,7 +33,7 @@ Requirements for serverAudio are recorded in serverAudio/requirements.txt. You m
 
 For clientCharacter, make sure you install [Raylib](https://github.com/raysan5/raylib).
 
-I used a homebrew installation of Raylib on Mac, and for Raspberry Pi, I installed used `make install PLATFORM=PLATFORM_DESKTOP GRAPHICS=GRAPHICS_API_OPENGL_21`.
+I used a homebrew installation of Raylib on Mac, and for Raspberry Pi, I installed used `sudo make install PLATFORM=PLATFORM_DESKTOP GRAPHICS=GRAPHICS_API_OPENGL_21`.
 
 
 ## Compiling and Running
@@ -38,11 +48,11 @@ Though replace `holovenv` with your own virtual env path. :wink:
 
 On a Mac, you can compile and run the client/3D character with
 ```
-cd clientCharacter && cc holoAssistant.c character.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib` -o HoloAssistant && ./HoloAssistant
+cd clientCharacter && cc holoAssistant.c character.c stopWatch.c -framework IOKit -framework Cocoa -framework OpenGL `pkg-config --libs --cflags raylib` -o HoloAssistant && ./HoloAssistant
 ```
 
 On a Raspberry Pi 4, you can compile and run the client/3D character with
 ```
-cd clientCharacter && cc holoAssistant.c character.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -o HoloAssistant && ./HoloAssistant 
+cd clientCharacter && cc holoAssistant.c character.c stopWatch.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -o HoloAssistant && ./HoloAssistant 
 ```
 If you are ssh-ing in, you may need to run `export DISPLAY=:0.0` before using the call above.

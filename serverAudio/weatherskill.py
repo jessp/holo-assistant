@@ -2,13 +2,13 @@ import json
 import geograpy
 import requests
 import urllib.parse
-from charactermodule import CharacterModule
+from charactercontroller import CharacterController
 
 
 
-class WeatherModule(CharacterModule):
-	def __init__(self, connection, global_timer, google_key, weather_key):
-		super().__init__(connection, global_timer, google_key)
+class WeatherSkill(CharacterController):
+	def __init__(self, connection, global_timer, google_key, callback, terms, weather_key):
+		super().__init__(connection, global_timer, google_key, callback, terms)
 		self.weather_key = weather_key
 
 	def listen(self, heard):
