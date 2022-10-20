@@ -75,7 +75,7 @@ function App() {
             <p className={"bold"}>APIs</p>
             <ul>
               <li>Signing up for <a href="https://www.weatherapi.com/" target="blank">WeatherAPI.com</a> is pretty straight-forward</li>
-              <li>Sign up for a <a href="https://developer.spotify.com/" target="blank">Spotify developer account</a>. Create an app. Under the app's settings, enter http://localhost:9876 under Redirect URIs</li>
+              <li>Sign up for a <a href="https://developer.spotify.com/" target="blank">Spotify developer account</a>. Create an app. Under the app's settings, enter http://localhost:9876 under Redirect URIs.</li>
               <li>Sign up for <a href="https://console.cloud.google.com/" target="blank">Google Cloud's</a> Text-to-Speech service. </li>
               <ul>
                 <li>I find that Google Cloud's services a bit tricky to navigate, so I recommend following the steps <a href="https://acloudguru.com/hands-on-labs/setting-up-google-cloud-text-to-speech" target="blank">here</a> under the headings "Enable the Cloud Text-to-Speech API" and "Set Up Service Account."</li>
