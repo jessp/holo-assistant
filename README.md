@@ -1,12 +1,11 @@
 # Holo-assistant
-This repo houses code for what will hopefully one day be a voice-activated virtual assistant with a simple holographic display. 
+This repo houses code for what will hopefully one day be a voice-activated virtual assistant with a simple holographic display. This README contains some basic instructions for running Maria, but I'm working on putting more thorough documentation online on [this website](https://jessp.github.io/holo-assistant/).
 
 
 
 
 
 https://user-images.githubusercontent.com/3848662/191604840-3753f7b8-5d2e-4af8-b8cb-4f3f4bc90a3f.mp4
-
 
 
 
