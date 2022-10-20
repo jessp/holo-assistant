@@ -1,7 +1,7 @@
 {
   "main.css": "/holo-assistant/static/css/main.7f89d3eb.chunk.css",
-  "main.js": "/holo-assistant/static/js/main.a694b64f.chunk.js",
-  "main.js.map": "/holo-assistant/static/js/main.a694b64f.chunk.js.map",
+  "main.js": "/holo-assistant/static/js/main.8eb935b9.chunk.js",
+  "main.js.map": "/holo-assistant/static/js/main.8eb935b9.chunk.js.map",
   "static/js/1.597585ec.chunk.js": "/holo-assistant/static/js/1.597585ec.chunk.js",
   "static/js/1.597585ec.chunk.js.map": "/holo-assistant/static/js/1.597585ec.chunk.js.map",
   "runtime~main.js": "/holo-assistant/static/js/runtime~main.c6b59ac9.js",
@@ -14,6 +14,6 @@
   "static/media/App.css": "/holo-assistant/static/media/sparkle.494d81cc.svg",
   "static/css/main.7f89d3eb.chunk.css.map": "/holo-assistant/static/css/main.7f89d3eb.chunk.css.map",
   "index.html": "/holo-assistant/index.html",
-  "precache-manifest.2e7a10e09af132df4cf941060b30397d.js": "/holo-assistant/precache-manifest.2e7a10e09af132df4cf941060b30397d.js",
+  "precache-manifest.8b3b8f3d986811be9debf9695e794356.js": "/holo-assistant/precache-manifest.8b3b8f3d986811be9debf9695e794356.js",
   "service-worker.js": "/holo-assistant/service-worker.js"
 }
