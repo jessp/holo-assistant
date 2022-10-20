@@ -95,7 +95,7 @@ function App() {
           </Step>
           <Step title={"Compile and install Raylib"} index={5}>
             <p>Via SSH, navigate outside of your holo-assistant directory to where you want to download <a href="https://www.raylib.com/" target="blank">Raylib</a> to. Raylib is the 3D library used to animate Maria.</p>
-            <p>Download Raylib using <code>https://github.com/raysan5/raylib</code>. Navigate into your newly download Raylib folder.</p>
+            <p>Download Raylib using <code>git clone https://github.com/raysan5/raylib</code>. Navigate into your newly download Raylib folder.</p>
             <p>Raylib has a <a href="https://github.com/raysan5/raylib/wiki/Working-on-Raspberry-Pi" target="blank">pretty great Wiki</a> on installing Raylib on Raspberry Pi.</p>
             <p>At the risk of reiterating these steps, do the following:</p>
             <ul>
