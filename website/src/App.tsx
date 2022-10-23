@@ -4,6 +4,7 @@ import logo from './assets/maria.svg';
 import instructionsTitle from './assets/instructions.svg';
 import bottomFrame from './assets/bottom-ornamental-frame.svg';
 import topFrame from './assets/top-ornamental-frame.svg';
+import nameFrame from './assets/name-border.svg';
 import drawing from './assets/drawing.png';
 import './App.css';
 
@@ -29,7 +30,7 @@ function App() {
             <img src={instructionsTitle} className="fullWidth" alt="" />
             <p className="navList">
               <span><a href="#step-1">Clone my Github repo</a></span>
-              <span><a href="#step-2">Assemble your materials</a></span>
+              <span><a href="#step-2">Get your materials ready</a></span>
               <span><a href="#step-3">Sign up for APIs</a></span>
               <span><a href="#step-4">Install Python Dependencies</a></span>
               <span><a href="#step-5">Compile and install Raylib</a></span>
@@ -40,12 +41,19 @@ function App() {
             </p>
           </nav>
         <main>
+
+          <div className="nameCredit">
+            <img src={nameFrame} className="" alt="" />
+              <p>A project by <a href="https://awardwinninghuman.com/" target="blank">J. Peter</a></p>
+            <img src={nameFrame} style={{"transform": "scaleY(-1)"}} className="" alt="" />
+          </div>
+
           <Step title={"Clone my Github repo"} index={1}>
             <p>Power up your Raspberry Pi. <a href="https://www.howtogeek.com/768053/how-to-ssh-into-your-raspberry-pi/" target="blank">SSH into your Pi from a computer on the same network.</a></p>
             <p>In your terminal, navigate to whichever directory you want to run Maria from. It doesn't really matter. Clone my Github repository into your folder.</p>
             <p>That might look something like <code>cd Documents && git clone https://github.com/jessp/holo-assistant.git</code>.</p>
           </Step>
-          <Step title={"Assemble your materials"} index={2}>
+          <Step title={"Get your materials ready"} index={2}>
             <p>I wanted Maria to be as easy and affordable to assemble as possible. That said, you need some things to get started. 
             I've linked to some of the specific items I used (no affiliate links), but please consider alternatives that might be easier 
             to source for you.</p>
@@ -97,7 +105,7 @@ function App() {
             <p>Via SSH, navigate outside of your holo-assistant directory to where you want to download <a href="https://www.raylib.com/" target="blank">Raylib</a> to. Raylib is the 3D library used to animate Maria.</p>
             <p>Download Raylib using <code>git clone https://github.com/raysan5/raylib</code>. Navigate into your newly download Raylib folder.</p>
             <p>Raylib has a <a href="https://github.com/raysan5/raylib/wiki/Working-on-Raspberry-Pi" target="blank">pretty great Wiki</a> on installing Raylib on Raspberry Pi.</p>
-            <p>At the risk of reiterating these steps, do the following:</p>
+            <p>At the risk of mostly reiterating the steps described in the Wiki entry, I did the following:</p>
             <ul>
               <li>Run <code>sudo apt-get install --no-install-recommends raspberrypi-ui-mods lxterminal gvfs</code></li>
               <li>Run <code>sudo apt-get install libx11-dev libxcursor-dev libxinerama-dev libxrandr-dev libxi-dev libasound2-dev mesa-common-dev libgl1-mesa-dev</code></li>
@@ -109,7 +117,7 @@ function App() {
             <p>Plug your crappy keyboard and mouse into your Raspberry Pi. If you haven't already, attach your screen, microphone, and speaker as well.</p>
             <p>Use Raspberry Pi's settings to rotate your screen orientation and select your speakers as your audio output. I promise, it's so much easier using the GUI than trying to do this over SSH.</p>
             <p>Open the terminal on your Raspberry Pi. Navigate into holo-assistant. Run <code>cd serverAudio && ./../holovenv/bin/python runmefirst.py</code>.</p>
-            <p>The main thing runmefirst.py does is trigger the Spotify authentication to trigger, which must be done within the browser of the device you are using it on. It also includes some calls to attempt to trigger a geography library we use, <a href="https://geograpy3.readthedocs.io/en/latest/" target="blank">geograpy3</a>, to download some essential place-name data we need before we can use it. But that call is pretty hit and miss, and doesn't impact our ability to run Maria.</p>
+            <p>The main thing runmefirst.py does is trigger the Spotify authentication process, which must be done within the browser of the device you are using it on. It also includes some calls to attempt to trigger a geography library we use, <a href="https://geograpy3.readthedocs.io/en/latest/" target="blank">geograpy3</a>, to download some essential place-name data we need before we can use it. But that call is pretty hit and miss, and doesn't impact our ability to run Maria.</p>
             <p>Unplug your keyboard and mouse.</p>
           </Step>
           <Step title={"Build Maria's home"} index={7}>
@@ -118,7 +126,7 @@ function App() {
           <Step title={"Run Maria"} index={8}>
             <p>Open two terminal tabs that both are SSH-ing into your Raspberry Pi.</p><p>In both tabs, navigate into holo-assistant. In one, run <code>cd serverAudio && ./../holovenv/bin/python main.py</code>. In the other, run <code>cd clientCharacter && cc holoAssistant.c character.c stopWatch.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -o HoloAssistant && ./HoloAssistant</code>.</p>
           </Step>
-          <Step title={"Enjoy asking Maria about cool stuff"} index={9}>
+          <Step title={"Ask Maria to do stuff"} index={9}>
             <p>TODO</p>
           </Step>
         </main>

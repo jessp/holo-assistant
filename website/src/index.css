@@ -40,6 +40,10 @@ a {
   color: #bd2929;
 }
 
+ul {
+  padding-inline-start: var(--big-margin);
+}
+
 .sr-only {
   border: 0 !important;
   clip: rect(1px, 1px, 1px, 1px) !important; 

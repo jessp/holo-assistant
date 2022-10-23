@@ -30,7 +30,11 @@
 	margin-bottom: 1em;
 }
 
-.step:nth-child(even) h3 {
+.step:nth-child(3n - 1) h3 {
+	color: var(--mid-red);
+}
+
+.step:nth-child(3n) h3 {
 	color: var(--mid-blue);
 }
 
@@ -43,7 +47,7 @@
 	    font-size: 0.7em;
 	    height: 1.5em;
 	    flex: 0 0 2em;
-	    background-image: url('~./../assets/dark-heart.svg');
+	    background-image: url('~./../assets/dark-blue-heart.svg');
 	    background-size: contain;
   		background-repeat: no-repeat;
   		background-position: 50% 54%;
@@ -53,8 +57,12 @@
   		color: var(--bg);
 	}
 
-	.step:nth-child(even) h3:before {
-  		background-image: url('~./../assets/mid-heart.svg');
+	.step:nth-child(3n - 1) h3:before {
+  		background-image: url('~./../assets/mid-red-heart.svg');
+	}
+
+	.step:nth-child(3n) h3:before {
+  		background-image: url('~./../assets/mid-blue-heart.svg');
 	}
 	
 

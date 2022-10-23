@@ -36,7 +36,7 @@ h1, h2, h3 {
 h2 {
   font-size: 4.25em;
   line-height: 95%;
-  color: var(--mid-blue);
+  color: var(--dark-blue);
 }
 
 h3 {
@@ -77,7 +77,16 @@ ul {
 
 .navList span {
   counter-increment: small-step 1;
+  z-index: 3;
+  text-shadow: 0px 0px var(--dark-red);
+  transition: text-shadow 0.25s,;
 }
+
+.navList span:hover {
+  text-shadow: 1px 1px var(--dark-red);
+  transition: text-shadow 0.25s;
+}
+
 
 .navList span a {
   position: relative;
@@ -102,14 +111,15 @@ ul {
   vertical-align: bottom;
   width: 1.9em;
   text-align: center;
-  background-image: url('~./assets/dark-heart.svg');
+  background-image: url('~./assets/dark-blue-heart.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: 50% 54%;
   margin: 0 var(--small-margin) 0 0;
   color: var(--bg);
   background-color: var(--bg);
-  z-index: 3;
+  z-index: 5;
+  position: relative;
 }
 
 
@@ -134,6 +144,10 @@ ul {
   transition: left 3s, opacity 1s, top  3s;
 }
 
+.navList span:nth-last-child(-n+2):hover:after {
+  top:  5%;
+}
+
 
 .navList span:nth-child(3n - 1), .navList span:nth-child(3n - 1) a {
   color: var(--mid-red);
@@ -143,8 +157,12 @@ ul {
   color: var(--mid-blue);
 }
 
-.navList span:nth-child(even):before {
-  background-image: url('~./assets/mid-heart.svg');
+.navList span:nth-child(3n - 1):before {
+  background-image: url('~./assets/mid-red-heart.svg');
+}
+
+.navList span:nth-child(3n):before {
+  background-image: url('~./assets/mid-blue-heart.svg');
 }
 
 .overlay {
@@ -169,6 +187,21 @@ ul {
   width: 75%;
 }
 
+.nameCredit {
+  color: var(--dark-red);
+  font-size: 1.5em;
+  text-align: center;
+  padding-bottom: 2em;
+}
+
+.nameCredit p {
+  margin: 0em auto 0.2em auto;
+}
+
+.nameCredit img {
+  width:  max(45%, 200px);
+}
+
 @media all and (max-width: 1200px) {
   .navList span:before {
     background-image: none;
@@ -177,7 +210,12 @@ ul {
     color: var(--dark-blue);
   }
 
-  .navList span:nth-child(even):before {
+  .navList span:nth-child(3n - 1):before {
+    background-image: none;
+    color: var(--mid-red);
+  }
+
+  .navList span:nth-child(3n):before {
     background-image: none;
     color: var(--mid-blue);
   }
