@@ -247,7 +247,7 @@ ul {
   }
 
   .nameBanner {
-    padding-bottom: var(--small-margin);
+    padding-bottom: 0px;
   }
 
   .nameBanner div > img {
