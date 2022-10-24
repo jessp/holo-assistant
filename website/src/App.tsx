@@ -42,12 +42,6 @@ function App() {
           </nav>
         <main>
 
-          <div className="nameCredit">
-            <img src={nameFrame} className="" alt="" />
-              <p>A project by <a href="https://awardwinninghuman.com/" target="blank">J. Peter</a></p>
-            <img src={nameFrame} style={{"transform": "scaleY(-1)"}} className="" alt="" />
-          </div>
-
           <Step title={"Clone my Github repo"} index={1}>
             <p>Power up your Raspberry Pi. <a href="https://www.howtogeek.com/768053/how-to-ssh-into-your-raspberry-pi/" target="blank">SSH into your Pi from a computer on the same network.</a></p>
             <p>In your terminal, navigate to whichever directory you want to run Maria from. It doesn't really matter. Clone my Github repository into your folder.</p>
@@ -60,7 +54,7 @@ function App() {
             <p className={"bold"}>Materials</p>
             <ul>
               <li>Raspberry Pi 4B running a recent Raspberry Pi OS</li>
-              <li>Micro SD card, for your Raspberry Pi</li>
+              <li>Micro SD card and charger, for your Raspberry Pi</li>
               <li>The cheapest keyboard you can find, for set-up</li>
               <li>The cheapest mouse you can find, for set-up</li>
               <li><a href="https://thepihut.com/products/3-2-ips-hdmi-lcd-display-for-raspberry-pi-480x800" target="blank">A 3.2", 800x400 screen, ideally one that connects over HDMI</a></li>

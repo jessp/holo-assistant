@@ -187,20 +187,6 @@ ul {
   width: 75%;
 }
 
-.nameCredit {
-  color: var(--dark-red);
-  font-size: 1.5em;
-  text-align: center;
-  padding-bottom: 2em;
-}
-
-.nameCredit p {
-  margin: 0em auto 0.2em auto;
-}
-
-.nameCredit img {
-  width:  max(45%, 200px);
-}
 
 @media all and (max-width: 1200px) {
   .navList span:before {
