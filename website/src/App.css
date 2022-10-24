@@ -253,6 +253,11 @@ ul {
 
   .nameBanner p {
     font-size: 2.5em;
+    margin: 0 0.75em;
+  }
+
+  .nameBanner div > img {
+    height: 65%;
   }
 }
 
