@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "9cbe26059e3a96eb8f78",
-    "url": "/holo-assistant/static/css/main.4aa2d4c9.chunk.css"
+    "revision": "40ba687dc1bbecf00c10",
+    "url": "/holo-assistant/static/css/main.b3e6c528.chunk.css"
   },
   {
-    "revision": "9cbe26059e3a96eb8f78",
-    "url": "/holo-assistant/static/js/main.9cbe2605.chunk.js"
+    "revision": "40ba687dc1bbecf00c10",
+    "url": "/holo-assistant/static/js/main.40ba687d.chunk.js"
   },
   {
     "revision": "a9355e28037227211257",
@@ -16,8 +16,8 @@ self.__precacheManifest = [
     "url": "/holo-assistant/static/js/runtime~main.c6b59ac9.js"
   },
   {
-    "revision": "b567b909029e4aaabb6b1724c5023ea6",
-    "url": "/holo-assistant/static/media/name-border.b567b909.svg"
+    "revision": "709c8d163c822d04eafdd7eb47c62154",
+    "url": "/holo-assistant/static/media/name-border.709c8d16.svg"
   },
   {
     "revision": "fc18eb3c29c6b914d9bfb2b0e584210c",
@@ -36,8 +36,8 @@ self.__precacheManifest = [
     "url": "/holo-assistant/static/media/top-ornamental-frame.333e6965.svg"
   },
   {
-    "revision": "8545286bb16cd68fe80fb5036fb2b6b6",
-    "url": "/holo-assistant/static/media/drawing.8545286b.png"
+    "revision": "d38372b0bcf6b655b1b716feda8e5df0",
+    "url": "/holo-assistant/static/media/drawing.d38372b0.png"
   },
   {
     "revision": "247fb03de125b25907d32456239b645e",
@@ -56,7 +56,7 @@ self.__precacheManifest = [
     "url": "/holo-assistant/static/media/sparkle.052fd1ae.svg"
   },
   {
-    "revision": "1401b0e34471f4f92dfe9909a4d11fa3",
+    "revision": "aa5459d6344818a0d03d2cd3cf611e10",
     "url": "/holo-assistant/index.html"
   }
 ];

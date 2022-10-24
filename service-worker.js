@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/holo-assistant/precache-manifest.7153201612ae3ec2afaaab9d8fdce8ed.js"
+  "/holo-assistant/precache-manifest.303cff31957035b0c4ebcb20b4f085d3.js"
 );
 
 workbox.clientsClaim();
