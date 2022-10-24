@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "40ba687dc1bbecf00c10",
-    "url": "/holo-assistant/static/css/main.b3e6c528.chunk.css"
+    "revision": "a368304ccc44d551c06c",
+    "url": "/holo-assistant/static/css/main.d907a8d9.chunk.css"
   },
   {
-    "revision": "40ba687dc1bbecf00c10",
-    "url": "/holo-assistant/static/js/main.40ba687d.chunk.js"
+    "revision": "a368304ccc44d551c06c",
+    "url": "/holo-assistant/static/js/main.a368304c.chunk.js"
   },
   {
     "revision": "a9355e28037227211257",
@@ -56,7 +56,7 @@ self.__precacheManifest = [
     "url": "/holo-assistant/static/media/sparkle.052fd1ae.svg"
   },
   {
-    "revision": "aa5459d6344818a0d03d2cd3cf611e10",
+    "revision": "86fa7529c70c459a1129573572d9154b",
     "url": "/holo-assistant/index.html"
   }
 ];
