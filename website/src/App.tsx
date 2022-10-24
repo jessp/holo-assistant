@@ -14,6 +14,17 @@ function App() {
     <div className="contentWrapper">
       <div className="content">
         <header>
+
+          <div className="nameBanner">
+            <div className="bannerLines">
+              <img src={nameFrame} alt="" />
+            </div>
+            <p>A Project by <a href="https://awardwinninghuman.com/" target="blank">J. Peter</a></p>
+            <div className="bannerLines">
+              <img src={nameFrame} alt="" />
+            </div>
+          </div>
+
           <img src={logo} className="fullWidth" alt="" />
           <h1 className="sr-only">Maria</h1>
           <h2>An anime-inspired holo&shy;graphic virtual assis&shy;tant you can make at home!</h2>

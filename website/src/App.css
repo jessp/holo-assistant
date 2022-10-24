@@ -187,6 +187,30 @@ ul {
   width: 75%;
 }
 
+.nameBanner {
+  width: 100%;
+  display: flex;
+  padding-bottom: var(--big-margin);
+}
+
+.nameBanner div {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+}
+
+.nameBanner div > img {
+  width: 100%;
+  height: 85%;
+}
+
+.nameBanner p {
+  font-family: "Bungee";
+  margin: 0 1em;
+  color: var(--mid-red);
+  display: block;
+  white-space: nowrap;
+}
 
 @media all and (max-width: 1200px) {
   .navList span:before {
@@ -221,6 +245,18 @@ ul {
   .heroVideo {
     margin-top:  3.25em;
   }
+
+  .nameBanner {
+    padding-bottom: var(--small-margin);
+  }
+
+  .nameBanner div > img {
+    height: 100%;
+  }
+
+  .nameBanner p {
+    font-size: 2.5em;
+  }
 }
 
 @media all and (max-width: 500px) {
@@ -235,4 +271,5 @@ ul {
   .heroVideo {
     margin-top:  3.25em;
   }
+
 }
