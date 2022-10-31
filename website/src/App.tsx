@@ -5,6 +5,7 @@ import instructionsTitle from './assets/instructions.svg';
 import bottomFrame from './assets/bottom-ornamental-frame.svg';
 import topFrame from './assets/top-ornamental-frame.svg';
 import nameFrame from './assets/name-border.svg';
+import fullFrame from './assets/full-frame.svg';
 import drawing from './assets/drawing.png';
 import './App.css';
 
@@ -129,14 +130,27 @@ function App() {
           <Step title={"Build Maria's home"} index={7}>
             <p>Maria needs a place to live. All you need is cone made out of an acetate sheet of a paper, but you can also 3D print a special case if you so choose. The video below will walk you through how to assemble Maria's home.</p>
             <iframe className="video"
-            src="https://www.youtube.com/embed/dMH0bHeiRNg?modestbranding=1"
+            src="https://www.youtube.com/embed/ekxollSk66c?modestbranding=1"
+            title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope;"
             allowFullScreen
             ></iframe>
             <p className={"bold"}>Instructions</p>
             <ol type="i">
-              <li>Blah</li>
+              <li>Draw two circles on a sheet of acetate with the same centre point. The smaller circle has a radius of 1.5cm, while the larger circle has a radius of 9.7cm.</li>
+              <li>Draw a 90° angle extending from the centre of the circles.</li>
+              <li>Draw jagged rectangular "teeth" extending from one line making up the angle.</li>
+              <li>Cut out your shape. This will form your cone.</li>
+              <li>Tape your cone together so that your jagged teeth overlao with the other edge.</li>
+              <li>If you haven't already, plug in your screen to your Raspberry Pi.</li>
+              <li>Plug in your microphone to your Raspberry Pi.</li>
+              <li>Plug in your speaker to your Raspberry Pi. Place the speaker in the four corners that extend up from the base of the Pi case.</li>
+              <li>Position your Raspberry Pi on the raised platform. The bottom of the screen should face towards the speaker.</li>
+              <li>Plug your power cord into the Raspberry Pi, then put the lid of the base on. The screen should line up with the rectangular cut-away of the lid.</li>
+              <li>Position your cone on the lid of the case. The bottom third of the narrow end of the cone should overlap with the screen.</li>
+              <li>Place the cage over your cone. The gap in the cage should face the side of the case the power cable extends from.</li>
+              <li>Finally, place the cap over the cage.</li>
             </ol>
           </Step>
           <Step title={"Run Maria"} index={8}>

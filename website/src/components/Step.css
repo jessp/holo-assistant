@@ -17,7 +17,7 @@
 
 .step h3:before {
     content: counter(big-step);
-    font-family: "Bungee Inline", sans-serif;
+    font-family: var(--Bungee-inline-text-stack);
     font-weight: normal;
     font-size: 2.4em;
     display: flex;
@@ -40,8 +40,6 @@
 
 
 @media all and (min-width: 1200px) {
-	.step h3 {
-	}
 
 	.step h3:before {
 	    font-size: 0.7em;

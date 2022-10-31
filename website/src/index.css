@@ -9,6 +9,8 @@
   --dark-red: #D85858;
   --mid-red: #DA7A7A;
   --bg: #FAF2E6;
+  --Bungee-text-stack: "Bungee", "Bungee Inline", sans-serif;
+  --Bungee-inline-text-stack: "Bungee Inline", "Bungee", sans-serif;
 }
 
 html {
@@ -17,8 +19,7 @@ html {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, 'Work Sans', 'Helvetica Neue', 'Helvetica', 'Arial',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
