@@ -59,6 +59,11 @@ ul {
   margin-bottom: var(--big-margin);
 }
 
+.video {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+
 .heroVideo {
   aspect-ratio: 16 / 9;
   width: 100%;
@@ -177,7 +182,6 @@ ul {
   height: 104.5%;
   left: -2.25%;
   top: -2.25%;
-
 }
 
 .drawing {

@@ -80,6 +80,7 @@ function App() {
                 <li>Cap for cage, printed in PLA FDM</li>
               </ul>
             </ul>
+
             <p>I note that the case is optional because, honestly, it's a bit pricy to 3D print, and my modelling skills aren't great.
             you can absolutely use those files, but I also encourage you to be creative with whatever materials you have around.</p>
           </Step>
@@ -126,7 +127,17 @@ function App() {
             <p>Unplug your keyboard and mouse.</p>
           </Step>
           <Step title={"Build Maria's home"} index={7}>
-            <p>TODO</p>
+            <p>Maria needs a place to live. All you need is cone made out of an acetate sheet of a paper, but you can also 3D print a special case if you so choose. The video below will walk you through how to assemble Maria's home.</p>
+            <iframe className="video"
+            src="https://www.youtube.com/embed/dMH0bHeiRNg?modestbranding=1"
+            frameBorder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope;"
+            allowFullScreen
+            ></iframe>
+            <p className={"bold"}>Instructions</p>
+            <ol type="i">
+              <li>Blah</li>
+            </ol>
           </Step>
           <Step title={"Run Maria"} index={8}>
             <p>Open two terminal tabs that both are SSH-ing into your Raspberry Pi.</p><p>In both tabs, navigate into holo-assistant. In one, run <code>cd serverAudio && ./../holovenv/bin/python main.py</code>. In the other, run <code>cd clientCharacter && cc holoAssistant.c character.c stopWatch.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -o HoloAssistant && ./HoloAssistant</code>.</p>
