@@ -121,14 +121,14 @@ function App() {
             <p>If you end up faffing around with nothing working, try enabling x11 forwarding on your Pi per <a href="https://techsphinx.com/raspberry-pi/enable-x11-forwarding-on-raspberry-pi/" target="blank">this article</a>. I never quite confirmed if it was necessary for Raylib.</p>
           </Step>
           <Step title={"Prep your Raspberry Pi for use"} index={6}>
-            <p>Plug your crappy keyboard and mouse into your Raspberry Pi. If you haven't already, attach your screen as well.</p>
+            <p>Plug your crappy keyboard and mouse into your Raspberry Pi. If you haven't already, connect your screen as well.</p>
             <p>Use Raspberry Pi's settings to rotate your screen orientation and select your speakers as your audio output. I promise, it's so much easier using the GUI than trying to do this over SSH.</p>
             <p>Open the terminal on your Raspberry Pi. Navigate into holo-assistant. Run <code>cd serverAudio && ./../holovenv/bin/python runmefirst.py</code>.</p>
             <p>The main thing runmefirst.py does is trigger the Spotify authentication process, which must be done within the browser of the device you are using it on. It also includes some calls to attempt to trigger a geography library we use, <a href="https://geograpy3.readthedocs.io/en/latest/" target="blank">geograpy3</a>, to download some essential place-name data we need before we can use it. But that call is pretty hit and miss, and doesn't impact our ability to run Maria.</p>
             <p>Unplug your keyboard and mouse.</p>
           </Step>
           <Step title={"Build Maria's home"} index={7}>
-            <p>Maria needs a place to live. All you need is cone made out of an acetate sheet of a paper, but you can also 3D print a special case if you so choose. The video below will walk you through how to assemble Maria's home.</p>
+            <p>Maria needs a place to live. All you need is cone made out of an acetate sheet of a paper, but you can also 3D print a special case if you so choose. The video below will walk you through how to assemble Maria's home, and the steps are written out after.</p>
             <iframe className="video"
             src="https://www.youtube.com/embed/ekxollSk66c?modestbranding=1"
             title="YouTube video player"
