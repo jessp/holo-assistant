@@ -57,7 +57,7 @@ function App() {
               </ul>
 
               <p>I note that the case is optional because, honestly, it's a bit pricy to 3D print, and my modelling skills aren't great.
-              you can absolutely use those files, but I also encourage you to be creative with whatever materials you have around.</p>
+              You can absolutely use those files, but I also encourage you to be creative with whatever materials you have around.</p>
             </Step>
             <Step title={"Sign up for APIs"} index={3}>
               <p>Maria is powered by a few different APIs. You'll need to sign up for accounts in order to interact with her.</p>
