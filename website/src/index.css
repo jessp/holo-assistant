@@ -26,6 +26,7 @@ body {
   background-color: var(--bg);
   font-size: min(calc(3px + 0.825vw), 16px);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 code {
