@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.736ef2b8.css",
-    "main.js": "/static/js/main.c04c650b.js",
+    "main.css": "/static/css/main.18bf3442.css",
+    "main.js": "/static/js/main.817a1f19.js",
     "static/media/drawing.png": "/static/media/drawing.f7875f2d3823d95bcaae.png",
     "static/media/sparkle.svg": "/static/media/sparkle.656a4f2c1af6e98b19b7.svg",
     "static/media/bottom-ornamental-frame.svg": "/static/media/bottom-ornamental-frame.4bd22376ac33d9c033959e6432a43b07.svg",
@@ -10,14 +10,14 @@
     "static/media/maria.svg": "/static/media/maria.c160979574997917adecf4975ce880c8.svg",
     "static/media/name-border.svg": "/static/media/name-border.3175cb86005a37992baa0c13d24b0508.svg",
     "index.html": "/index.html",
-    "static/media/dark-blue-heart.svg": "/static/media/dark-blue-heart.53996c50b0912b011c6e.svg",
+    "static/media/dark-blue-heart.svg": "/static/media/dark-blue-heart.29b1b61dba86a4441764.svg",
     "static/media/mid-blue-heart.svg": "/static/media/mid-blue-heart.390c8a384dbac8639e09.svg",
     "static/media/mid-red-heart.svg": "/static/media/mid-red-heart.ea0f7fa51d9fb5c33ea8.svg",
-    "main.736ef2b8.css.map": "/static/css/main.736ef2b8.css.map",
-    "main.c04c650b.js.map": "/static/js/main.c04c650b.js.map"
+    "main.18bf3442.css.map": "/static/css/main.18bf3442.css.map",
+    "main.817a1f19.js.map": "/static/js/main.817a1f19.js.map"
   },
   "entrypoints": [
-    "static/css/main.736ef2b8.css",
-    "static/js/main.c04c650b.js"
+    "static/css/main.18bf3442.css",
+    "static/js/main.817a1f19.js"
   ]
 }
