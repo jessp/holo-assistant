@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
+import Vimeo from '@u-wave/react-vimeo';
 import drawing from './../assets/drawing.png';
 import bottomFrame from './../assets/bottom-ornamental-frame.svg';
 import topFrame from './../assets/top-ornamental-frame.svg';
 import nameFrame from './../assets/name-border.svg';
 import logo from './../assets/maria.svg';
-
-import YouTube, { YouTubeProps } from 'react-youtube';
 
 
 class Header extends React.Component {
@@ -15,22 +14,11 @@ class Header extends React.Component {
     this.state = {
       showing: true
     };
+
   }
 
 
   render() {
-    const opts = {
-      playerVars: {
-        autoplay: 0,
-        controls: 1,
-        cc_load_policy: 0,
-        fs: 0,
-        iv_load_policy: 3,
-        modestbranding: 1,
-        rel: 0,
-        showinfo: 0
-      },
-    };
     return (
       <header>
 
@@ -49,14 +37,16 @@ class Header extends React.Component {
             <h2>An anime-inspired holo&shy;graphic virtual assis&shy;tant you can make at home!</h2>
             <div className="heroVideo">
               <div className="overlay">
+                <Vimeo
+                  video="https://vimeo.com/767444828"
+                  id="player"
+                  showByline={false}
+                  dnt={true}
+                  className="video"
+                  responsive
+                  onPlaying={() => this.setState({"showing": false})}
+                  onPause={() => this.setState({"showing": true})}/>
                 <img src={topFrame} className="frameOverlay" alt="" />
-                <YouTube videoId="ekxollSk66c" 
-                  opts={opts} 
-                  className="video" 
-                  onPlay={() => this.setState({"showing": false})}
-                  onPause={() => this.setState({"showing": true})}
-                  onPause={() => this.setState({"showing": true})}
-                  id="player" />
                 <img src={drawing} 
                   className={this.state.showing ? "drawing" : "drawing hide"} 
                   alt="An anime character says in Japanese 'I am powered by Raspberry Pi.'"/>

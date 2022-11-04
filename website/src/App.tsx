@@ -1,4 +1,5 @@
 import React from 'react';
+import Vimeo from '@u-wave/react-vimeo';
 import Header from './components/Header';
 import Step from './components/Step';
 import instructionsTitle from './assets/instructions.svg';
@@ -103,13 +104,13 @@ function App() {
             </Step>
             <Step title={"Build Maria's home"} index={7}>
               <p>Maria needs a place to live. All you need is cone made out of an acetate sheet of a paper, but you can also 3D print a special case if you so choose. The video below will walk you through how to assemble Maria's home, and the steps are written out after.</p>
-              <iframe className="video"
-              src="https://www.youtube.com/embed/ekxollSk66c?modestbranding=1"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-              allowFullScreen
-              ></iframe>
+              <Vimeo
+                  video="https://vimeo.com/767444828"
+                  id="player"
+                  showByline={false}
+                  dnt={true}
+                  className="video"
+                  responsive/>
               <p className={"bold"}>Instructions</p>
               <ol type="i">
                 <li>Draw two circles on a sheet of acetate with the same centre point. The smaller circle has a radius of 1.5cm, while the larger circle has a radius of 9.7cm.</li>
