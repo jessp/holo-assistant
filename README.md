@@ -19,9 +19,6 @@ Currently, I have the following:
     - Plays music using the Spotify API on a local device (not Sonos though :pensive:)
 - A simple shader to perspective-correct the character based on Roxanne Luo's [Pepper's Cone](https://github.com/roxanneluo/Pepper-s-Cone-Unity)
 
-## Roadmap
-Better documentation (including roadmap!) coming soon.
-
 ## Platforms
 This project is developed on an M1 Mac running MacOs 12.3.
 
