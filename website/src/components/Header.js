@@ -1,25 +1,32 @@
-import React, { Component } from 'react';
+import React, { useRef, useState } from 'react';
 import Vimeo from '@u-wave/react-vimeo';
 import drawing from './../assets/drawing.png';
 import bottomFrame from './../assets/bottom-ornamental-frame.svg';
 import topFrame from './../assets/top-ornamental-frame.svg';
 import nameFrame from './../assets/name-border.svg';
 import logo from './../assets/maria.svg';
+import heart from './../assets/beige-heart.svg';
 
 
-class Header extends React.Component {
+const Header = () => {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      showing: true
-    };
 
+  const [showing, setShowing] = useState(true);
+
+  const playerRef = useRef()
+
+  const onReady = player => {
+    playerRef.current = player
+  }
+
+  const buttonClick = e => {
+    if (playerRef.current && showing){
+      playerRef.current.play();
+    }
   }
 
 
-  render() {
-    return (
+  return (
       <header>
 
             <div className="nameBanner">
@@ -38,24 +45,30 @@ class Header extends React.Component {
             <div className="heroVideo">
               <div className="overlay">
                 <Vimeo
-                  video="https://vimeo.com/767444828"
+                  video="https://vimeo.com/768220002"
                   id="player"
                   showByline={false}
                   dnt={true}
                   className="video"
                   responsive
-                  onPlaying={() => this.setState({"showing": false})}
-                  onPause={() => this.setState({"showing": true})}/>
+                  onPlaying={() => setShowing(false)}
+                  onPause={() => setShowing(true)}
+                  onReady={onReady}/>
                 <img src={topFrame} className="frameOverlay" alt="" />
+                <button 
+                  className={showing ? "" : "hide"}
+                  onClick = {() => buttonClick()}>
+                  <img src={heart} alt=""/>
+                  <span>play video</span>
+                </button>
                 <img src={drawing} 
-                  className={this.state.showing ? "drawing" : "drawing hide"} 
+                  className={showing ? "drawing" : "drawing hide"} 
                   alt="An anime character says in Japanese 'I am powered by Raspberry Pi.'"/>
                 <img src={bottomFrame} className="frameOverlay" alt="" />
               </div>
             </div>
           </header>
     );
-  }
 }
 
 export default Header;

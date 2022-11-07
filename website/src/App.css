@@ -78,6 +78,52 @@ ul {
   margin:  2em 0;
 }
 
+.heroVideo button {
+  position: absolute;
+  top: 50%;
+  transform:  translate(0px, -50%);
+  left: 15%;
+  background-color: var(--dark-red);
+  display: inline-block;
+  border: none;
+  padding: min(1em, 1.25vw) min(4em, 5vw);
+  border-radius: 10px;
+  margin: 0;
+  text-decoration: none;
+  color: var(--bg);
+  font-family: sans-serif;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 150ms ease, box-shadow 150ms, opacity 1s, left 1s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-shadow: 8px 8px var(--mid-red);
+  opacity: 1;
+
+}
+
+.heroVideo button.hide {
+  left: -100%;
+  opacity: 0;
+  transition: left 1s, opacity 1s;
+}
+
+.heroVideo button:active {
+  box-shadow: 0px 0px var(--mid-red);
+  transform: translate(8px, calc(-50% + 8px));
+  transition: transform 150ms ease, box-shadow 150ms;
+}
+
+.heroVideo button img {
+  width: 4.5vw;
+  height: auto;
+}
+
+.heroVideo button span {
+  display: block;
+  font-size: 1.75em;
+}
+
 .navList {
   font-family: var(--Bungee-text-stack);
   font-size: 3em;
@@ -279,6 +325,18 @@ ul {
   .nameBanner div > img {
     height: 65%;
   }
+
+  .heroVideo button span {
+    font-size: 1em;
+  }
+
+  .heroVideo button {
+      box-shadow: 4px 4px var(--mid-red);
+  }
+
+  .heroVideo button:active {
+    transform: translate(4px, calc(-50% + 4px));
+  }
 }
 
 @media all and (max-width: 500px) {
@@ -292,6 +350,10 @@ ul {
 
   .heroVideo {
     margin-top:  3.25em;
+  }
+
+  .heroVideo button span {
+    font-size: 0.75em;
   }
 
   nav {

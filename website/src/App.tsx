@@ -25,7 +25,7 @@ function App() {
                 <span><a href="#step-6">Prep your Raspberry Pi for use</a></span>
                 <span><a href="#step-7">Build Maria's home</a></span>
                 <span><a href="#step-8">Run Maria</a></span>
-                <span><a href="#step-9">Enjoy asking Maria about cool stuff</a></span>
+                <span><a href="#step-9">Ask Maria for help</a></span>
               </p>
             </nav>
           <main>
@@ -33,6 +33,7 @@ function App() {
               <p>Power up your Raspberry Pi. <a href="https://www.howtogeek.com/768053/how-to-ssh-into-your-raspberry-pi/" target="blank">SSH into your Pi from a computer on the same network.</a></p>
               <p>In your terminal, navigate to whichever directory you want to run Maria from. It doesn't really matter. Clone my Github repository into your folder.</p>
               <p>That might look something like <code>cd Documents && git clone https://github.com/jessp/holo-assistant.git</code>.</p>
+              <p>Alternatively, you can download <a href="https://github.com/jessp/holo-assistant" target="blank">my code from here</a>.</p>
             </Step>
             <Step title={"Get your materials ready"} index={2}>
               <p>I wanted Maria to be as easy and affordable to assemble as possible. That said, you need some things to get started. 
@@ -131,9 +132,33 @@ function App() {
             <Step title={"Run Maria"} index={8}>
               <p>Open two terminal tabs that both are SSH-ing into your Raspberry Pi.</p><p>In both tabs, navigate into holo-assistant. In one, run <code>cd serverAudio && ./../holovenv/bin/python main.py</code>. In the other, run <code>cd clientCharacter && cc holoAssistant.c character.c stopWatch.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -o HoloAssistant && ./HoloAssistant</code>.</p>
             </Step>
-            <Step title={"Ask Maria to do stuff"} index={9}>
-              <p>TODO</p>
+            <Step title={"Ask Maria for help"} index={9}>
+              <p>Maria loves to help her friends. She's also a buggy work-in-progress, so there are some limitations as to what she can do. To get Maria's attention, say her name. Then ask her for help with any of the things below.</p>
+              <p className={"bold"}>Music</p>
+              <ul>
+                <li>Say "play" followed by the name of a song to play a song on Spotify</li>
+                <li>Use the phrase "as by" to specify a performer. For example, you might say "play 'The Man Who Sold the World' as by Nirvana"</li>
+                <li>Say "stop", "pause", or "cancel" the "song" or the "music" to stop playback</li>
+                <li>This only works on devices that you've very recently played Spotify music on</li>
+                <li>This doesn't work on Sonos devices unless you're using "AirPlay" or something similar</li>
+                <li>I'm using Vosk's English language model, so this works best with English song names</li>
+              </ul>
+              <p className={"bold"}>Weather</p>
+              <ul>
+                <li>If you just ask for the weather (e.g., "What's the weather?"), Maria will use your IP address to determine your location via WeatherAPI.com's API, and will say the weather for the rest of the day</li>
+                <li>Say "tomorrow" to specify's tomorrow's weather rather than today's</li>
+                <li>If you say "in" followed by a city name (e.g., "What's the weather in Paris?"), Maria will attempt to get weather in that location</li>
+              </ul>
+              <p className={"bold"}>Timer</p>
+              <ul>
+                <li>Maria can set timers while you go about other things</li>
+                <li>Say "stop" or "cancel" the "timer" to stop the timer</li>
+                <li>You can set the time in seconds, minutes, and hours</li>
+                <li>You cannot set a timer for longer than six hours</li>
+              </ul>
             </Step>
+
+            <p>Visit me on <a href="https://awardwinninghuman.com/" target="blank">my website</a>, or <a href="https://github.com/jessp" target="blank">Github</a>.</p>
           </main>
         </div>
       </div>
