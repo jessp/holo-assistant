@@ -1,5 +1,5 @@
 .contentWrapper {
-  margin:  0 auto;
+  margin:  0 auto var(--big-margin) auto;
   max-width: 1350px;
 }
 

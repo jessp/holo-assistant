@@ -51,10 +51,10 @@ function App() {
                 <li>Acetate sheets</li>
                 <li>3D-printed case (optional), including:</li>
                 <ul>
-                  <li>Box for Raspberry Pi and peripherals, printed in PLA FDM</li>
-                  <li>Lid for Raspberry Pi and peripherals, printed in PLA FDM</li>
-                  <li>Cage for surrounding cone, printed in PA12 Nylon MJF</li>
-                  <li>Cap for cage, printed in PLA FDM</li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/base.stl">Box for Raspberry Pi and peripherals, printed in PLA FDM</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/lid.stl">Lid for box containing Raspberry Pi and peripherals, printed in PLA FDM</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/top.stl">Cage for surrounding cone, printed in PA12 Nylon MJF</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/cap.stl">Cap for cage, printed in PLA FDM</a></li>
                 </ul>
               </ul>
 
@@ -104,7 +104,7 @@ function App() {
               <p>Unplug your keyboard and mouse.</p>
             </Step>
             <Step title={"Build Maria's home"} index={7}>
-              <p>Maria needs a place to live. All you need is cone made out of an acetate sheet of a paper, but you can also 3D print a special case if you so choose. The video below will walk you through how to assemble Maria's home, and the steps are written out after.</p>
+              <p>Maria needs a place to live. All you need is cone made out of an acetate sheet of a paper, but you can also <a href="https://github.com/jessp/holo-assistant/tree/main/case" target="blank">3D print a special case</a> if you so choose. The video below will walk you through how to assemble Maria's home, and the steps are written out after.</p>
               <Vimeo
                   video="https://vimeo.com/767444828"
                   id="player"
