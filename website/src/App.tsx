@@ -51,10 +51,10 @@ function App() {
                 <li>Acetate sheets</li>
                 <li>3D-printed case (optional), including:</li>
                 <ul>
-                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/base.stl">Box for Raspberry Pi and peripherals, printed in PLA FDM</a></li>
-                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/lid.stl">Lid for box containing Raspberry Pi and peripherals, printed in PLA FDM</a></li>
-                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/top.stl">Cage for surrounding cone, printed in PA12 Nylon MJF</a></li>
-                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/cap.stl">Cap for cage, printed in PLA FDM</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/base.stl" target="blank">Box for Raspberry Pi and peripherals, printed in PLA FDM</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/lid.stl" target="blank">Lid for box containing Raspberry Pi and peripherals, printed in PLA FDM</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/top.stl" target="blank">Cage for surrounding cone, printed in PA12 Nylon MJF</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/cap.stl" target="blank">Cap for cage, printed in PLA FDM</a></li>
                 </ul>
               </ul>
 
