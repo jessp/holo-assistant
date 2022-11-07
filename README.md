@@ -1,11 +1,11 @@
 # Holo-assistant
-This repo houses code for what will hopefully one day be a voice-activated virtual assistant with a simple holographic display. This README contains some basic instructions for running Maria, but I'm working on putting more thorough documentation online on [this website](http://maria.awardwinninghuman.com/).
+This repo houses code for Maria: an anime-inspired holographic virtual assistant than runs on a Raspberry Pi 4B. This README contains some basic instructions for running Maria, but I'm working on putting more thorough documentation online on [this website](http://maria.awardwinninghuman.com/).
 
 
 
 
+![maria_loop](https://user-images.githubusercontent.com/3848662/200412149-21e1398f-4635-4482-bc0f-957f53ed6800.gif)
 
-https://user-images.githubusercontent.com/3848662/191604840-3753f7b8-5d2e-4af8-b8cb-4f3f4bc90a3f.mp4
 
 
 
