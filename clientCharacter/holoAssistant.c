@@ -302,30 +302,37 @@ void *runClientThread(void* mySock)
             
         puts("Server reply :");
         puts(serverReply);
-        if (TextIsEqual(serverReply, "listen\n")) {
-            SetPose(1);
-        } 
-        if (TextIsEqual(serverReply, "exit listen\n")) {
-            SetPose(2);
-        } 
-        if (TextIsEqual(serverReply, "dab\n")) {
-            SetPose(3);
-        } 
-        if (TextIsEqual(serverReply, "wave\n")) {
-            SetPose(4);
-        } 
-        if (TextIsEqual(serverReply, "clock\n")) {
-            stopWatch.showing = true;
-        } 
-        if (TextIsEqual(serverReply, "exit clock\n")) {
-            stopWatch.fadeOut = true;
-        } 
-        if (TextIsEqual(serverReply, "talk\n")) {
-            SetTalk(true);
-        } 
-        if (TextIsEqual(serverReply, "exit talk\n")) {
-            SetTalk(false);
-        } 
+
+        char* tokenized = strtok(serverReply, "\n");
+     
+        while (tokenized != NULL) {
+            if (TextIsEqual(tokenized, "listen")) {
+                SetPose(1);
+            } 
+            if (TextIsEqual(tokenized, "exit listen")) {
+                SetPose(2);
+            } 
+            if (TextIsEqual(tokenized, "dab")) {
+                SetPose(3);
+            } 
+            if (TextIsEqual(tokenized, "wave")) {
+                SetPose(4);
+            } 
+            if (TextIsEqual(tokenized, "clock")) {
+                stopWatch.showing = true;
+            } 
+            if (TextIsEqual(tokenized, "exit clock")) {
+                stopWatch.fadeOut = true;
+            } 
+            if (TextIsEqual(tokenized, "talk")) {
+                SetTalk(true);
+            } 
+            if (TextIsEqual(tokenized, "exit talk")) {
+                SetTalk(false);
+            } 
+            tokenized = strtok(NULL, "\n");
+        }
+
         memset(serverReply, 0, 2000 * (sizeof serverReply[0]) );
     }
 }
