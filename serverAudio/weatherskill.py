@@ -22,14 +22,15 @@ class WeatherSkill(CharacterController):
 		
 
 	def get_condition(self, json_string, condition, is_tomorrow):
-		now_epoch = int(time.time())
+		#Get the current hour
+		now_epoch = int(time.time()) - (int(time.time())%3600)
 		for hour in json_string["hour"]:
-			if is_tomorrow or hour["time_epoch"] > now_epoch:
+			if is_tomorrow or hour["time_epoch"] >= now_epoch:
 				if condition == "rain" and hour["chance_of_rain"] > 50:
 					return hour["time"][-5:]
 				elif condition == "snow" and hour["chance_of_snow"] > 50:
 					return hour["time"][-5:]
-			return False
+		return False
 
 	def get_extreme(self, json_string, isHigh):
 		get_all_vals = [temp["temp_c"] for temp in json_string["hour"]]
