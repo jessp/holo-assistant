@@ -2,6 +2,7 @@ import json
 import geograpy
 import requests
 import urllib.parse
+import time    
 from charactercontroller import CharacterController
 
 
@@ -20,18 +21,23 @@ class WeatherSkill(CharacterController):
 			self.talk("latest_output.wav")
 		
 
-	def get_condition(self, json_string, condition):
+	def get_condition(self, json_string, condition, is_tomorrow):
+		#Get the current hour
+		now_epoch = int(time.time()) - (int(time.time())%3600)
 		for hour in json_string["hour"]:
-			if condition in hour["condition"]["text"].lower():
-				return hour["time"][-5:]
-			return False
+			if is_tomorrow or hour["time_epoch"] >= now_epoch:
+				if condition == "rain" and hour["chance_of_rain"] > 50:
+					return hour["time"][-5:]
+				elif condition == "snow" and hour["chance_of_snow"] > 50:
+					return hour["time"][-5:]
+		return False
 
 	def get_extreme(self, json_string, isHigh):
-			get_all_vals = [temp["temp_c"] for temp in json_string["hour"]]
-			if isHigh:
-				return max(get_all_vals)
-			else:
-				return min(get_all_vals)
+		get_all_vals = [temp["temp_c"] for temp in json_string["hour"]]
+		if isHigh:
+			return max(get_all_vals)
+		else:
+			return min(get_all_vals)
 
 	def get_weather(self, key, text):
 		weather_base_url = "http://api.weatherapi.com/v1/"
@@ -57,10 +63,10 @@ class WeatherSkill(CharacterController):
 			the_high = self.get_extreme(json_resp["forecast"]["forecastday"][when_var - 1], True)
 			the_low = self.get_extreme(json_resp["forecast"]["forecastday"][when_var - 1], False)
 			weather_string += "The high for %s will be %s degrees, and the low will be %s degrees."%(when_string,the_high,the_low)
-			rain_time = self.get_condition(json_resp["forecast"]["forecastday"][when_var - 1], "rain")
+			rain_time = self.get_condition(json_resp["forecast"]["forecastday"][when_var - 1], "rain", when_var - 1)
 			if (rain_time != False):
 				weather_string += " There may be rain starting at %s."%(rain_time)
-			snow_time = self.get_condition(json_resp["forecast"]["forecastday"][when_var - 1], "snow")
+			snow_time = self.get_condition(json_resp["forecast"]["forecastday"][when_var - 1], "snow", when_var - 1)
 			if (snow_time != False):
 				weather_string += " There may be snow starting at %s."%(snow_time)
 			print(weather_string)
