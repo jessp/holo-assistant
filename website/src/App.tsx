@@ -3,7 +3,6 @@ import Vimeo from '@u-wave/react-vimeo';
 import Header from './components/Header';
 import Step from './components/Step';
 import instructionsTitle from './assets/instructions.svg';
-import nameFrame from './assets/name-border.svg';
 import './App.css';
 
 
@@ -130,7 +129,9 @@ function App() {
               </ol>
             </Step>
             <Step title={"Run Maria"} index={8}>
-              <p>Open two terminal tabs that both are SSH-ing into your Raspberry Pi.</p><p>In both tabs, navigate into holo-assistant. In one, run <code>cd serverAudio && ./../holovenv/bin/python main.py</code>. In the other, run <code>cd clientCharacter && cc holoAssistant.c character.c stopWatch.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -o HoloAssistant && ./HoloAssistant</code>.</p>
+              <p>Open two terminal tabs that both are SSH-ing into your Raspberry Pi. In both tabs, navigate into holo-assistant.</p>
+              <p>In one, run <code>cd serverAudio && ./../holovenv/bin/python main.py</code>.</p>
+              <p>In the other, run <code>export DISPLAY=:0.0</code> and then <code>cd clientCharacter && cc holoAssistant.c character.c stopWatch.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -o HoloAssistant && ./HoloAssistant</code>.</p>
             </Step>
             <Step title={"Ask Maria for help"} index={9}>
               <p>Maria loves to help her friends. She's also a buggy work-in-progress, so there are some limitations as to what she can do. To get Maria's attention, say her name. Then ask her for help with any of the things below.</p>

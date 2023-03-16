@@ -1,5 +1,5 @@
 # Holo-assistant
-This repo houses code for Maria: an anime-inspired holographic virtual assistant than runs on a Raspberry Pi 4B. This README contains some basic instructions for running Maria, but I'm working on putting more thorough documentation online on [this website](http://maria.awardwinninghuman.com/).
+This repo houses code for Maria: an anime pseudo-holographic virtual assistant than runs on a Raspberry Pi 4B. This README contains some basic instructions for running Maria, but more thorough documentation is on [this website](http://maria.awardwinninghuman.com/).
 
 
 
@@ -17,7 +17,7 @@ Currently, I have the following:
     - Gives the current and the next day's weather using [weatherApi](https://www.weatherapi.com/) 
     - Runs a simple timer program
     - Plays music using the Spotify API on a local device (not Sonos though :pensive:)
-- A simple shader to perspective-correct the character based on Roxanne Luo's [Pepper's Cone](https://github.com/roxanneluo/Pepper-s-Cone-Unity)
+- A simple shader to perspective-correct the character based on Roxanne Luo's [Pepper's Cone](https://github.com/roxanneluo/Pepper-s-Cone-Unity) (based on the Pepper's ghost illusion)
 
 ## Platforms
 This project is developed on an M1 Mac running MacOs 12.3.

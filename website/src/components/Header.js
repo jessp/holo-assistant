@@ -41,7 +41,7 @@ const Header = () => {
 
             <img src={logo} className="fullWidth" alt="" />
             <h1 className="sr-only">Maria</h1>
-            <h2>An anime-inspired holo&shy;graphic virtual assis&shy;tant you can make at home!</h2>
+            <h2>An anime pseudo-holog&shy;raphic virtual assis&shy;tant you can make at home!</h2>
             <div className="heroVideo">
               <div className="overlay">
                 <Vimeo
