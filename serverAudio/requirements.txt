@@ -1,13 +1,13 @@
-geograpy3==0.2.3
-requests==2.28.1
-sounddevice==0.4.4
-SoundFile==0.10.3.post1
-vosk==0.3.43
-text2num==2.4.0
+geograpy3==0.2.5
+requests==2.28.2
+sounddevice==0.4.6
+SoundFile==0.12.1
+vosk==0.3.44
+text2num==2.5.0
 pydub==0.25.1
-google-cloud-storage==2.5.0
-google-cloud-texttospeech==2.12.1
+google-cloud-storage==2.7.0
+google-cloud-texttospeech==2.14.1
 # realistically, we only need the below on raspberry pi but i don't know how to target more effectively
-grpcio==1.44.0 --no-binary=grpcio; os_name == 'posix'
-grpcio-tools==1.44.0 --no-binary=grpcio-tools; os_name == 'posix'
-spotipy==2.20.0
+grpcio==1.51.3 --no-binary=grpcio; os_name == 'posix'
+grpcio-tools==1.51.3 --no-binary=grpcio-tools; os_name == 'posix'
+spotipy==2.22.1
