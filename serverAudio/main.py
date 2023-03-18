@@ -97,7 +97,9 @@ def main():
 							weather_module.hear_value(heard)
 							music_module.hear_value(heard)
 							timer_module.hear_value(heard)
+							heard = ""
 						else:
+							heard = ""
 							continue
 					else:
 						heard = json.loads(rec.PartialResult())["partial"]
