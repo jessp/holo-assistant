@@ -107,6 +107,7 @@ def main():
 							start_time = time.time()
 							t.cancel()
 							t.start()
+						heard = ""
 
 
 	except KeyboardInterrupt:
