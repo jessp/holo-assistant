@@ -81,7 +81,7 @@ def main():
 			music_module = MusicSkill(conn, t, config['DEFAULT']['googleFileLocation'], command_off, [["play"], ["stop", "music"], ["stop", "song"], ["cancel", "music"], ["cancel", "song"], ["pause", "music"], ["pause", "song"]], config['DEFAULT']['spotifyClientId'], config['DEFAULT']['spotifyClientSecret'], config['DEFAULT']['spotifyRedirectURL'])
 
 			with sd.RawInputStream(samplerate=sample_rate, blocksize = 0, 
-				dtype='int16', channels=1, latency=0.5, callback=callback):
+				dtype='int16', channels=1, latency=0.2, callback=callback):
 				print('#' * 80)
 				print('Press Ctrl+C to stop the recording')
 				print('#' * 80)
