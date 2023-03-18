@@ -29,17 +29,16 @@ class CharacterController:
 
 	def synthesize_text(self, text, out_name="./resources/sound_clips/latest_output.wav"):
 		"""Synthesizes speech from the input string of text."""
-		print("one")
+		print("starting simulation...")
 		import os
 		from google.cloud import texttospeech
 		os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = self.google_key
-		print("two")
+		
 
 		client = texttospeech.TextToSpeechClient()
-		print("three")
+		print("synthesizing step one...")
 
 		input_text = texttospeech.SynthesisInput(text=text)
-		print("four")
 
 		# Note: the voice can also be specified by name.
 		# Names of voices can be retrieved with client.list_voices().
@@ -53,14 +52,14 @@ class CharacterController:
 			audio_encoding=texttospeech.AudioEncoding.LINEAR16,
 			pitch=2.5
 		)
-		print("five")
+		print("synthesizing step two...")
 
 		response = client.synthesize_speech(
 			request={"input": input_text, "voice": voice, "audio_config": audio_config}
 		)
-		print("six")
+		print("outputting file...")
 
 		# The response's audio_content is binary.
 		with open(out_name, "wb") as out:
 			out.write(response.audio_content)
-			print("secen")
+			print("file exported")
