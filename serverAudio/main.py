@@ -14,6 +14,7 @@ from infinitetimer import InfiniteTimer
 from weatherskill import WeatherSkill
 from timerskill import TimerSkill
 from musicskill import MusicSkill
+from dictionaryskill import DictionarySkill
 
 
 logging.basicConfig(level=20)
@@ -79,6 +80,7 @@ def main():
 			weather_module = WeatherSkill(conn, t, config['DEFAULT']['googleFileLocation'], command_off, [["whether"], ["weather"]], config['DEFAULT']['weatherApiKey'])
 			timer_module = TimerSkill(conn, t, config['DEFAULT']['googleFileLocation'], command_off, [["timer"]])
 			music_module = MusicSkill(conn, t, config['DEFAULT']['googleFileLocation'], command_off, [["play"], ["stop", "music"], ["stop", "song"], ["cancel", "music"], ["cancel", "song"], ["pause", "music"], ["pause", "song"]], config['DEFAULT']['spotifyClientId'], config['DEFAULT']['spotifyClientSecret'], config['DEFAULT']['spotifyRedirectURL'])
+			dictionary_module = DictionarySkill(conn, t, config['DEFAULT']['googleFileLocation'], command_off, [["define"], ["definition of"], ["meaning of"]], config['DEFAULT']['dictionaryApiKey'])
 
 			with sd.RawInputStream(samplerate=sample_rate, blocksize = 0, 
 				dtype='int16', channels=1, latency=0.2, callback=callback):
@@ -97,6 +99,7 @@ def main():
 							weather_module.hear_value(heard)
 							music_module.hear_value(heard)
 							timer_module.hear_value(heard)
+							dictionary_module.hear_value(heard)
 							heard = ""
 						else:
 							heard = ""
