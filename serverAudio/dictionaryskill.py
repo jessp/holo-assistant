@@ -1,7 +1,8 @@
 import json
 import requests
 import urllib.parse
-import time    
+import time
+from pydub import AudioSegment
 from charactercontroller import CharacterController
 
 
@@ -13,13 +14,17 @@ class DictionarySkill(CharacterController):
 
 
 	def listen(self, heard):
+		resourse = "./resources/sound_clips/"
 		flattened_terms = [item for sublist in self.terms for item in sublist]
 		dictionary_resp = self.get_definition(self.dictionary_key, heard, flattened_terms)
 		if dictionary_resp[0] == -1:
 			self.talk(dictionary_resp[1])
 		else:
-			self.talk(dictionary_resp[1])
+			#we interrupt outselves if we don't recombine the files
+			intro = AudioSegment.from_file(resourse + dictionary_resp[1], format="wav")
 			self.synthesize_text(dictionary_resp[2])
+			main = AudioSegment.from_file(resourse + "latest_output.wav", format="wav")
+			(intro + main).export(resourse + "latest_output.wav", format="wav")
 			self.talk("latest_output.wav")
 
 	def get_definition(self, key, text, terms):
