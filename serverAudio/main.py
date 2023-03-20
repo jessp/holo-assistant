@@ -82,8 +82,8 @@ def main():
 			music_module = MusicSkill(conn, t, config['DEFAULT']['googleFileLocation'], command_off, [["play"], ["stop", "music"], ["stop", "song"], ["cancel", "music"], ["cancel", "song"], ["pause", "music"], ["pause", "song"]], config['DEFAULT']['spotifyClientId'], config['DEFAULT']['spotifyClientSecret'], config['DEFAULT']['spotifyRedirectURL'])
 			dictionary_module = DictionarySkill(conn, t, config['DEFAULT']['googleFileLocation'], command_off, [["define"], ["definition of"], ["meaning of"]], config['DEFAULT']['dictionaryApiKey'])
 
-			with sd.RawInputStream(samplerate=sample_rate, blocksize = 0, 
-				dtype='int16', channels=1, latency=0.2, callback=callback):
+			with sd.RawInputStream(samplerate=sample_rate, blocksize = 512, 
+				dtype='int16', channels=1, latency=0.1, callback=callback):
 				print('#' * 80)
 				print('Press Ctrl+C to stop the recording')
 				print('#' * 80)
@@ -107,6 +107,7 @@ def main():
 					else:
 						heard = json.loads(rec.PartialResult())["partial"]
 						if command_mode == False and wake_word in heard:
+							print("heard...")
 							conn.sendall(b'listen\n')
 							command_mode = True
 							start_time = time.time()
