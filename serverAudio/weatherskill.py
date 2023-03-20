@@ -14,10 +14,10 @@ class WeatherSkill(CharacterController):
 
 	def listen(self, heard):
 		weather_resp = self.get_weather(self.weather_key, heard)
-		self.synthesize_text(weather_resp[1])
 		if weather_resp[0] == -1:
 			self.talk("sorry_no_info.wav")
 		else:
+			self.synthesize_text(weather_resp[1])
 			self.talk("latest_output.wav")
 		
 

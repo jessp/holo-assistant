@@ -4,3 +4,4 @@ googleFileLocation: ./googleCredentials/xxxxxxxx.json
 spotifyClientId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 spotifyClientSecret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 spotifyRedirectURL: http://localhost:9876
+dictionaryApiKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
