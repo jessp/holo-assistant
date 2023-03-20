@@ -16,15 +16,10 @@ class DictionarySkill(CharacterController):
 		flattened_terms = [item for sublist in self.terms for item in sublist]
 		dictionary_resp = self.get_definition(self.dictionary_key, heard, flattened_terms)
 		if dictionary_resp[0] == -1:
-			self.talk("sorry_no_info.wav")
-		elif dictionary_resp[1] == 0:
-			self.talk("not_a_word.wav")
+			self.talk(dictionary_resp[1])
 		else:
-			if (dictionary_resp[1] == 2):
-				self.talk("found_definition.wav")
-			else:
-				self.talk("found_definitions.wav")
-			self.synthesize_text(dictionary_resp[1])
+			self.talk(dictionary_resp[1])
+			self.synthesize_text(dictionary_resp[2])
 			self.talk("latest_output.wav")
 
 	def get_definition(self, key, text, terms):
@@ -46,22 +41,22 @@ class DictionarySkill(CharacterController):
 			print(definition_response)
 			if definition_response.status_code == requests.codes.ok:
 				json_resp = definition_response.json()
-				definitions = [(x["definition"]) for x in json_resp["definitions"]]
-				if len(definitions) == 1:
-					#only return the first few definitions
-					return (2, definitions[:5])
-				else:
-					return (1, (". ").join(definitions))
+				definitions = [(x["definition"]) for x in json_resp["definitions"]][:5]
+				the_wav = "found_definition.wav"
+				if len(definitions) > 1:
+					the_wav = "found_definitions.wav"
+				definitions = (". ").join(definitions)
+				return (1, the_wav, definitions)
 			else:
 				json_resp = definition_response.json()
 				try:
 					#special error message for non-word, but otherwise send something generic
 					json_resp["message"]
 					if json_resp["message"] == "word not found":
-						return (0)
+						return (-1, "not_a_word.wav")
 					else:
-						return (-1)
+						return (-1, "sorry_no_info.wav")
 				except:
-					return (-1)
-				return (-1)
+					return (-1, "sorry_no_info.wav")
+				return (-1, "sorry_no_info.wav")
 		
