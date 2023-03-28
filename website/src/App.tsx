@@ -48,17 +48,20 @@ function App() {
                 <li><a href="https://thepihut.com/products/mini-external-usb-stereo-speaker" target="blank">Small USB speaker</a></li>
                 <li><a href="https://thepihut.com/products/mini-usb-microphone" target="blank">Miniature USB microphone</a></li>
                 <li>Acetate sheets</li>
-                <li>3D-printed case (optional), including:</li>
+                <li>3D-printed case (optional), composed of:</li>
                 <ul>
-                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/base.stl" target="blank">Box for Raspberry Pi and peripherals, printed in PLA FDM</a></li>
-                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/lid.stl" target="blank">Lid for box containing Raspberry Pi and peripherals, printed in PLA FDM</a></li>
-                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/top.stl" target="blank">Cage for surrounding cone, printed in PA12 Nylon MJF</a></li>
-                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/cap.stl" target="blank">Cap for cage, printed in PLA FDM</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/base.stl" target="blank">Base for Raspberry Pi and peripherals (PLA FDM)</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/main_wall.stl" target="blank">3x standard walls for the base (PA12 Nylon SLS)</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/back_wall.stl" target="blank">1x wall with USB hole for the base (PA12 Nylon SLS)</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/base_lid.stl" target="blank">Lid for base (PLA FDM)</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/crown.stl" target="blank">Crown structure for surrounding cone (PA12 Nylon SLS)</a></li>
+                  <li><a href="https://github.com/jessp/holo-assistant/blob/main/case/cap.stl" target="blank">Cap for crown structure (PLA FDM)</a></li>
                 </ul>
               </ul>
 
               <p>I note that the case is optional because, honestly, it's a bit pricy to 3D print, and my modelling skills aren't great.
               You can absolutely use those files, but I also encourage you to be creative with whatever materials you have around.</p>
+              <p>The case in the videos above is an older model, but you can see the updated version in the this update.</p>
             </Step>
             <Step title={"Sign up for APIs"} index={3}>
               <p>Maria is powered by a few different APIs. You'll need to sign up for accounts in order to interact with her.</p>
@@ -66,6 +69,7 @@ function App() {
               <ul>
                 <li>Signing up for <a href="https://www.weatherapi.com/" target="blank">WeatherAPI.com</a> is pretty straight-forward.</li>
                 <li>Sign up for a <a href="https://developer.spotify.com/" target="blank">Spotify developer account</a>. Create an app. Under the app's settings, enter http://localhost:9876 under Redirect URIs.</li>
+                <li>Sign up for <a href="https://www.wordsapi.com/" target="blank">Words API</a> via RapidAPI.</li>
                 <li>Sign up for <a href="https://console.cloud.google.com/" target="blank">Google Cloud's</a> Text-to-Speech service. </li>
                 <ul>
                   <li>I find that Google Cloud's services a bit tricky to navigate, so I recommend following the steps <a href="https://acloudguru.com/hands-on-labs/setting-up-google-cloud-text-to-speech" target="blank">here</a> under the headings "Enable the Cloud Text-to-Speech API" and "Set Up Service Account."</li>
@@ -103,7 +107,7 @@ function App() {
               <p>Unplug your keyboard and mouse.</p>
             </Step>
             <Step title={"Build Maria's home"} index={7}>
-              <p>Maria needs a place to live. All you need is cone made out of an acetate sheet of a paper, but you can also <a href="https://github.com/jessp/holo-assistant/tree/main/case" target="blank">3D print a special case</a> if you so choose. The video below will walk you through how to assemble Maria's home, and the steps are written out after.</p>
+              <p>Maria needs a place to live. All you need is cone made out of an acetate sheet of a paper, but you can also <a href="https://github.com/jessp/holo-assistant/tree/main/case" target="blank">3D print a special case</a> if you so choose. The video below will walk you through how to assemble Maria's home, and the steps are written out after. Some details of the case have been updated since the video was made, which are documented here.</p>
               <Vimeo
                   video="https://vimeo.com/767444828"
                   id="player"
@@ -113,16 +117,18 @@ function App() {
                   responsive/>
               <p className={"bold"}>Instructions</p>
               <ol type="i">
-                <li>Draw two circles on a sheet of acetate with the same centre point. The smaller circle has a radius of 1.5cm, while the larger circle has a radius of 9.7cm.</li>
+                <li>Draw two circles on a sheet of acetate with the same centre point. The smaller circle has a radius of 1.5cm, while the larger circle has a radius of 10cm.</li>
                 <li>Draw a 90° angle extending from the centre of the circles.</li>
                 <li>Draw jagged rectangular "teeth" extending from one line making up the angle.</li>
                 <li>Cut out your shape. This will form your cone.</li>
                 <li>Tape your cone together so that your jagged teeth overlao with the other edge.</li>
                 <li>If you haven't already, plug in your screen to your Raspberry Pi.</li>
                 <li>Plug in your microphone to your Raspberry Pi.</li>
+                <li>Glue together the walls with the notches facing inward.</li>
+                <li>Snap fit the walls onto the base.</li>
                 <li>Plug in your speaker to your Raspberry Pi. Place the speaker in the four corners that extend up from the base of the Pi case.</li>
                 <li>Position your Raspberry Pi on the raised platform. The bottom of the screen should face towards the speaker.</li>
-                <li>Plug your power cord into the Raspberry Pi, then put the lid of the base on. The screen should line up with the rectangular cut-away of the lid.</li>
+                <li>Plug your power cord into the Raspberry Pi through the hole in one wall, then put the lid of the base on. The screen should line up with the rectangular cut-away of the lid.</li>
                 <li>Position your cone on the lid of the case. The bottom third of the narrow end of the cone should overlap with the screen.</li>
                 <li>Place the cage over your cone. The gap in the cage should face the side of the case the power cable extends from.</li>
                 <li>Finally, place the cap over the cage.</li>
@@ -156,6 +162,10 @@ function App() {
                 <li>Say "stop" or "cancel" the "timer" to stop the timer</li>
                 <li>You can set the time in seconds, minutes, and hours</li>
                 <li>You cannot set a timer for longer than six hours</li>
+              </ul>
+              <p className={"bold"}>Dictionary</p>
+              <ul>
+                <li>Maria can define words when given prompts like, "define", "what's the meaning of", or "what's the definition of"</li>
               </ul>
             </Step>
 
