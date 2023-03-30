@@ -36,7 +36,7 @@ class DictionarySkill(CharacterController):
 				found_word = attempt.strip().split(" ")[0]
 				continue
 		if found_word == "":
-			return (-1)
+			return (-1, "not_a_word.wav")
 		else:
 			full_url = definition_base_url%(found_word)
 			print(full_url)
