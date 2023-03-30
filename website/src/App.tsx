@@ -61,7 +61,7 @@ function App() {
 
               <p>I note that the case is optional because, honestly, it's a bit pricy to 3D print, and my modelling skills aren't great.
               You can absolutely use those files, but I also encourage you to be creative with whatever materials you have around.</p>
-              <p>The case in the videos above is an older model, but you can see the updated version in the this update.</p>
+              <p>The case in the videos above is an older model, but you can see the updated version in <a href="https://github.com/jessp/holo-assistant/wiki/Mar-2023-Update" target="blank">this Wiki post</a>.</p>
             </Step>
             <Step title={"Sign up for APIs"} index={3}>
               <p>Maria is powered by a few different APIs. You'll need to sign up for accounts in order to interact with her.</p>
@@ -107,7 +107,7 @@ function App() {
               <p>Unplug your keyboard and mouse.</p>
             </Step>
             <Step title={"Build Maria's home"} index={7}>
-              <p>Maria needs a place to live. All you need is cone made out of an acetate sheet of a paper, but you can also <a href="https://github.com/jessp/holo-assistant/tree/main/case" target="blank">3D print a special case</a> if you so choose. The video below will walk you through how to assemble Maria's home, and the steps are written out after. Some details of the case have been updated since the video was made, which are documented here.</p>
+              <p>Maria needs a place to live. All you need is cone made out of an acetate sheet of a paper, but you can also <a href="https://github.com/jessp/holo-assistant/tree/main/case" target="blank">3D print a special case</a> if you so choose. The video below will walk you through how to assemble Maria's home, and the steps are written out after. Some details of the case have been updated since the video was made, which are documented <a href="https://github.com/jessp/holo-assistant/wiki/Mar-2023-Update" target="blank">here</a>.</p>
               <Vimeo
                   video="https://vimeo.com/767444828"
                   id="player"
